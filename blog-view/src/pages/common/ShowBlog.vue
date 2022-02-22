@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container cl">
     我是单个博客页面 =====> {{$route.query.blogId}}
   </div>
 </template>

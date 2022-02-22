@@ -10,9 +10,9 @@
         <nav class="nav navbar-nav nav-collapse w_menu" role="navigation">
           <ul class="cl">
             <li class="active"> <a href="#" data-hover="首页">首页</a> </li>
-            <li> <a href="#" data-hover="学无止境">学无止尽</a> </li>
+            <li> <a href="#" data-hover="学无止境">学无止境</a> </li>
             <li> <a href="#" data-hover="碎言碎语">碎言碎语</a> </li>
-            <li> <a href="#" data-hover="关于我">关于我</a></li>
+            <li> <a href="#" data-hover="关于我">关于我</a> </li>
             <li> <a href="#" data-hover="留言板">留言板</a> </li>
             <li><input type="text" id="search" class="input-text input-size" v-model="keyword"><button class="btn btn-default" @click="goSearch">搜索</button></li>
           </ul>
@@ -103,13 +103,5 @@ export default {
   color: #838383;
   position: absolute;
   right: 33px;
-}
-.userInfo img.radius{
-  border: 2px #777 solid;
-  box-shadow:0 1px 3px rgba(0, 0, 0, 0.22);
-  -webkit-transition:.4s all ease-in-out;-moz-transition:.4s all ease-in-out;-o-transition:.4s all ease-in-out;transition:.4s all ease-in-out;
-}
-.userInfo img.radius:hover {
-  -webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);-o-transform:rotate(360deg);-ms-transform:rotate(360deg);transform:rotate(360deg);
 }
 </style>
