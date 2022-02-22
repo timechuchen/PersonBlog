@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="art_content">
-          <Blog/>
+          <BlogList/>
         </div>
         <div class="text-c mb-20" id="moreBlog">
           <a class="btn  radius btn-block " href="javascript:;">点击加载更多</a>
@@ -35,7 +35,7 @@
 <script>
 //引入其子组件
 import SlideShow from "@/pages/Home/Main/SlideShow";
-import Blog from "@/pages/Home/Main/Blog"
+import BlogList from "@/pages/Home/Main/BlogList"
 import Statement from "@/pages/Home/RightBar/Statement";
 import Personal from "@/pages/Home/RightBar/Personal";
 import Seniority from "@/pages/Home/RightBar/Seniority";
@@ -46,7 +46,7 @@ import SiteShare from "@/pages/Home/RightBar/images/SiteShare";
 
 export default {
   name: "index",
-  components: {SlideShow,Blog,Statement,Personal,Seniority,Attention,FriendlyLink,Visitors,SiteShare},
+  components: {SlideShow,BlogList,Statement,Personal,Seniority,Attention,FriendlyLink,Visitors,SiteShare},
 }
 </script>
 

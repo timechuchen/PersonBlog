@@ -23,6 +23,8 @@ import Daily from '@/pages/Daily'
 import Message from '@/pages/Message'
 import Knowledge from '@/pages/Knowledge'
 import Search from '@/pages/Search'
+import BlogList from "@/pages/Home/Main/BlogList";
+import ShowBlog from "@/pages/common/ShowBlog";
 
 //具体的路由配置
 export default new VueRouter({
@@ -62,6 +64,12 @@ export default new VueRouter({
             path: '/knowledge',
             component: Knowledge,
             meta: {isShowFooter: true}
+        },
+        {
+            path: '/showblog',
+            component: ShowBlog,
+            name: 'ShowBlog',
+            meta: {isShowFooter: false}
         },
         {
             //重定向，在项目跑起来的时候，也就是访问根路径就要访问首页
