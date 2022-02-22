@@ -6,15 +6,24 @@
           <img class="logo" src="./images/logo.png" alt="初晨博客" />
         </router-link>
         <a class="logo navbar-logo-m visible-xs" href="#">初晨博客</a>
-        <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:void(0);">&#xe667;</a>
-        <nav class="nav navbar-nav nav-collapse" role="navigation" id="Hui-navbar">
+        <nav class="nav navbar-nav nav-collapse font-size" role="navigation" id="Hui-navbar">
           <ul class="cl">
             <li class="active"> <a href="#" data-hover="首页">首页</a> </li>
-            <li> <a href="#" data-hover="学无止境">学无止境</a> </li>
+            <li class="dropDown dropDown_hover" @mouseenter="current = true" @mouseleave="current = false">
+              <a href="#" class="dropDown_A" data-hover="学无止境">学无止境<i class="Hui-iconfont">&#xe6d5;</i></a>
+              <ul class="dropDown-menu menu radius box-shadow" :style="{display: current ? 'block' : 'none'}">
+                <li><a @click="goSearch2('Java')">Java</a></li>
+                <li><a @click="goSearch2('力扣算法')">力扣算法</a> </li>
+                <li><a @click="goSearch2('C++')">C++</a></li>
+              </ul>
+            </li>
             <li> <a href="#" data-hover="碎言碎语">碎言碎语</a> </li>
             <li> <a href="#" data-hover="关于我">关于我</a> </li>
             <li> <a href="#" data-hover="留言板">留言板</a> </li>
-            <li><input type="text" id="search" class="input-text input-size" v-model="keyword"><button class="btn btn-default" @click="goSearch">搜索</button></li>
+            <li>
+              <input type="text" class="input-text input-size" v-model="keyword" placeholder="搜索博客">
+              <button class="btn btn-default" @click="goSearch">搜索</button>
+            </li>
           </ul>
         </nav>
         <nav class="navbar-nav navbar-userbar hidden-xs hidden-sm " style="top: 0;">
@@ -34,7 +43,8 @@ export default {
   name: 'Header',
   data() {
     return {
-      keyword: ''
+      keyword: '',
+      current: false
     }
   },
   methods: {
@@ -47,13 +57,16 @@ export default {
       // this.$router.push(`/search/${this.keyword}`);
       //第三种，对象的写法，一般真正的项目开发也都用这种
       this.$router.push({name:'search',params: {keyword:this.keyword !== ''?this.keyword:undefined}});
+    },
+    goSearch2(value){
+      this.$router.push({name:'search',params: {keyword:value}});
     }
   }
 }
 </script>
 
 <style scoped>
-/*导航条*/
+/*!*导航条*!*/
 .navbar.navbar-fixed-top {
   border-bottom: 1px #222 solid;
 }
@@ -66,15 +79,6 @@ export default {
 }
 .nav ul li.active a {
   color:#000;
-}
-.nav>ul>li>a {
-  padding: 0 30px;/*导航宽度*/
-  outline: none;
-  color: #838383;
-  text-decoration: none;
-  letter-spacing: 5px;
-  text-shadow: 0 0 1px rgba(255,255,255,0.3);
-  font-size: 1.25em;
 }
 .nav>ul>li>a::before {
   color: #000;
@@ -97,11 +101,31 @@ export default {
   transform: scale(1) translateX(0px) translateY(0px) rotate(0deg);
   opacity: 1;
 }
-/*user login*/
-.userInfo i {
-  font-size: 28px;
-  color: #838383;
-  position: absolute;
-  right: 33px;
+.navbar-wrapper{ height: 45px}
+.navbar{ position:relative; z-index:1030}
+.navbar-fixed-top{ position:fixed; top:0;left: 0; right: 0; z-index:1030}
+
+/*logo*/
+.logo{ display:inline-block; text-decoration:none; cursor:pointer}
+a.logo:hover{ text-decoration:none}
+.navbar .logo{height: 44px;line-height: 44px;margin-right: 10px;float: left}
+.navbar-logo,.navbar-logo-m{font-size: 16px}
+.navbar .container{ position:relative}
+.navbar-userbar{position:absolute;top:0; right:15px}
+.navbar .container .navbar-userbar{ right:0
+}
+
+/*导航*/
+.nav{ z-index:1}
+.nav > ul{ font-size:0; line-height:0}
+.nav > ul > li{ position:relative}
+.nav > ul > li,.nav > ul > li > a{ display:inline-block; height:44px; line-height:44px;text-align:center;font-size:18px}
+.nav > ul > li > a{ padding:0 20px}
+.nav > ul > li > a:hover,.nav > ul > li.current > a{background-color:rgba(255,255,255,0.2); text-decoration:none;
+  -webkit-transition: background-color 0.3s ease 0s;
+  -moz-transition: background-color 0.3s ease 0s;
+  -o-transition: background-color 0.3s ease 0s;
+  -ms-transition: background-color 0.3s ease 0s;
+  transition: background-color 0.3s ease 0s
 }
 </style>
