@@ -1,5 +1,5 @@
 body {
-  background: url(./img/background.png) repeat 0 0;
+  background: url(public/images/background.png) repeat 0 0;
 }
 a:hover {
   text-decoration: none;
@@ -356,7 +356,7 @@ ul.infos p {
 }
 
 .keybq {
-  background: url(./img/tab.png) no-repeat 10px center #f8f8f8;
+  background: url(public/images/tab.png) no-repeat 10px center #f8f8f8;
   line-height: 30px;
   height: 30px;
   padding-left: 40px;

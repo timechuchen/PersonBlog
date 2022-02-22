@@ -7,6 +7,9 @@ import router from '@/router'
 //引入仓库
 import store from '@/store'
 
+//引入mock虚拟数据
+import '@/mock/mockServe'
+
 //将云标签和热门标签注册为全局组件
 import TagCloud from "@/pages/Home/RightBar/TagCloud";
 import HotTag from "@/pages/Home/RightBar/HotTag";
