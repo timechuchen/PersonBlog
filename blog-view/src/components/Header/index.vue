@@ -11,11 +11,13 @@
             <li class="active"> <a href="#" data-hover="首页">首页</a> </li>
             <li class="dropDown dropDown_hover" @mouseenter="current = true" @mouseleave="current = false">
               <a href="#" class="dropDown_A" data-hover="学无止境">学无止境<i class="Hui-iconfont">&#xe6d5;</i></a>
-              <ul class="dropDown-menu menu radius box-shadow" :style="{display: current ? 'block' : 'none'}">
-                <li><a @click="goSearch2('Java')">Java</a></li>
-                <li><a @click="goSearch2('力扣算法')">力扣算法</a> </li>
-                <li><a @click="goSearch2('C++')">C++</a></li>
-              </ul>
+              <transition>
+                <ul class="dropDown-menu menu radius box-shadow" v-show="current" style="display: block">
+                  <li><a @click="goSearch2('Java')">Java</a></li>
+                  <li><a @click="goSearch2('力扣算法')">力扣算法</a> </li>
+                  <li><a @click="goSearch2('C++')">C++</a></li>
+                </ul>
+              </transition>
             </li>
             <li> <a href="#" data-hover="碎言碎语">碎言碎语</a> </li>
             <li> <a href="#" data-hover="关于我">关于我</a> </li>
@@ -114,7 +116,6 @@ a.logo:hover{ text-decoration:none}
 .navbar-userbar{position:absolute;top:0; right:15px}
 .navbar .container .navbar-userbar{ right:0
 }
-
 /*导航*/
 .nav{ z-index:1}
 .nav > ul{ font-size:0; line-height:0}
@@ -127,5 +128,20 @@ a.logo:hover{ text-decoration:none}
   -o-transition: background-color 0.3s ease 0s;
   -ms-transition: background-color 0.3s ease 0s;
   transition: background-color 0.3s ease 0s
+}
+.v-enter-active {
+  animation: isShow 0.5s linear;
+}
+.v-leave-active {
+  animation: isShow 0.5s linear reverse;
+}
+/*定义动画*/
+@keyframes isShow {
+  from{
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 </style>
