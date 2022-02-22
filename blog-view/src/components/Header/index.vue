@@ -7,7 +7,7 @@
         </router-link>
         <a class="logo navbar-logo-m visible-xs" href="#">初晨博客</a>
         <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:void(0);">&#xe667;</a>
-        <nav class="nav navbar-nav nav-collapse w_menu" role="navigation">
+        <nav class="nav navbar-nav nav-collapse" role="navigation" id="Hui-navbar">
           <ul class="cl">
             <li class="active"> <a href="#" data-hover="首页">首页</a> </li>
             <li> <a href="#" data-hover="学无止境">学无止境</a> </li>
