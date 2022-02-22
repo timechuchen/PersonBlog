@@ -4,6 +4,8 @@ import App from './App.vue'
 Vue.config.productionTip = false
 //引入路由
 import router from '@/router'
+//引入仓库
+import store from '@/store'
 
 //将云标签和热门标签注册为全局组件
 import TagCloud from "@/pages/Home/RightBar/TagCloud";
@@ -18,5 +20,7 @@ Vue.component(HotTag.name,HotTag);
 new Vue({
   render: h => h(App),
   //注册路由
-  router
+  router,
+  //注册仓库：组件实例的身上对多一个$store属性
+  store
 }).$mount('#app')

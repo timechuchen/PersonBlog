@@ -10,20 +10,7 @@
           </div>
         </div>
         <div class="art_content">
-          <ul class="index_arc">
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-            <Blog/>
-          </ul>
+          <Blog/>
         </div>
         <div class="text-c mb-20" id="moreBlog">
           <a class="btn  radius btn-block " href="javascript:;">点击加载更多</a>
