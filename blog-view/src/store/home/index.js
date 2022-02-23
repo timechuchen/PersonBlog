@@ -1,16 +1,20 @@
 //home模块的小仓库
 //引入请求函数，但是我还没写后台，这里就先不用，用mock模拟数据
-import {reqGetBlogList} from '@/api';
+import {reqGetBlogList,reqGetBanner} from '@/api';
 
 //仓库存储数据的地方
 const state = {
     //state中的默认初始数据不要瞎写，一般要和接口返回的数据类型要一致
     blogList: [],
+    bannerList: []
 };
 //修改state的唯一手段
 const mutations = {
     BLOGLIST(state,blogList){
         state.blogList = blogList;
+    },
+    GETBANNERLIST(state,bannerList){
+        state.bannerList = bannerList;
     }
 };
 //处理action，可以书写自己的业务逻辑，也可以处理异步
@@ -20,6 +24,13 @@ const actions = {
         let blogs = await reqGetBlogList();
         if(blogs.code === 200) {
             commit('BLOGLIST',blogs.data);
+        }
+    },
+    //获取轮播图数据
+    async bannerList({commit}){
+        let banner = await reqGetBanner();
+        if(banner.code === 200){
+            commit('GETBANNERLIST',banner.data);
         }
     }
 };

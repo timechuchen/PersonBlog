@@ -20,8 +20,18 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
-  name: "SlideShow"
+  name: "SlideShow",
+  mounted() {
+    //从Vuex发送请求获取数据（这里先拿到模拟数据）
+    this.$store.dispatch('bannerList');
+  },
+  computed: {
+    ...mapState({
+      bannerList: state => state.home.bannerList
+    })
+  }
 }
 </script>
 

@@ -6,4 +6,5 @@ import mockRequest from "@/api/mockAjax";
 export const reqGitHubList = ()=> requests({url: '/search/users?q=chuchen',method:'get'})
 
 //获取博客列表的接口
-export const reqGetBlogList = ()=> mockRequest({url:'/blogList'});
+export const reqGetBlogList = ()=> mockRequest({url:'/blogList',method:'get'});
+export const reqGetBanner = ()=> mockRequest({url:'/banner',method:'get'});
