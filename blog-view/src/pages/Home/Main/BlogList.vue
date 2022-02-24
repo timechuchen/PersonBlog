@@ -40,7 +40,7 @@ export default {
   //组件挂载完毕就可以向服务器发送请求获取数据
   mounted() {
     //从Vuex发送请求获取数据（这里先拿到模拟数据）
-    this.$store.dispatch('blogList')
+    this.$store.dispatch('getBlogList')
   },
   computed: {
     ...mapState({

@@ -23,8 +23,6 @@
         <Personal/>
         <HotTag/>
         <Seniority/>
-        <TagCloud/>
-        <Attention/>
         <Visitors/>
         <SiteShare/>
       </div>
@@ -39,14 +37,13 @@ import BlogList from "@/pages/Home/Main/BlogList"
 import Statement from "@/pages/Home/RightBar/Statement";
 import Personal from "@/pages/Home/RightBar/Personal";
 import Seniority from "@/pages/Home/RightBar/Seniority";
-import Attention from "@/pages/Home/RightBar/Attention";
 import FriendlyLink from "@/pages/Home/RightBar/FriendlyLink";
 import Visitors from "@/pages/Home/RightBar/Visitors";
 import SiteShare from "@/pages/Home/RightBar/images/SiteShare";
 
 export default {
   name: "index",
-  components: {SlideShow,BlogList,Statement,Personal,Seniority,Attention,FriendlyLink,Visitors,SiteShare},
+  components: {SlideShow,BlogList,Statement,Personal,Seniority,FriendlyLink,Visitors,SiteShare},
 }
 </script>
 

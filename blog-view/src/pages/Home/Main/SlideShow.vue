@@ -28,7 +28,7 @@ export default {
   name: "SlideShow",
   mounted() {
     //从Vuex发送请求获取数据（这里先拿到模拟数据）
-    this.$store.dispatch('bannerList');
+    this.$store.dispatch('getBannerList');
   },
   computed: {
     ...mapState({

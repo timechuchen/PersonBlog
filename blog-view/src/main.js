@@ -10,10 +10,8 @@ import store from '@/store'
 //引入mock虚拟数据
 import '@/mock/mockServe'
 
-//将云标签和热门标签注册为全局组件
-import TagCloud from "@/pages/Home/RightBar/TagCloud";
-import HotTag from "@/pages/Home/RightBar/HotTag";
-Vue.component(TagCloud.name,TagCloud)
+//将热门标签注册为全局组件
+import HotTag from "@/pages/common/HotTag";
 Vue.component(HotTag.name,HotTag);
 
 // //测试接口

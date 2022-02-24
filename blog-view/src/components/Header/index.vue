@@ -8,9 +8,9 @@
         <a class="logo navbar-logo-m visible-xs" href="#">初晨博客</a>
         <nav class="nav navbar-nav nav-collapse font-size" role="navigation" id="Hui-navbar">
           <ul class="cl">
-            <li class="active"> <a href="#" data-hover="首页">首页</a> </li>
+            <li class="active"> <router-link to="/home" data-hover="首页">首页</router-link> </li>
             <li class="dropDown dropDown_hover" @mouseenter="current = true" @mouseleave="current = false">
-              <a href="#" class="dropDown_A" data-hover="学无止境">学无止境<i class="Hui-iconfont">&#xe6d5;</i></a>
+              <router-link to="/knowledge" class="dropDown_A" data-hover="学无止境">学无止境<i class="Hui-iconfont">&#xe6d5;</i></router-link>
               <transition>
                 <ul class="dropDown-menu menu radius box-shadow" v-show="current" style="display: block">
                   <li><a @click="goSearch2('Java')">Java</a></li>
@@ -19,9 +19,9 @@
                 </ul>
               </transition>
             </li>
-            <li> <a href="#" data-hover="碎言碎语">碎言碎语</a> </li>
-            <li> <a href="#" data-hover="关于我">关于我</a> </li>
-            <li> <a href="#" data-hover="留言板">留言板</a> </li>
+            <li> <router-link to="/daily" data-hover="碎言碎语">碎言碎语</router-link> </li>
+            <li> <router-link to="/about" data-hover="关于我">关于我</router-link> </li>
+            <li> <router-link to="/message" data-hover="留言板">留言板</router-link> </li>
             <li>
               <input type="text" class="input-text input-size" v-model="keyword" placeholder="搜索博客">
               <button class="btn btn-default" @click="goSearch">搜索</button>

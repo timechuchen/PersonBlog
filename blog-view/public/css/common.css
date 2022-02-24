@@ -1,5 +1,5 @@
 body {
-  background: url(public/images/background.png) repeat 0 0;
+  background: url(../img/001.png) repeat 0 0;
 }
 a:hover {
   text-decoration: none;
@@ -259,6 +259,8 @@ a:hover {
   margin: 5px;
 }
 
+/* about CSS Document */
+/*.aboutcon{background:url(../img/slider/aboutphoto.jpg) no-repeat bottom right; color:#696969}*/
 h1.t_nav {
   border-bottom: #337ab7 1px solid;
   font-size: 12px;
@@ -320,7 +322,7 @@ a.blog_link {
   font: 12px "宋体", Arial, Helvetica, sans-serif;
   color: #756f71;
 }
-.c_tittle {
+.c_titile {
   font-size: 22px;
   text-align: center;
   color: #333;
@@ -356,7 +358,7 @@ ul.infos p {
 }
 
 .keybq {
-  background: url(public/images/tab.png) no-repeat 10px center #f8f8f8;
+  background: url(../img/tab.png) no-repeat 10px center #f8f8f8;
   line-height: 30px;
   height: 30px;
   padding-left: 40px;

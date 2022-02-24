@@ -7,4 +7,11 @@ export const reqGitHubList = ()=> requests({url: '/search/users?q=chuchen',metho
 
 //获取博客列表的接口
 export const reqGetBlogList = ()=> mockRequest({url:'/blogList',method:'get'});
+//获取轮播图数据接口
 export const reqGetBanner = ()=> mockRequest({url:'/banner',method:'get'});
+//获取“我”的个人信息
+export const reqPersonInfo = ()=> mockRequest({url:'/personInfo'});
+//获取热点推荐信息
+export const reqHot = ()=> mockRequest({url: '/hot'});
+//获取日志信息
+export const reqRecode = ()=> mockRequest({url:'/diary'});
