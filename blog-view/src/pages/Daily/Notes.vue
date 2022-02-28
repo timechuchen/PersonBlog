@@ -14,6 +14,7 @@
           </a>
           <span class="font-style">{{ recode.likes }}</span>
         </div>
+<!--        <button class="btn btn-success size-S location" v-if="recode.content.length>70">{{msg}}</button>-->
         <span class="cd-date">{{recode.create_time}}</span>
       </div>
     </div>
@@ -28,6 +29,7 @@ export default {
   data() {
     return {
       flag: [],
+      // msg: '展开'
     }
   },
   //组件挂载完毕就可以向服务器发送请求获取数据
@@ -39,12 +41,21 @@ export default {
   methods: {
     isLike(index){
       this.flag.splice(index,1,!this.flag[index]);
-    }
+    },
   },
   computed: {
     ...mapState({
-      recodes:state=> state.diary.recode
-    })
+      recodes:state=> state.diary.recode,
+    }),
+  },
+  filters: {
+    text(value) {
+      if(value.length > 70){
+        return value.slice(0,70) + ' . . .';
+      }else {
+        return value
+      }
+    }
   }
 }
 </script>
@@ -58,5 +69,8 @@ export default {
   line-height: 105%;
   font-weight: 900;
   color: white;
+}
+.location {
+  float: left;
 }
 </style>

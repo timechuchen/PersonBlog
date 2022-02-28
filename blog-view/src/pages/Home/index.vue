@@ -12,10 +12,6 @@
         <div class="art_content">
           <BlogList/>
         </div>
-        <div class="text-c mb-20" id="moreBlog">
-          <a class="btn  radius btn-block " href="javascript:;">点击加载更多</a>
-          <a class="btn  radius btn-block hidden" href="javascript:;">加载中……</a>
-        </div>
       </div>
       <div class="col-sm-3 col-md-3">
         <!-- 热门标签，这已经是全局组件了，所以不用再次注册了 -->
