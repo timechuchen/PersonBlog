@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      content: `欢迎使用`,
+      content: ``,
       editorOption: {
         modules: {
           toolbar:[
@@ -74,6 +74,6 @@ export default {
 <style scoped>
 .location {
   float: right;
-  margin-top: 5px;
+  margin: 10px;
 }
 </style>

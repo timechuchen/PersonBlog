@@ -15,3 +15,5 @@ export const reqPersonInfo = ()=> mockRequest({url:'/personInfo'});
 export const reqHot = ()=> mockRequest({url: '/hot'});
 //获取日志信息
 export const reqRecode = ()=> mockRequest({url:'/diary'});
+//获取留言信息
+export const reqWords = ()=> mockRequest({url:'/words'});

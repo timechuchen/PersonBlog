@@ -8,6 +8,7 @@ Vue.use(Vuex);
 import home from './home'
 import search from './search'
 import diary from './diary'
+import message from './message'
 
 //对外暴露Store的一个实例
 export default new Vuex.Store({
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     modules: {
         home,
         search,
-        diary
+        diary,
+        message
     }
 });

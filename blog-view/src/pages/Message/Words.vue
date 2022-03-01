@@ -1,83 +1,58 @@
 <template>
-  <ul class="commentList mt-50">
-    <li class="item cl"> <a href="#"><i class="avatar size-L radius"><img alt="" src="http://q.qlogo.cn/qqapp/101388738/1CF8425D24660DB8C3EBB76C03D95F35/100"></i></a>
-      <div class="comment-main">
-        <header class="comment-header">
-          <div class="comment-meta"><a class="comment-author" href="#">老王</a>
-            <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20" class="f-r">2014-8-31 15:20</time>
+  <div>
+    <ul class="commentList mt-50">
+      <li class="item cl" v-for="(word,index) in words" :key="word.id" v-if="index < count">
+        <a href="#"><i class="avatar size-L radius">
+          <img alt="" :src="word.img"></i>
+        </a>
+        <div class="comment-main">
+          <header class="comment-header">
+            <div class="comment-meta"><a class="comment-author" href="#">{{ word.author }}</a>
+              <time class="f-r">{{ word.time }}</time>
+            </div>
+          </header>
+          <div class="comment-body">
+            {{word.content}}
           </div>
-        </header>
-        <div class="comment-body">
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
         </div>
-      </div>
-    </li>
-    <li class="item cl"> <a href="#"><i class="avatar size-L radius"><img alt="" src="http://q.qlogo.cn/qqapp/101388738/1CF8425D24660DB8C3EBB76C03D95F35/100"></i></a>
-      <div class="comment-main">
-        <header class="comment-header">
-          <div class="comment-meta"><a class="comment-author" href="#">老王</a>
-            <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20" class="f-r">2014-8-31 15:20</time>
-          </div>
-        </header>
-        <div class="comment-body">
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-        </div>
-      </div>
-    </li>
-    <li class="item cl"> <a href="#"><i class="avatar size-L radius"><img alt="" src="http://q.qlogo.cn/qqapp/101388738/1CF8425D24660DB8C3EBB76C03D95F35/100"></i></a>
-      <div class="comment-main">
-        <header class="comment-header">
-          <div class="comment-meta"><a class="comment-author" href="#">老王</a>
-            <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20" class="f-r">2014-8-31 15:20</time>
-          </div>
-        </header>
-        <div class="comment-body">
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-        </div>
-      </div>
-    </li>
-    <li class="item cl"> <a href="#"><i class="avatar size-L radius"><img alt="" src="http://q.qlogo.cn/qqapp/101388738/1CF8425D24660DB8C3EBB76C03D95F35/100"></i></a>
-      <div class="comment-main">
-        <header class="comment-header">
-          <div class="comment-meta"><a class="comment-author" href="#">老王</a>
-            <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20" class="f-r">2014-8-31 15:20</time>
-          </div>
-        </header>
-        <div class="comment-body">
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-          你是猴子派来的救兵吗？
-        </div>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+    <div class="text-c mb-20" id="moreBlog" style="margin-top: 15px">
+      <a class="btn  radius btn-block" @click="showMore(words.length)">{{msg}}</a>
+      <!--    <a class="btn  radius btn-block hidden" href="javascript:">加载中……</a>-->
+    </div>
+  </div>
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
-  name: "Words"
+  name: "Words",
+  data() {
+    return {
+      count: 5,
+      msg:"点击加载更多",
+    }
+  },
+  methods: {
+    showMore(number) {
+      if(this.count < number){
+        this.count += 5;
+      }else {
+        this.msg = "没有更多了哦！！！"
+      }
+    }
+  },
+  mounted() {
+    //从Vuex发送请求获取数据（这里先拿到模拟数据）
+    this.$store.dispatch('getWords');
+  },
+  computed: {
+    ...mapState({
+      words:state=> state.message.words
+    }),
+  },
 }
 </script>
 
