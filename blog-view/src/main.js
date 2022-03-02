@@ -6,13 +6,21 @@ Vue.config.productionTip = false
 import router from '@/router'
 //引入仓库
 import store from '@/store'
+//引入懒加载插件
+import VueLazyload from "vue-lazyload";
 //引入mock虚拟数据
 import '@/mock/mockServe'
 
 //将热门标签注册为全局组件
 import HotTag from "@/pages/common/HotTag";
+//引入懒加载图片
+import pic from '@/assets/default.gif'
 Vue.component(HotTag.name,HotTag);
 
+Vue.use(VueLazyload,{
+  //懒加载默认的图片
+  loading:pic
+})
 // //测试接口
 // import {reqGitHubList} from "@/api";
 // reqGitHubList();

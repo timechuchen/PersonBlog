@@ -3,7 +3,7 @@
   <ul class="index_arc" @click="goBlog">
     <li class="index_arc_item" v-for="(blog,index) in blogList" :key="blog.blogId" v-if="index < count" :class="blog.blogPic === null ? 'no_pic' : null">
       <a class="pic" v-if="blog.blogPic !== null">
-        <img :data-blogOne="blog.blogId" class="lazyload" :src="blog.blogPic" alt="logo"/>
+        <img :data-blogOne="blog.blogId" class="lazyload" v-lazy="blog.blogPic" alt="logo"/>
       </a>
       <h4 class="title">
         <a :data-blogOne="blog.blogId">{{blog.blogTitle}}</a>
