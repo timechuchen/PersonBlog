@@ -17,3 +17,5 @@ export const reqHot = ()=> mockRequest({url: '/hot'});
 export const reqRecode = ()=> mockRequest({url:'/diary'});
 //获取留言信息
 export const reqWords = ()=> mockRequest({url:'/words'});
+//获取博客详细信息
+export const reqBlog = ()=> mockRequest({url:'/blog',method: 'get'});

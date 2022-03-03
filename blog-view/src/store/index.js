@@ -9,6 +9,7 @@ import home from './home'
 import search from './search'
 import diary from './diary'
 import message from './message'
+import blog from './blog'
 
 //对外暴露Store的一个实例
 export default new Vuex.Store({
@@ -17,6 +18,7 @@ export default new Vuex.Store({
         home,
         search,
         diary,
-        message
+        message,
+        blog
     }
 });

@@ -9,7 +9,6 @@
     <section class="container pt-20">
       <div class="col-sm-9 col-md-9">
         <div class="art_content">
-
           <BlogList/>
         </div>
       </div>
@@ -22,7 +21,7 @@
 
 <script>
 import BlogList from "@/pages/Knowledge/BlogList";
-import HotTag from "@/pages/common/HotTag";
+import HotTag from "@/pages/Common/HotTag";
 export default {
   name: "index",
   components: {BlogList,HotTag}

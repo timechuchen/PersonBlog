@@ -23,8 +23,7 @@ import Daily from '@/pages/Daily'
 import Message from '@/pages/Message'
 import Knowledge from '@/pages/Knowledge'
 import Search from '@/pages/Search'
-import BlogList from "@/pages/Home/Main/BlogList";
-import ShowBlog from "@/pages/common/ShowBlog";
+import Blog from '@/pages/Blog'
 
 //具体的路由配置
 export default new VueRouter({
@@ -66,9 +65,9 @@ export default new VueRouter({
             meta: {isShowFooter: true}
         },
         {
-            path: '/showblog',
-            component: ShowBlog,
-            name: 'ShowBlog',
+            path: '/blog',
+            component: Blog,
+            name: 'Blog',
             meta: {isShowFooter: false}
         },
         {

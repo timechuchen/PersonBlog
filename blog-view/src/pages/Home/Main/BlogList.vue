@@ -43,7 +43,7 @@ export default {
       let {blogone} = element.dataset;
       // //如果标签身上有blog_one属性那它一定是a标签
       if(blogone){
-        let location = {name: 'ShowBlog'};
+        let location = {name: 'Blog'};
         location.query = {blogId: blogone};
         this.$router.push(location);
       }

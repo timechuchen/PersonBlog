@@ -16,7 +16,7 @@ import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
-import {addQuillTitle} from "@/pages/Message/js/quill-title";
+import {addQuillTitle} from "@/utils/quill-title";
 
 export default {
   name: "InputText",
