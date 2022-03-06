@@ -9,19 +9,8 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'https://api.github.com',
-                pathRewrite: {
-                    '^/api': '',
-                },
-                // ws: true, //用于支持websocket
-                // changeOrigin: true
+                target: 'http://localhost:8089',
             },
-            '/demo': {
-                target: 'http://localhost:5001',
-                pathRewrite: {
-                    '^/demo': '',
-                },
-            }
         }
     }
 }

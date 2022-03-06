@@ -19,3 +19,11 @@ export const reqRecode = ()=> mockRequest({url:'/diary'});
 export const reqWords = ()=> mockRequest({url:'/words'});
 //获取博客详细信息
 export const reqBlog = ()=> mockRequest({url:'/blog',method: 'get'});
+//获取验证码
+export const reqGetCode = (phone)=>requests({url:`/user/getCode/${phone}`,method:'get'});
+//注册接口  /user/sigin
+export const reqUserRegister = (data)=>requests({url:`/user/sigin/${data.username}/${data.password}/${data.phone}/${data.code}`,data,method:'post'});
+//登陆
+export const reqLogo = (data)=>requests({url:`/user/login?phone=${data.phone}&password=${data.password}`,method:'post'});
+//获取用户的信息（需要带着用户的 token 像服务器要信息）
+export const reqUserInfo = ()=> requests({url:`/user/getUserLogin`,method:'get'});

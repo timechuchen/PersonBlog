@@ -10,6 +10,7 @@ import search from './search'
 import diary from './diary'
 import message from './message'
 import blog from './blog'
+import user from './user'
 
 //对外暴露Store的一个实例
 export default new Vuex.Store({
@@ -19,6 +20,7 @@ export default new Vuex.Store({
         search,
         diary,
         message,
-        blog
+        blog,
+        user
     }
 });

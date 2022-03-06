@@ -8,7 +8,7 @@
         <a class="logo navbar-logo-m visible-xs" href="#">初晨博客</a>
         <nav class="nav navbar-nav nav-collapse font-size" role="navigation" id="Hui-navbar">
           <ul class="cl">
-            <li class="active"> <router-link to="/home" data-hover="首页">首页</router-link> </li>
+            <li> <router-link to="/home" data-hover="首页">首页</router-link> </li>
             <li class="dropDown dropDown_hover" @mouseenter="current = true" @mouseleave="current = false">
               <router-link to="/knowledge" class="dropDown_A" data-hover="学无止境">学无止境<i class="Hui-iconfont">&#xe6d5;</i></router-link>
               <transition>
@@ -31,7 +31,15 @@
         <nav class="navbar-nav navbar-userbar hidden-xs hidden-sm " style="top: 0;">
           <ul class="cl">
             <li class="userInfo dropDown dropDown_hover">
-              <router-link to="/login"><img class="avatar size-S" src="./images/qq.jpg" title="登入" alt="QQ登陆">登陆</router-link>
+              <router-link to="/login" v-if="!userName">
+                <img class="avatar size-S" src="./images/qq.jpg" title="登入" alt="QQ登陆">
+                登陆
+              </router-link>
+              <p v-else>
+                <img class="avatar size-S" src="./images/qq.jpg" title="登入" alt="QQ登陆">
+                <a>{{userName}}</a> |
+                <a style="color: #b94a48">退出登陆</a>
+              </p>
             </li>
           </ul>
         </nav>
@@ -46,6 +54,7 @@ export default {
   data() {
     return {
       keyword: '',
+      user: '登陆',
       current: false
     }
   },
@@ -62,6 +71,11 @@ export default {
     },
     goSearch2(value){
       this.$router.push({name:'search',params: {keyword:value}});
+    }
+  },
+  computed: {
+    userName() {
+      return this.$store.state.user.userInfo.username;
     }
   }
 }

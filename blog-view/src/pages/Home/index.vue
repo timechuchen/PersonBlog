@@ -40,6 +40,10 @@ import SiteShare from "@/pages/Home/RightBar/images/SiteShare";
 export default {
   name: "index",
   components: {SlideShow,BlogList,Statement,Personal,Seniority,FriendlyLink,Visitors,SiteShare},
+  mounted() {
+    //获取用户信息进行展示
+    this.$store.dispatch('getUserInfo');
+  }
 }
 </script>
 
