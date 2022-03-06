@@ -1,6 +1,6 @@
 //登陆预注册
-import {reqGetCode, reqLogo, reqUserInfo, reqUserRegister} from "@/api";
-import {getToken, setToken} from "@/utils/token";
+import {reqGetCode, reqLogo, reqLogout, reqUserInfo, reqUserRegister} from "@/api";
+import {getToken, setToken, removeToken} from "@/utils/token";
 //仓库存储数据的地方
 const state = {
     token: getToken(),
@@ -17,6 +17,12 @@ const mutations = {
     },
     GETUSERINFO(state,data){
         state.userInfo = data;
+    },
+    CLEAR(state) {
+        //把仓库和本地存储的所有用户信息清空
+        state.token = '';
+        state.userInfo = {};
+        removeToken();
     }
 };
 //处理action，可以书写自己的业务逻辑，也可以处理异步
@@ -37,8 +43,12 @@ const actions = {
        let result = await reqUserRegister(user);
        if(result.code === 200) {
            return 'ok';
-       }else {
-           return Promise.reject(new Error('注册失败'));
+       }else if(result.code === 70001){
+           return Promise.reject(new Error('验证码错误'));
+       }else if(result.code === 20005){
+           return Promise.reject(new Error('用户已存在'));
+       }else if(result.code === 500){
+           return Promise.reject(new Error('服务器错误'));
        }
     },
     //登陆业务
@@ -49,8 +59,10 @@ const actions = {
             //对token进行本地持久化存储
             setToken(result.data);
             return 'ok'
+        }else if(result.code === 20003){
+            return Promise.reject(new Error('密码错误'));
         }else {
-            return Promise.reject(new Error('登陆失败'));
+            return Promise.reject(new Error('未注册'));
         }
     },
     //通过 token 请求用户信息
@@ -58,6 +70,17 @@ const actions = {
         let result = await reqUserInfo();
         if(result.code === 200){
             commit('GETUSERINFO',result.data);
+        }
+    },
+    //退出登陆
+    async userLogout({commit}) {
+        let result = await reqLogout();
+        //注意，action 中不能操作 state，需要提交 mutation
+        if (result.code === 200){
+            commit('CLEAR');
+            return 'ok';
+        }else {
+            return Promise.reject(new Error('服务器异常'));
         }
     }
 };

@@ -38,7 +38,7 @@
               <p v-else>
                 <img class="avatar size-S" src="./images/qq.jpg" title="登入" alt="QQ登陆">
                 <a>{{userName}}</a> |
-                <a style="color: #b94a48">退出登陆</a>
+                <a style="color: #b94a48" @click="logout">退出登陆</a>
               </p>
             </li>
           </ul>
@@ -71,6 +71,15 @@ export default {
     },
     goSearch2(value){
       this.$router.push({name:'search',params: {keyword:value}});
+    },
+    logout() {
+      try {
+        this.$store.dispatch('userLogout');
+        //回到首页
+        this.$router.push('/');
+      }catch (error) {
+        alert(error.message);
+      }
     }
   },
   computed: {

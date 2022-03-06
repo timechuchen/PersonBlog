@@ -1,8 +1,6 @@
 package ltd.chuchen.controller;
 
-import com.alibaba.fastjson.JSON;
 import ltd.chuchen.entity.User;
-import ltd.chuchen.model.dto.LoginInfo;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.UserService;
 import ltd.chuchen.utils.RedisUtil;
@@ -27,14 +25,15 @@ public class LogoController {
     @PostMapping("/user/sigin/{username}/{password}/{phone}/{code}")
     public Result sigin(@PathVariable String code, @PathVariable String password, @PathVariable String phone, @PathVariable String username) {
         if(Integer.parseInt(code) != this.code){
-            return Result.error("验证码不对");
+            return Result.create(70001,"验证码不对");
         }
-        if(userService.sigin(username,password,phone,code) == 0){
+        int res = userService.sigin(username,password,phone,code);
+        if(res == 0){
             return Result.ok("注册成功");
-        }else if(userService.sigin(username,password,phone,code) == 1){
-            return Result.error("用户已存在！");
+        }else if (res == 1){
+            return Result.create(20005,"用户已存在！");
         }else {
-            return Result.error("注册失败！");
+            return Result.create(500,"注册异常");
         }
     }
 
@@ -43,16 +42,18 @@ public class LogoController {
     public Result login(@RequestParam("phone") String phone, @RequestParam("password") String password){
         //查询是否存在该用户
         boolean isLoginSuccessfully = userService.login(phone, password);
+        User loginInfo = userService.findUserByPhone(phone);
         if(isLoginSuccessfully){
             //生成一个 token 令牌
             String token = TokenUtil.getToken();
             //存到Redis中
-            User loginInfo = userService.findUserByPhone(phone);
-            redisUtil.set(token,loginInfo,300000L);
+            redisUtil.set(token,loginInfo,3000000L);
             return Result.ok("登陆成功",token);
-        }else {
+        }else if(loginInfo != null){
             //告诉用户登陆失败
-            return Result.error("登陆失败");
+            return Result.create(20003,"密码错误");
+        }else {
+            return Result.create(20001,"用户不存在");
         }
     }
 
@@ -66,11 +67,16 @@ public class LogoController {
     }
 
     @ResponseBody
-    @RequestMapping("/user/logout/{phone}")
-    public Result logout(@PathVariable String phone){
-        //注销的逻辑代码
-
-        return Result.ok("注销成功");
+    @RequestMapping("/user/logout")
+    public Result logout(HttpServletRequest request){
+        //退出登录的逻辑代码
+        String token = request.getHeader("token");
+        if(token.equals("")){
+            return Result.error("未登录");
+        }
+        //删除redis中的对应令牌
+        redisUtil.del(token);
+        return Result.ok("退出成功");
     }
 
     @ResponseBody

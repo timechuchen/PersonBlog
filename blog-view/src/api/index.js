@@ -27,3 +27,5 @@ export const reqUserRegister = (data)=>requests({url:`/user/sigin/${data.usernam
 export const reqLogo = (data)=>requests({url:`/user/login?phone=${data.phone}&password=${data.password}`,method:'post'});
 //获取用户的信息（需要带着用户的 token 像服务器要信息）
 export const reqUserInfo = ()=> requests({url:`/user/getUserLogin`,method:'get'});
+//退出登陆
+export const reqLogout = ()=> requests({url: `/user/logout`,method: 'get'});
