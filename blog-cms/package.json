@@ -16,7 +16,8 @@
     "vuex": "3.5.1",
     "nprogress": "0.2.0",
     "normalize.css": "7.0.0",
-    "v-viewer": "1.5.1"
+    "v-viewer": "1.5.1",
+    "lodash": "4.17.19"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.15",

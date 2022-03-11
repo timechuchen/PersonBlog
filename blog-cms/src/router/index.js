@@ -116,7 +116,7 @@ const routes = [
                 path: 'site',
                 name: 'SiteSetting',
                 component: () => import('@/page/page/SiteSetting'),
-                meta: {title: '站点设置', icon: 'el-icon-guide'}
+                meta: {title: '热点设置', icon: 'el-icon-guide'}
             },
             {
                 path: 'friend',
