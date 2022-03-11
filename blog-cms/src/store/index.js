@@ -9,6 +9,7 @@ Vue.use(Vuex);
 import navbar from './navbar'
 import settings from "@/store/settings";
 import app from './app'
+import page from "@/store/page";
 
 //对外暴露Store的一个实例
 export default new Vuex.Store({
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     modules: {
         navbar,
         settings,
-        app
+        app,
+        page
     },
     getters
 });

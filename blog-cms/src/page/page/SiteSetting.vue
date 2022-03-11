@@ -7,19 +7,19 @@
         </div>
         <el-form :inline="true" v-for="(badge,index) in typeMap" :key="badge.id">
           <el-form-item label="title">
-            <el-input v-model="badge.value.title" size="mini"></el-input>
+            <el-input v-model="badge.title" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="url">
-            <el-input v-model="badge.value.url" size="mini"></el-input>
+            <el-input v-model="badge.url" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="subject">
-            <el-input v-model="badge.value.subject" size="mini"></el-input>
+            <el-input v-model="badge.subject" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="value">
-            <el-input v-model="badge.value.value" size="mini"></el-input>
+            <el-input v-model="badge.value" size="mini"></el-input>
           </el-form-item>
           <el-form-item label="color">
-            <el-input v-model="badge.value.color" size="mini"></el-input>
+            <el-input v-model="badge.color" size="mini"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteBadge(index)">删除</el-button>
@@ -37,6 +37,8 @@
 
 <script>
 import Breadcrumb from "@/components/Breadcrumb";
+import {updateSite} from '@/api/page';
+import {mapState} from "vuex";
 
 export default {
   name: "SiteSetting",
@@ -46,35 +48,46 @@ export default {
       typeMap: [],
     }
   },
-  created() {
-    //从后台拿到数据
-  },
   methods: {
     addBadge() {
       this.typeMap.push(
           {
-            createTime: new Date().getTime(),
-            value: {
-              title: '',
-              url: '',
-              subject: '',
-              value: '',
-              color: ''
-            }
+            title: '',
+            url: '',
+            subject: '',
+            value: '',
+            color: ''
           },
       );
     },
     deleteBadge(badge) {
       this.typeMap.splice(badge,1)
+      this.submit()
     },
     submit() {
       let data = this.typeMap;
       let jsonObject = JSON.parse(JSON.stringify(data));
-      // console.log(jsonObject)
       //提交数据到后台
-
+      updateSite(jsonObject).then((res)=>{
+        this.msgSuccess(res.msg);
+        console.log(res)
+      })
     }
-  }
+  },
+  created() {
+    //从后台拿到数据
+    this.$store.dispatch('getHotTagInfo')
+  },
+  computed: {
+    ...mapState({
+      hotTag:state=> state.page.hotTag
+    }),
+  },
+  watch: {
+    hotTag() {
+      this.typeMap = this.hotTag;
+    }
+  },
 }
 </script>
 
