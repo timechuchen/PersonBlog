@@ -18,11 +18,11 @@ import java.util.Map;
 /**
  * @Description: 热点标签设置后台管理
  * @Author: Chuchen
- * @Date: 2020-08-09
+ * @Date: 2022-03-11
  */
 @Controller
 @RequestMapping("/api/admin")
-public class PageController {
+public class PageAdminController {
 
     @Autowired
     private HotSpotServe hotSpotServe;

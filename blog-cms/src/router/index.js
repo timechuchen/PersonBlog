@@ -54,9 +54,9 @@ const routes = [
                 meta: {title: '写文章', icon: 'el-icon-edit'}
             },
             {
-                path: 'moment/write',
-                name: 'WriteMoment',
-                component: () => import('@/page/blog/moment/WriteMoment'),
+                path: 'record/write',
+                name: 'WriteRecord',
+                component: () => import('@/page/blog/record/WriteRecord'),
                 meta: {title: '写动态', icon: 'el-icon-edit'}
             },
             {
@@ -67,9 +67,9 @@ const routes = [
                 hidden: true
             },
             {
-                path: 'moment/edit/:id',
-                name: 'EditMoment',
-                component: () => import('@/page/blog/moment/WriteMoment'),
+                path: 'record/edit/:id',
+                name: 'EditRecord',
+                component: () => import('@/page/blog/record/WriteRecord'),
                 meta: {title: '编辑动态', icon: 'el-icon-edit'},
                 hidden: true
             },
@@ -80,9 +80,9 @@ const routes = [
                 meta: {title: '文章管理', icon: 'el-icon-s-order'}
             },
             {
-                path: 'moment/list',
-                name: 'MomentList',
-                component: () => import('@/page/blog/moment/MomentList'),
+                path: 'record/list',
+                name: 'RecordList',
+                component: () => import('@/page/blog/record/RecordList'),
                 meta: {title: '动态管理', icon: 'el-icon-chat-dot-round'}
             },
             {

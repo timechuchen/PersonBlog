@@ -17,6 +17,8 @@ import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
 // directive
 import './utils/directive'
+//moment
+import './utils/dateTimeFormatUtils.js'
 
 Vue.prototype.msgSuccess = function (msg) {
   this.$message.success(msg)

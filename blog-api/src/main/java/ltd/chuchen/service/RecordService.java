@@ -1,18 +1,25 @@
 package ltd.chuchen.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ltd.chuchen.entity.Record;
+import ltd.chuchen.model.dto.RecordInfo;
 
 import java.util.List;
 
 public interface RecordService {
 
-     Boolean addRecord();
+     Boolean saveMoment(RecordInfo recordInfo);
 
-     Boolean updateRecord(Long id);
+     IPage<Record> selectPage(Page<Record> page);
 
-     Boolean deleteRecord(Long id);
+     List<Record> selectAll();
 
-     List<Record> selectRecord();
+     Boolean updateMomentPublishedById(Long id, Boolean published);
 
-     Record selectRecordOne(Long id);
+     boolean deleteRecordById(Long id);
+
+     Record getRecordById(Long id);
+
+     boolean updateRecord(Record record);
 }

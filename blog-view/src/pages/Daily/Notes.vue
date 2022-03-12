@@ -15,7 +15,7 @@
           <span class="font-style">{{ recode.likes }}</span>
         </div>
 <!--        <button class="btn btn-success size-S location" v-if="recode.content.length>70">{{msg}}</button>-->
-        <span class="cd-date">{{recode.create_time}}</span>
+        <span class="cd-date">{{recode.createTime | timeFormat}}</span>
       </div>
     </div>
   </div>
@@ -23,6 +23,7 @@
 
 <script>
 import {mapState} from "vuex";
+import dayjs from '@/utils/dayjs.min'
 
 export default {
   name: "Notes",
@@ -55,7 +56,10 @@ export default {
       }else {
         return value
       }
-    }
+    },
+    timeFormat(val,str='YYYY-MM-DD HH:mm:ss'){
+      return dayjs(val).format(str);
+    },
   }
 }
 </script>
