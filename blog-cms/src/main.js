@@ -9,6 +9,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/styles/index.scss'
 //icon
 import '@/icons'
+//mavonEditor
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 //v-viewer
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
@@ -27,6 +30,7 @@ Vue.config.productionTip = false
 
 Vue.use(Element)
 Vue.use(Viewer)
+Vue.use(mavonEditor)
 
 new Vue({
   router,

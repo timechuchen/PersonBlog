@@ -24,19 +24,27 @@ import Message from '@/pages/Message'
 import Knowledge from '@/pages/Knowledge'
 import Search from '@/pages/Search'
 import Blog from '@/pages/Blog'
+import File from '@/pages/404'
 
 //具体的路由配置
 export default new VueRouter({
+    mode: 'history',
     routes: [
+        {
+            path: '/404',
+            component: File,
+            meta: {title: '404 NOT FOUND'},
+            hidden: true
+        },
         {
             path: '/home',
             component: Home,
-            meta: {isShowFooter: true}
+            meta: {isShowFooter: true},
         },
         {
             path: '/login',
             component: Login,
-            meta: {isShowFooter: false}
+            meta: {isShowFooter: false},
         },
         {
             path: '/about',
@@ -74,6 +82,8 @@ export default new VueRouter({
             //重定向，在项目跑起来的时候，也就是访问根路径就要访问首页
             path: '/',
             redirect: '/home'
-        }
+        },
+        // 404 page must be placed at the end !!!
+        {path: '*', redirect: '/404'}
     ]
 })

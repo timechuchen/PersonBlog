@@ -17,7 +17,8 @@
     "nprogress": "0.2.0",
     "normalize.css": "7.0.0",
     "v-viewer": "1.5.1",
-    "lodash": "4.17.19"
+    "lodash": "4.17.19",
+    "mavon-editor": "2.9.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.15",

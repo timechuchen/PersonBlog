@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/api/admin")
-public class Page {
+public class PageController {
 
     @Autowired
     private HotSpotServe hotSpotServe;
@@ -32,7 +32,7 @@ public class Page {
      * @param map 前端传回的 JSON 对象
      * @return Result
      */
-    @PostMapping("/updateSite")
+    @PostMapping("/page/updateSite")
     @ResponseBody
     public Result updateSite(@RequestBody Map<String, ArrayList<HotTagInfo>> map) {
         ArrayList<HotTagInfo> hotTag = map.get("hotTag");
@@ -49,7 +49,7 @@ public class Page {
      * 查找所有热点信息
      * @return Result
      */
-    @PostMapping("/getAllSite")
+    @PostMapping("/page/getAllSite")
     @ResponseBody
     public Result getAllSite() {
         List<HotSpot> allHotSpot = hotSpotServe.getAllHotSpot();

@@ -7,8 +7,8 @@
     <div class="tab-category-item">
       <ul class="index_recd">
         <li v-for="(hot,index) in hotTag" :key="hot.id">
-          <a :href="hot.address">{{hot.name}}</a>
-          <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i> 276 </p>
+          <a :href="hot.url">{{hot.title}}</a>
+          <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i> {{hot.hits}} </p>
         </li>
       </ul>
     </div>

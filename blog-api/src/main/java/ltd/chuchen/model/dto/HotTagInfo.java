@@ -11,6 +11,6 @@ public class HotTagInfo {
     private String title;
     private String url;
     private String subject;
-    private String value;
+    private Long hits;
     private String color;
 }

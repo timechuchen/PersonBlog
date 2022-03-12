@@ -53,6 +53,9 @@ const actions = {
         let result = await reqHot();
         if(result.code === 200){
             commit('GETHOTTAG',result.data);
+            return result.msg;
+        }else {
+            return new Error("加载失败")
         }
     }
 };

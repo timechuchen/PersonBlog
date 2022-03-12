@@ -12,7 +12,8 @@ export const reqGetBanner = ()=> mockRequest({url:'/banner',method:'get'});
 //获取“我”的个人信息
 export const reqPersonInfo = ()=> mockRequest({url:'/personInfo'});
 //获取热点推荐信息
-export const reqHot = ()=> mockRequest({url: '/hot'});
+// export const reqHot = ()=> mockRequest({url: '/hot'});
+export const reqHot = ()=> requests({url: '/loadHotTag'});
 //获取日志信息
 export const reqRecode = ()=> mockRequest({url:'/diary'});
 //获取留言信息

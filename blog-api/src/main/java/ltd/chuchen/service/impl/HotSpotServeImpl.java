@@ -8,6 +8,7 @@ import ltd.chuchen.service.HotSpotServe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class HotSpotServeImpl implements HotSpotServe {
             hotSpot.setTitle(hot.getTitle());
             hotSpot.setUrl(hot.getUrl());
             hotSpot.setSubject(hot.getSubject());
-            hotSpot.setValue(hot.getValue());
+            hotSpot.setHits(hot.getHits());
             hotSpot.setColor(hot.getColor());
             hotSpotMapper.insert(hotSpot);
         }
@@ -35,5 +36,21 @@ public class HotSpotServeImpl implements HotSpotServe {
     @Override
     public List<HotSpot> getAllHotSpot() {
        return hotSpotMapper.selectAll();
+    }
+
+    @Override
+    public List<HotTagInfo> getHotTageInfo() {
+        List<HotSpot> hotSpots = hotSpotMapper.selectAll();
+        List<HotTagInfo> hotTagInfos = new LinkedList<>();
+        for(HotSpot hotSpot : hotSpots){
+            HotTagInfo hotTagInfo = new HotTagInfo();
+            hotTagInfo.setTitle(hotSpot.getTitle());
+            hotTagInfo.setUrl(hotSpot.getUrl());
+            hotTagInfo.setSubject(hotSpot.getSubject());
+            hotTagInfo.setHits(hotSpot.getHits());
+            hotTagInfo.setColor(hotSpot.getColor());
+            hotTagInfos.add(hotTagInfo);
+        }
+        return hotTagInfos;
     }
 }

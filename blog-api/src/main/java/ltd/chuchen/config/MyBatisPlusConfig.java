@@ -38,7 +38,7 @@ public class MyBatisPlusConfig {
     @Profile({"dev","test"})
     public PerformanceInterceptor performanceInterceptor(){
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
-        performanceInterceptor.setMaxTime(1000); //ms 设置sql执行的最大时间，若超时则不执行，这个在工作中一般都要设置
+        performanceInterceptor.setMaxTime(2000); //ms 设置sql执行的最大时间，若超时则不执行，这个在工作中一般都要设置
         performanceInterceptor.setFormat(true); //是否开启格式化支持，就是在日志给我们看的时候有没有格式
         return performanceInterceptor;
     }

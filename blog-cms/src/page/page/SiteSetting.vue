@@ -7,19 +7,19 @@
         </div>
         <el-form :inline="true" v-for="(badge,index) in typeMap" :key="badge.id">
           <el-form-item label="title">
-            <el-input v-model="badge.title" size="mini"></el-input>
+            <el-input v-model="badge.title" size="mini" placeholder="请输入标题"></el-input>
           </el-form-item>
           <el-form-item label="url">
-            <el-input v-model="badge.url" size="mini"></el-input>
+            <el-input v-model="badge.url" size="mini" placeholder="请输入地址链接"></el-input>
           </el-form-item>
           <el-form-item label="subject">
-            <el-input v-model="badge.subject" size="mini"></el-input>
+            <el-input v-model="badge.subject" size="mini" placeholder="请输入标签"></el-input>
           </el-form-item>
-          <el-form-item label="value">
-            <el-input v-model="badge.value" size="mini"></el-input>
+          <el-form-item label="hits">
+            <el-input v-model="badge.hits" size="mini" placeholder="请输入热度"></el-input>
           </el-form-item>
           <el-form-item label="color">
-            <el-input v-model="badge.color" size="mini"></el-input>
+            <el-input v-model="badge.color" size="mini" placeholder="请输入显示颜色"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteBadge(index)">删除</el-button>
@@ -30,7 +30,7 @@
     </el-row>
 
     <div style="text-align: right;margin-top: 30px">
-      <el-button type="primary" icon="el-icon-check" @click="submit">保存</el-button>
+      <el-button type="primary" icon="el-icon-check" size="mini" round @click="submit">保存</el-button>
     </div>
   </div>
 </template>
@@ -55,7 +55,7 @@ export default {
             title: '',
             url: '',
             subject: '',
-            value: '',
+            htis: '',
             color: ''
           },
       );
@@ -96,5 +96,8 @@ export default {
   font-size: 20px;
   font-weight: 700;
   color: #20a0ff;
+}
+.el-form--inline .el-form-item {
+  margin-right: 7px;
 }
 </style>

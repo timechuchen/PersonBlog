@@ -11,4 +11,5 @@ public interface HotSpotServe {
 
     List<HotSpot> getAllHotSpot();
 
+    List<HotTagInfo> getHotTageInfo();
 }

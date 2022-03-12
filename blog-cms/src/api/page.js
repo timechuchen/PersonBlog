@@ -2,7 +2,7 @@ import axios from '@/utils/request'
 
 export function updateSite(hotTag) {
     return axios({
-        url: '/updateSite',
+        url: '/page/updateSite',
         method: 'post',
         data: {
             hotTag,
@@ -12,7 +12,7 @@ export function updateSite(hotTag) {
 
 export function getAllSite() {
     return axios({
-        url: '/getAllSite',
+        url: '/page/getAllSite',
         method: 'post'
     })
 }
