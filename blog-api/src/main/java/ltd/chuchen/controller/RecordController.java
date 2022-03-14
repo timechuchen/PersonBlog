@@ -24,4 +24,11 @@ public class RecordController {
         List<Record> records = recordService.selectAll();
         return Result.ok("成功",records);
     }
+
+    @GetMapping("/recordsByDesc")
+    @ResponseBody
+    public Result getRecordListAllDesc() {
+        List<Record> records = recordService.selectAllByDesc();
+        return Result.ok("成功",records);
+    }
 }

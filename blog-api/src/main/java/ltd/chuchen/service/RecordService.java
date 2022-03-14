@@ -22,4 +22,6 @@ public interface RecordService {
      Record getRecordById(Long id);
 
      boolean updateRecord(Record record);
+
+    List<Record> selectAllByDesc();
 }

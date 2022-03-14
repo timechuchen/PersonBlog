@@ -1,6 +1,7 @@
 package ltd.chuchen.controller;
 
 import ltd.chuchen.entity.User;
+import ltd.chuchen.model.dto.SiginInfo;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.UserService;
 import ltd.chuchen.utils.RedisUtil;
@@ -22,12 +23,12 @@ public class LogoController {
     private Integer code = 0;
 
     @ResponseBody
-    @PostMapping("/user/sigin/{username}/{password}/{phone}/{code}")
-    public Result sigin(@PathVariable String code, @PathVariable String password, @PathVariable String phone, @PathVariable String username) {
-        if(Integer.parseInt(code) != this.code){
+    @PostMapping("/user/sigin")
+    public Result sigin(@RequestBody SiginInfo siginInfo) {
+        if(Integer.parseInt(siginInfo.getCode()) != this.code){
             return Result.create(70001,"验证码不对");
         }
-        int res = userService.sigin(username,password,phone,code);
+        int res = userService.sigin(siginInfo.getUsername(),siginInfo.getPassword(),siginInfo.getPhone(),siginInfo.getCode(),siginInfo.getImageUrl());
         if(res == 0){
             return Result.ok("注册成功");
         }else if (res == 1){

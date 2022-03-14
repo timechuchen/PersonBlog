@@ -36,7 +36,7 @@
                 登陆
               </router-link>
               <p v-else>
-                <img class="avatar size-S" src="./images/qq.jpg" title="登入" alt="QQ登陆">
+                <img class="avatar size-S round" :src="userImg" title="登入" alt="已经登陆">
                 <a>{{userName}}</a> |
                 <a style="color: #b94a48" @click="logout">退出登陆</a>
               </p>
@@ -61,12 +61,6 @@ export default {
   methods: {
     //搜索按钮的回调函数：需要想search路由进行跳转
     goSearch() {
-      //路由传递参数
-      //第一种，字符串形式
-      // this.$router.push('/search/' + this.keyword);
-      //第二种，模板字符串的方式
-      // this.$router.push(`/search/${this.keyword}`);
-      //第三种，对象的写法，一般真正的项目开发也都用这种
       this.$router.push({name:'search',params: {keyword:this.keyword !== ''?this.keyword:undefined}});
     },
     goSearch2(value){
@@ -85,6 +79,14 @@ export default {
   computed: {
     userName() {
       return this.$store.state.user.userInfo.username;
+    },
+    userImg() {
+      let img = this.$store.state.user.userInfo.avatar;
+      if(img === null) {
+        return 'http://localhost:8089/api/util/files/head/mm'
+      }else {
+        return img;
+      }
     }
   }
 }

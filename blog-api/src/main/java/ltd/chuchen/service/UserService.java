@@ -18,7 +18,7 @@ public interface UserService {
      * @param phone 电话
      * @return 0：登陆成功 1：已有用户名 2：其他原因
      */
-    int sigin(String username,String password,String phone,String code);
+    int sigin(String username,String password,String phone,String code,String imageUrl);
 
     /**
      * 查找用户信息

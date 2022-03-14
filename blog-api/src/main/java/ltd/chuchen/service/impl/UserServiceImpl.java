@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int sigin(String username, String password, String phone,String code) {
+    public int sigin(String username, String password, String phone,String code,String imageUrl) {
         HashMap<String,Object> map = new HashMap<>();
         map.put("phone",phone);
         List<User> users = userMapper.selectByMap(map);
@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(username);
             user.setPassword(password);
             user.setPhone(phone);
+            user.setAvatar(imageUrl);
             userMapper.insert(user);
             return 0;
         }else if(users.size() == 1) {

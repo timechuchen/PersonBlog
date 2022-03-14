@@ -10,6 +10,9 @@ import store from '@/store'
 import VueLazyload from "vue-lazyload";
 //引入mock虚拟数据
 import '@/mock/mockServe'
+//element-ui
+import Element from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 //将热门标签注册为全局组件
 import HotTag from "@/pages/Common/HotTag";
@@ -21,6 +24,7 @@ Vue.use(VueLazyload,{
   //懒加载默认的图片
   loading:pic
 })
+Vue.use(Element)
 // //测试接口
 // import {reqGitHubList} from "@/api";
 // reqGitHubList();

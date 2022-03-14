@@ -68,4 +68,11 @@ public class RecordServiceImpl implements RecordService {
         int i = recordMapper.updateById(record);
         return i > 0;
     }
+
+    @Override
+    public List<Record> selectAllByDesc() {
+        QueryWrapper<Record> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        return recordMapper.selectList(queryWrapper);
+    }
 }
