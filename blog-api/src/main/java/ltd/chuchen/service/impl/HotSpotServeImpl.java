@@ -4,7 +4,7 @@ import lombok.experimental.Accessors;
 import ltd.chuchen.entity.HotSpot;
 import ltd.chuchen.mapper.HotSpotMapper;
 import ltd.chuchen.model.dto.HotTagInfo;
-import ltd.chuchen.service.HotSpotServe;
+import ltd.chuchen.service.HotSpotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @Accessors(chain = true)  //链式写法
-public class HotSpotServeImpl implements HotSpotServe {
+public class HotSpotServeImpl implements HotSpotService {
 
     @Autowired
     private HotSpotMapper hotSpotMapper;

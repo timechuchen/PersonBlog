@@ -5,7 +5,7 @@ import ltd.chuchen.model.dto.HotTagInfo;
 
 import java.util.List;
 
-public interface HotSpotServe {
+public interface HotSpotService {
 
     boolean updateHotSpot(List<HotTagInfo> typeMap);
 

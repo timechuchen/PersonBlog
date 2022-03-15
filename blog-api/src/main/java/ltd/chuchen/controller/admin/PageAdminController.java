@@ -3,7 +3,7 @@ package ltd.chuchen.controller.admin;
 import ltd.chuchen.entity.HotSpot;
 import ltd.chuchen.model.dto.HotTagInfo;
 import ltd.chuchen.model.vo.Result;
-import ltd.chuchen.service.HotSpotServe;
+import ltd.chuchen.service.HotSpotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class PageAdminController {
 
     @Autowired
-    private HotSpotServe hotSpotServe;
+    private HotSpotService hotSpotServe;
 
     /**
      * 更新热点信息
@@ -36,8 +36,6 @@ public class PageAdminController {
     @ResponseBody
     public Result updateSite(@RequestBody Map<String, ArrayList<HotTagInfo>> map) {
         ArrayList<HotTagInfo> hotTag = map.get("hotTag");
-        System.out.println(hotTag);
-        System.out.println(hotTag.getClass());
         if(hotSpotServe.updateHotSpot(hotTag)){
             return Result.ok("更新成功");
         }else {
