@@ -9,7 +9,10 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="文章首图URL" prop="firstPicture">
-            <el-input v-model="form.firstPicture" placeholder="文章首图，用于随机文章展示"></el-input>
+            <el-upload :action="this.form.firstPicture ? this.form.firstPicture : action" :on-success="filesUploadSuccess">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <img width="100px" :src="this.form.firstPicture" alt="">
           </el-form-item>
         </el-col>
       </el-row>
@@ -26,14 +29,14 @@
         <el-col :span="12">
           <el-form-item label="分类" prop="cate">
             <el-select v-model="form.cate" placeholder="请选择分类（输入可添加新分类）" :allow-create="true" :filterable="true" style="width: 100%;">
-              <el-option :label="item.name" :value="item.id" v-for="item in categoryList" :key="item.id"></el-option>
+              <el-option :label="item.name" :value="item.categoryName" v-for="item in categoryList" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="标签" prop="tagList">
-            <el-select v-model="form.tagList" placeholder="请选择标签（输入可添加新标签）" :allow-create="true" :filterable="true" :multiple="true" style="width: 100%;">
-              <el-option :label="item.name" :value="item.id" v-for="item in tagList" :key="item.id"></el-option>
+            <el-select v-model="form.tagList" placeholder="请选择标签（输入可添加新标签）" :filterable="true" :multiple="true" style="width: 100%;">
+              <el-option :label="item.tagName" :value="item.tagName" v-for="item in tagList" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -103,15 +106,21 @@
 </template>
 
 <script>
+
+import {getCategoryAndTag, saveBlog, getBlogById, updateBlog} from '@/api/blog'
+
 export default {
   name: "WriteBlog",
   data() {
     return {
+      action: 'http://localhost:8081/api/util/files/blogImg/' + Math.random().toString(36).substr(2),
       categoryList: [],
       tagList: [],
       dialogVisible: false,
       radio: 1,
+      dialogImageUrl: '',
       form: {
+        id: '',
         title: '',
         firstPicture: '',
         description: '',
@@ -137,6 +146,12 @@ export default {
       },
     }
   },
+  created() {
+    this.getData();
+    if (this.$route.params.id) {
+      this.getBlog(this.$route.params.id)
+    }
+  },
   watch: {
     'form.words'(newValue) {
       this.form.readTime = newValue ? Math.round(newValue / 200) : null
@@ -144,16 +159,65 @@ export default {
   },
   methods: {
     getData() {
-
+      getCategoryAndTag().then(res => {
+        this.categoryList = res.data.categories
+        this.tagList = res.data.tags
+      })
     },
     getBlog(id) {
-
+      getBlogById(id).then(res => {
+        this.computeCategoryAndTag(res.data)
+        this.form = res.data
+        this.radio = this.form.published ? (this.form.password !== '' ? 3 : 1) : 2
+      })
     },
     computeCategoryAndTag(blog) {
-
+      blog.cate = blog.category.categoryName
+      blog.tagList = []
+      blog.tags.forEach(item => {
+        blog.tagList.push(item.tagName)
+      })
     },
     submit() {
-
+      if (this.radio === 3 && (this.form.password === '' || this.form.password === null)) {
+        return this.msgError("密码保护模式必须填写密码！")
+      }
+      this.$refs.formRef.validate(valid => {
+        if (valid) {
+          if (this.radio === 2) {
+            this.form.appreciation = false
+            this.form.recommend = false
+            this.form.commentEnabled = false
+            this.form.top = false
+            this.form.published = false
+          } else {
+            this.form.published = true
+          }
+          if (this.radio !== 3) {
+            this.form.password = ''
+          }
+          if (this.$route.params.id) {
+            this.form.category = null
+            this.form.tags = null
+            updateBlog(this.form).then(res => {
+              this.msgSuccess(res.msg)
+              this.$router.push('/blog/list')
+            })
+          } else {
+            saveBlog(this.form).then(res => {
+              this.msgSuccess(res.msg)
+              this.$router.push('/blog/list')
+            })
+          }
+        } else {
+          this.dialogVisible = false
+          return this.msgError('请填写必要的表单项')
+        }
+      })
+    },
+    filesUploadSuccess(res) {
+      console.log(res.data)
+      this.form.firstPicture = res.data
     }
   }
 }

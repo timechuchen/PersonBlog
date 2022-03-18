@@ -21,4 +21,7 @@ public interface TagMapper extends BaseMapper<Tag> {
 
     @Select("select * from cblog.tag")
     List<Tag> selectAll();
+
+    @Select("select tag_id from blog_tag where blog_id = #{blogId}")
+    List<Long> selectIdByBlogId(Long blogId);
 }

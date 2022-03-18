@@ -1,8 +1,10 @@
 package ltd.chuchen;
 
+import ltd.chuchen.entity.Tag;
 import ltd.chuchen.entity.User;
 import ltd.chuchen.mapper.UserMapper;
 import ltd.chuchen.service.UserService;
+import ltd.chuchen.service.impl.TagServiceImpl;
 import ltd.chuchen.utils.TokenUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ class BlogApiApplicationTests {
 
     @Test
     void contextLoads() {
-        int i = userMapper.deleteById(1499777449649516546L);
+        int i = userMapper.deleteById(1504321767206895617L);
     }
 
     @Test
@@ -31,17 +33,8 @@ class BlogApiApplicationTests {
 
     @Test
     public void testSelect(){
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("username","初晨");
-        map.put("password","1234");
-        List<User> users = userMapper.selectByMap(map);
-        if(users.size() != 0){
-            users.forEach(System.out::println);
-            System.out.println(users);
-        }else {
-            System.out.println("未找到");
-        }
+        TagServiceImpl tagService = new TagServiceImpl();
+        tagService.getTagList().forEach(System.out::println);
+//        tagService.getTagListByBlogId(1504321767206895617L).forEach(System.out::println);
     }
-
-
 }

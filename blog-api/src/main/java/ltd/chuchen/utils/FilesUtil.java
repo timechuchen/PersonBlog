@@ -66,4 +66,8 @@ public class FilesUtil {
             e.printStackTrace();
         }
     }
+
+    //博客图片的上传
+
+
 }

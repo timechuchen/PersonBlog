@@ -3,19 +3,19 @@
     <!--搜索-->
     <el-row>
       <el-col :span="8">
-        <el-input placeholder="请输入标题" v-model="queryInfo.title" :clearable="true" @clear="search" @keyup.native.enter="search" size="small" style="min-width: 500px">
+        <el-input placeholder="请输入标题" v-model="queryInfo.title" :clearable="true" @clear="getBlogs" @keyup.native.enter="search" size="small" style="min-width: 500px">
           <el-select v-model="queryInfo.categoryId" slot="prepend" placeholder="请选择分类" :clearable="true" @change="search" style="width: 160px">
-            <el-option :label="item.name" :value="item.id" v-for="item in categoryList" :key="item.id"></el-option>
+            <el-option :label="item.categoryName" :value="item.categoryName" v-for="item in categoryList" :key="item.id"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
         </el-input>
       </el-col>
     </el-row>
 
-    <el-table :data="blogList">
+    <el-table :data="pageList">
       <el-table-column label="序号" type="index" width="50"></el-table-column>
       <el-table-column label="标题" prop="title" show-overflow-tooltip></el-table-column>
-      <el-table-column label="分类" prop="category.name" width="150"></el-table-column>
+      <el-table-column label="分类" prop="category" width="150"></el-table-column>
       <el-table-column label="置顶" width="80">
         <template v-slot="scope">
           <el-switch v-model="scope.row.top" @change="blogTopChanged(scope.row)"></el-switch>
@@ -96,6 +96,9 @@
 </template>
 
 <script>
+
+import {getBlogs, deleteBlogById, updateTop, updateRecommend, updateVisibility} from '@/api/blog'
+
 export default {
   name: "BlogList",
   data() {
@@ -107,6 +110,7 @@ export default {
         pageSize: 10
       },
       blogList: [],
+      pageList: [],
       categoryList: [],
       total: 0,
       dialogVisible: false,
@@ -122,22 +126,45 @@ export default {
       }
     }
   },
+  created() {
+    this.getBlogs()
+  },
   methods: {
     getData() {
-
+      let start = (this.queryInfo.pageNum-1) * this.queryInfo.pageSize;
+      let end = start + this.queryInfo.pageSize
+      this.pageList = this.blogList.slice(start,end);
     },
     search() {
       this.queryInfo.pageNum = 1
       this.queryInfo.pageSize = 10
-      this.getData()
+      //这段逻辑先不写了吧，以后再写
+      this.pageList = []
+      this.blogList.forEach((item)=> {
+        if((this.queryInfo.title !== '' && item.title.search(this.queryInfo.title)) || (this.queryInfo.categoryId !== null && this.queryInfo.categoryId === item.category)) {
+          this.pageList.unshift(item)
+        }
+      })
+    },
+    getBlogs() {
+      getBlogs().then(res => {
+        this.blogList = res.data.blogListInfo
+        this.categoryList = res.data.categories
+        this.total = res.data.length
+        this.getData()
+      })
     },
     //切换博客置顶状态
     blogTopChanged(row) {
-
+      updateTop(row.id, row.top).then(res => {
+        this.msgSuccess(res.msg);
+      })
     },
     //切换博客推荐状态
     blogRecommendChanged(row) {
-
+      updateRecommend(row.id, row.recommend).then(res => {
+        this.msgSuccess(res.msg);
+      })
     },
     //编辑博客可见性
     editBlogVisibility(row) {
@@ -170,16 +197,21 @@ export default {
       if (this.radio !== 3) {
         this.visForm.password = ''
       }
+      updateVisibility(this.blogId, this.visForm).then(res => {
+        this.msgSuccess(res.msg)
+        this.getBlogs()
+        this.dialogVisible = false
+      })
     },
     //监听 pageSize 改变事件
     handleSizeChange(newSize) {
       this.queryInfo.pageSize = newSize
-      this.getData()
+      this.getBlogs()
     },
     //监听页码改变的事件
     handleCurrentChange(newPage) {
       this.queryInfo.pageNum = newPage
-      this.getData()
+      this.getBlogs()
     },
     goBlogEditPage(id) {
       this.$router.push(`/blog/edit/${id}`)
@@ -191,7 +223,10 @@ export default {
         type: 'warning',
         dangerouslyUseHTMLString: true
       }).then(() => {
-
+        deleteBlogById(id).then(res => {
+          this.msgSuccess(res.msg)
+          this.getBlogs()
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -204,5 +239,10 @@ export default {
 </script>
 
 <style scoped>
-
+.el-button + span {
+  margin-left: 10px;
+}
+el-option {
+  margin-top: 20px;
+}
 </style>

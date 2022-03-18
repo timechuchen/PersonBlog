@@ -45,7 +45,6 @@ public class RecordServiceImpl implements RecordService {
     public Boolean updateMomentPublishedById(Long id, Boolean published) {
         QueryWrapper<Record> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id",id);
-        System.out.println(id);
         Record record = recordMapper.selectOne(queryWrapper);
         record.setPublished(published);
         int i = recordMapper.updateById(record);

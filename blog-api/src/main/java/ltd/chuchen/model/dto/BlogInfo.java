@@ -1,6 +1,5 @@
-package ltd.chuchen.entity;
+package ltd.chuchen.model.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -8,19 +7,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
+import ltd.chuchen.entity.Category;
+import ltd.chuchen.entity.Tag;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * @Author chuchen
+ * @Date 2022/3/16
+ * @Description 博客简单类
+ */
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Accessors(chain = true) //支持链式编程
-public class Blog {
+public class BlogInfo {
 
-    @TableId(type = IdType.ID_WORKER)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String title;//文章标题
@@ -32,20 +36,14 @@ public class Blog {
     private Boolean appreciation;//赞赏开关
     private Boolean commentEnabled;//评论开关
     private Boolean top;//是否置顶
-    private Integer readTime;
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;//创建时间
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;//更新时间
     private Integer views;//浏览次数
     private Integer words;//文章字数
+    private Integer readTime;//阅读时长(分钟)
     private String password;//密码保护
 
-    private Long categoryId;//文章分类
-    private String role;
-    @TableLogic //逻辑删除
-    private Short deleted;
-    @Version //乐观锁
-    private Integer version;
+    private Category category;//文章分类
+    private List<Tag> tags = new ArrayList<>();//文章标签
 
+    private String cate;//页面展示层传输的分类对象：正常情况下为 字符串 或 分类id
+    private List<String> tagList;//页面展示层传输的标签对象：正常情况下为 List<Integer>标签id 或 List<String>标签名
 }

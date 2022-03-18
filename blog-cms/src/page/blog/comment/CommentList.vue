@@ -1,5 +1,5 @@
 <template>
-  <h1>我是 评论管理 组件</h1>
+<h1>我是评论管理</h1>
 </template>
 
 <script>

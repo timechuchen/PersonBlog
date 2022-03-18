@@ -15,8 +15,8 @@ const mutations = {
 //处理action，可以书写自己的业务逻辑，也可以处理异步
 const actions = {
     //获取轮播图数据
-    async getBlog({commit}){
-        let result = await reqBlog();
+    async getBlog({commit},blogId){
+        let result = await reqBlog(blogId);
         if(result.code === 200){
             commit('GETBLOG',result.data);
         }

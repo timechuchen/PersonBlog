@@ -1,0 +1,36 @@
+package ltd.chuchen.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import ltd.chuchen.entity.Blog;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+/**
+ * @Author chuchen
+ * @Date 2022/3/16
+ * @Description 博客管理映射文件
+ */
+@Mapper
+@Component
+@Repository
+public interface BlogMapper extends BaseMapper<Blog> {
+
+    @Insert("insert into blog_tag (blog_id, tag_id) values (#{blogId}, #{tagId})")
+    Integer saveBlogTag(Long blogId,Long tagId);
+
+    @Delete("delete from blog_tag where blog_id = #{id}")
+    void deleteTag(Long id);
+
+    @Update("update blog set recommend = #{recommend} where id = #{blogId}")
+    int updateRecommendById(Long blogId, Boolean recommend);
+
+    @Update("update blog set top = #{top} where id = #{blogId}")
+    int updateTopById(Long blogId, Boolean top);
+
+    @Update("update blog set views = #{views} where id = #{blogId}")
+    int updateViewsById(Long blogId, Integer views);
+
+    @Update("update blog set recommend = #{recommend},appreciation = #{appreciation},published = #{published},comment_enabled = #{commentEnabled},top = #{top},password = #{password} where id = #{blogId}")
+    int updateVisibilityById(Long blogId, Boolean recommend, Boolean appreciation, Boolean published, Boolean commentEnabled, Boolean top, String password);
+}

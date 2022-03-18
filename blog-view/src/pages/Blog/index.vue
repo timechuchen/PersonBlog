@@ -2,7 +2,7 @@
   <div class="container pt-20">
     <h1 style="text-align: center">{{ title }}</h1>
     <hr>
-    <ShowBlog @getTitle="setTitle"/>
+    <ShowBlog @getTitle="setTitle" :blogId="$route.query.blogId"/>
     <Comment/>
   </div>
 </template>

@@ -7,9 +7,10 @@
                  :subfield="false"
                  :ishljs="true"/>
     <div class="radius border font_style">
-      <i class="Hui-iconfont">&#xe667;</i> Java
-      <i class="Hui-iconfont">&#xe64b;</i> MyBatis
-      <i class="Hui-iconfont" style="margin-left: 20px">&#xe64b;</i> MyBatis
+      <i class="Hui-iconfont">&#xe667;</i>
+      <i class="Hui-iconfont" v-for="tag in blog.tags" :key="tag.id">&#xe64b;
+        {{tag.tagName}}
+      </i>
     </div>
   </div>
 </template>
@@ -27,9 +28,9 @@ export default {
       content: '',
     }
   },
+  props: ['blogId'],
   mounted() {
-    //从Vuex发送请求获取数据（这里先拿到模拟数据）
-    this.$store.dispatch('getBlog');
+    this.$store.dispatch('getBlog',this.blogId);
   },
   computed: {
     ...mapState({
@@ -40,6 +41,10 @@ export default {
     blog() {
       this.content = this.blog.content;
       this.$emit('getTitle',this.blog.title)
+      if(this.blog.password !== '') {
+        let pas = prompt('请输入密码：')
+        console.log(pas)
+      }
     }
   }
 }

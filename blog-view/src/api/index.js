@@ -6,7 +6,8 @@ import mockRequest from "@/api/mockAjax";
 export const reqGitHubList = ()=> requests({url: '/search/users?q=chuchen',method:'get'})
 
 //获取博客列表的接口
-export const reqGetBlogList = ()=> mockRequest({url:'/blogList',method:'get'});
+// export const reqGetBlogList = ()=> mockRequest({url:'/blogList',method:'get'});
+export const reqGetBlogList = ()=> requests({url:'/blogList',method:'get'});
 //获取轮播图数据接口
 export const reqGetBanner = ()=> mockRequest({url:'/banner',method:'get'});
 //获取“我”的个人信息
@@ -20,7 +21,8 @@ export const reqRecode = ()=> requests({url:'/recordsByDesc'});
 //获取留言信息
 export const reqWords = ()=> mockRequest({url:'/words'});
 //获取博客详细信息
-export const reqBlog = ()=> mockRequest({url:'/blog',method: 'get'});
+// export const reqBlog = (blogId)=> mockRequest({url:'/blog',method: 'get',params: {blogId: blogId}});
+export const reqBlog = (blogId)=> requests({url:'/blog',method: 'get',params: {blogId: blogId}});
 //获取验证码
 export const reqGetCode = (phone)=>requests({url:`/user/getCode/${phone}`,method:'get'});
 //注册接口  /user/sigin

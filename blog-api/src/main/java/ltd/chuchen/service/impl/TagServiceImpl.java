@@ -7,6 +7,7 @@ import ltd.chuchen.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -32,7 +33,14 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> getTagListByBlogId(Long blogId) {
-        return null;
+        List<Tag> tags = new LinkedList<>();
+        List<Long> ids = tagMapper.selectIdByBlogId(blogId);
+
+        for(Long id : ids){
+            Tag tag = tagMapper.selectById(id);
+            tags.add(tag);
+        }
+        return tags;
     }
 
     @Override
