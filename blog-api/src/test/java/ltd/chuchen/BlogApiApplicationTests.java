@@ -9,6 +9,7 @@ import ltd.chuchen.utils.TokenUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,8 +34,7 @@ class BlogApiApplicationTests {
 
     @Test
     public void testSelect(){
-        TagServiceImpl tagService = new TagServiceImpl();
-        tagService.getTagList().forEach(System.out::println);
-//        tagService.getTagListByBlogId(1504321767206895617L).forEach(System.out::println);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println(passwordEncoder.encode("Kfb200004195013"));
     }
 }

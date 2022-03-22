@@ -4,6 +4,7 @@ import ltd.chuchen.entity.User;
 import ltd.chuchen.model.dto.SiginInfo;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.UserService;
+import ltd.chuchen.utils.JWTUtil;
 import ltd.chuchen.utils.RedisUtil;
 import ltd.chuchen.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api")
@@ -34,7 +37,7 @@ public class LogoController {
         }else if (res == 1){
             return Result.create(20005,"用户已存在！");
         }else {
-            return Result.create(500,"注册异常");
+            return Result.error("注册异常");
         }
     }
 
@@ -45,10 +48,14 @@ public class LogoController {
         boolean isLoginSuccessfully = userService.login(phone, password);
         User loginInfo = userService.findUserByPhone(phone);
         if(isLoginSuccessfully){
-            //生成一个 token 令牌
-            String token = TokenUtil.getToken();
+            Map<String,String> payload = new HashMap<>();
+            payload.put("id", String.valueOf(loginInfo.getId()));
+            payload.put("role",loginInfo.getRole());
+            payload.put("name",loginInfo.getUsername());
+            //生成一个 JWT 令牌
+            String token = JWTUtil.getToken(payload);
             //存到Redis中
-            redisUtil.set(token,loginInfo,3000000L);
+            redisUtil.set(token,loginInfo);
             return Result.ok("登陆成功",token);
         }else if(loginInfo != null){
             //告诉用户登陆失败

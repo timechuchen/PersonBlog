@@ -208,16 +208,16 @@ const routes = [
         ]
     },
     {
-        path: '/statistics',
-        name: 'Statistics',
-        redirect: '/statistics/visitor',
+        path: '/statics',
+        name: 'Statics',
+        redirect: '/statics/visitor',
         component: Layout,
         meta: {title: '数据统计', icon: 'el-icon-s-data'},
         children: [
             {
                 path: 'visitor',
                 name: 'Visitor',
-                component: () => import('@/page/statistics/Visitor'),
+                component: () => import('@/page/statics/Visitor'),
                 meta: {title: '访客统计', icon: 'el-icon-s-marketing'}
             },
         ]
@@ -236,7 +236,7 @@ const router = new VueRouter({
 //挂载路由守卫
 router.beforeEach((to, from, next) => {
     if (to.path !== '/login') {
-        // //获取token
+        //获取token
         const tokenStr = window.localStorage.getItem('token')
         if (!tokenStr) return next("/login")
     }

@@ -6,13 +6,15 @@ import ltd.chuchen.entity.User;
 import ltd.chuchen.mapper.UserMapper;
 import ltd.chuchen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 
 @Service
-@Accessors(chain = true)  //链式写法
 public class UserServiceImpl implements UserService {
 
     @Autowired

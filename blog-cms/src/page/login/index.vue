@@ -4,11 +4,11 @@
     <form method="post" action="">
       <div class="name">
         <label for="user">账  &nbsp;&nbsp;  号：</label>
-        <input type="text" name="" id="user" tabindex="1" autocomplete="off" />
+        <input v-model="admin.username" type="text" name="" id="user" tabindex="1" autocomplete="off" />
       </div>
       <div class="password">
         <label for="password">密  &nbsp;&nbsp;  码：</label>
-        <input type="password" maxlength="16" id="password" tabindex="2" />
+        <input v-model="admin.password" type="password" maxlength="16" id="password" tabindex="2" />
       </div>
       <div class="login">
         <button type="submit" tabindex="5" @click.prevent="handleLogin">登录</button>
@@ -21,12 +21,38 @@
 </template>
 
 <script>
+import {login} from "@/api/login";
+
 export default {
   name: 'Login',
+  data() {
+    return {
+      admin: {
+        username: '',
+        password: ''
+      },
+      loginRules: {
+        username: [
+          {required: true, message: '请输入用户名', trigger: 'blur'},
+        ],
+        password: [
+          {required: true, message: '请输入密码', trigger: 'blur'},
+        ]
+      },
+      loading: false,
+      passwordType: 'password',
+    }
+  },
   methods: {
     handleLogin() {
-      window.localStorage.setItem('token', '53531525234531243');
-      this.$router.push('/');
+      this.loading = true
+      login(this.admin).then(res => {
+        this.msgSuccess(res.msg);
+        window.localStorage.setItem('token', res.data.token)
+        window.localStorage.setItem('user', JSON.stringify(res.data.user))
+        this.$router.push('/')
+      })
+      this.loading = false
     }
   }
 }

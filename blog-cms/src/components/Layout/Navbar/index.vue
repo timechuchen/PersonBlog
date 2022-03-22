@@ -7,7 +7,11 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/images/头像.png" class="user-avatar" alt="头像">
+          <div>
+            {{user.nickname}}
+            <img src="@/assets/images/头像.png" class="user-avatar" alt="头像">
+          </div>
+
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <a target="_blank" href="https://github.com/timechuchen">
@@ -31,6 +35,7 @@ import Hamburger from '@/components/Hamburger'
 import Breadcrumb from '@/components/Breadcrumb'
 import SvgIcon from '@/components/SvgIcon'
 import {mapGetters} from "vuex";
+import {logout} from "@/api/login";
 
 export default {
   name: "Navbar",
@@ -38,6 +43,7 @@ export default {
   data() {
     return {
       user: null,
+      imgUrl: '@/assets/images/头像.png'
     }
   },
   created() {
@@ -53,16 +59,17 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     getUserInfo() {
-      //this.user = JSON.parse(window.localStorage.getItem('user') || null)
-      // if (!this.user) {
-      //   this.$router.push('/login')
-      // }
+      this.user = JSON.parse(window.localStorage.getItem('user') || null)
+      if (!this.user) {
+        this.$router.push('/login')
+      }
     },
     logout() {
-      // window.localStorage.removeItem('token')
-      // window.localStorage.removeItem('user')
+      logout()
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('user')
       this.$router.push('/login')
-      // this.msgSuccess('退出成功')
+      this.msgSuccess('退出成功')
     }
   }
 }

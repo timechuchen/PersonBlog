@@ -1,7 +1,6 @@
 package ltd.chuchen.controller;
 
 import ltd.chuchen.model.dto.BlogViewListInfo;
-import ltd.chuchen.model.dto.HotTagInfo;
 import ltd.chuchen.model.vo.BlogInfos;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.BlogService;
@@ -44,7 +43,7 @@ public class BlogController {
         if(blog != null) {
             return Result.ok("ok",blog);
         }else {
-            return Result.error("ok");
+            return Result.error("error");
         }
     }
 }

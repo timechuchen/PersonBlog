@@ -15,13 +15,24 @@ const requests = axios.create({
     //代表请求超时时间为 5s
     timeout:5000
 });
+let CancelToken = axios.CancelToken
 //请求拦截器，在请求发送之前做的一些事
 requests.interceptors.request.use((config)=>{
+    //对于访客模式，除GET请求外，都拦截并提示
+    const userJson = window.localStorage.getItem('admin') || '{}'
+    const user = JSON.parse(userJson)
+    if (userJson !== '{}' && user.role !== 'ROLE_admin' && config.method !== 'get') {
+        config.cancelToken = new CancelToken(function executor(cancel) {
+            cancel('演示模式，不允许操作')
+        })
+        return config
+    }
     //config 配置对象，对象里面有一个属性很重要，就是请 headers 求头
-    // //需要将token携带给服务器
-    // if(store.state.user.token) {
-    //     config.headers.token = store.state.user.token;
-    // }
+    //需要将token携带给服务器
+    const token = window.localStorage.getItem('token')
+    if (token) {
+        config.headers.token = token
+    }
     //进度条开始动
     nprogress.start();
     return config;
