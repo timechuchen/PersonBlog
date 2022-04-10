@@ -33,3 +33,11 @@ export const reqLogo = (data)=>requests({url:`/user/login?phone=${data.phone}&pa
 export const reqUserInfo = ()=> requests({url:`/user/getUserLogin`,method:'get'});
 //退出登陆
 export const reqLogout = ()=> requests({url: `/user/logout`,method: 'get'});
+//发布评论
+export const reqComment = (comment)=> requests({
+    url: `/comment`,
+    method: 'POST',
+    data: {
+        ...comment
+    }
+})

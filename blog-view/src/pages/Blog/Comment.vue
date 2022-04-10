@@ -1,16 +1,17 @@
 <template>
   <div class="size">
-    <InputText/>
-    <Words/>
+    <InputComment/>
+    <CommentList/>
   </div>
 </template>
 
 <script>
-import InputText from '@/pages/Message/InputText'
-import Words from '@/pages/Message/Words'
+import InputComment from "@/pages/Blog/InputComment";
+import CommentList from "@/pages/Blog/CommentList";
+
 export default {
   name: "Comment",
-  components: {InputText,Words}
+  components: {InputComment,CommentList},
 }
 </script>
 

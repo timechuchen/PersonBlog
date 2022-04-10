@@ -54,7 +54,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         //从 redis 中获取用户信息
         Admin o = (Admin) redisUtil.get(userId);
         if(Objects.isNull(o)) {
-            throw new RuntimeException("用户未登录");
+            throw new RuntimeException("登陆已过期");
         }
         //将用户信息存入 SecurityContextHolder
         // 获取权限信息封装到 Authentication 中

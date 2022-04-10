@@ -6,7 +6,6 @@ import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.UserService;
 import ltd.chuchen.utils.JWTUtil;
 import ltd.chuchen.utils.RedisUtil;
-import ltd.chuchen.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -51,11 +50,12 @@ public class LogoController {
             Map<String,String> payload = new HashMap<>();
             payload.put("id", String.valueOf(loginInfo.getId()));
             payload.put("role",loginInfo.getRole());
-            payload.put("name",loginInfo.getUsername());
+            payload.put("username",loginInfo.getUsername());
+            payload.put("avatar",loginInfo.getAvatar());
             //生成一个 JWT 令牌
             String token = JWTUtil.getToken(payload);
             //存到Redis中
-            redisUtil.set(token,loginInfo);
+            redisUtil.set(token,payload);
             return Result.ok("登陆成功",token);
         }else if(loginInfo != null){
             //告诉用户登陆失败

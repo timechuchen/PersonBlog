@@ -25,9 +25,6 @@ Vue.use(VueLazyload,{
   loading:pic
 })
 Vue.use(Element)
-// //测试接口
-// import {reqGitHubList} from "@/api";
-// reqGitHubList();
 
 new Vue({
   render: h => h(App),

@@ -17,12 +17,15 @@ const mutations = {
     },
     GETUSERINFO(state,data){
         state.userInfo = data;
+        let user = {id: data.id,username: data.username,avatar:data.avatar}
+        localStorage.setItem('user',JSON.stringify(user));
     },
     CLEAR(state) {
         //把仓库和本地存储的所有用户信息清空
         state.token = '';
         state.userInfo = {};
         removeToken();
+        localStorage.removeItem('user')
     }
 };
 //处理action，可以书写自己的业务逻辑，也可以处理异步
@@ -70,6 +73,9 @@ const actions = {
         let result = await reqUserInfo();
         if(result.code === 200){
             commit('GETUSERINFO',result.data);
+            return 'ok';
+        }else{
+            return Promise.reject(new Error('获取信息失败'));
         }
     },
     //退出登陆
@@ -79,8 +85,6 @@ const actions = {
         if (result.code === 200){
             commit('CLEAR');
             return 'ok';
-        }else {
-            return Promise.reject(new Error('服务器异常'));
         }
     }
 };

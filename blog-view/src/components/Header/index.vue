@@ -55,7 +55,7 @@ export default {
     return {
       keyword: '',
       user: '登陆',
-      current: false
+      current: false,
     }
   },
   methods: {
@@ -78,17 +78,17 @@ export default {
   },
   computed: {
     userName() {
-      return this.$store.state.user.userInfo.username;
+      return this.$store.state.user.userInfo.username
     },
     userImg() {
-      let img = this.$store.state.user.userInfo.avatar;
-      if(img === null) {
+      let user = this.$store.state.user.userInfo;
+      if(user.avatar === null) {
         return 'http://localhost:8089/api/util/files/head/mm'
       }else {
-        return img;
+        return user.avatar;
       }
     }
-  }
+  },
 }
 </script>
 
