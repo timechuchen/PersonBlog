@@ -40,4 +40,12 @@ export const reqComment = (comment)=> requests({
     data: {
         ...comment
     }
-})
+});
+//获取博客评论
+export const reqCommentByBlogId = (blogId)=>requests({
+    url: `/blogComment`,
+    method: 'GET',
+    params: {
+        blogId
+    }
+});

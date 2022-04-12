@@ -3,7 +3,7 @@
     <el-input
         type="textarea"
         placeholder="请输入内容"
-        v-model="textarea"
+        v-model="comment.context"
         maxlength="100"
         show-word-limit
         clearable
@@ -15,20 +15,37 @@
 </template>
 
 <script>
-import {reqComment} from "@/api";
+
+import {reqComment} from '@/api'
 
 export default {
   name: "InputComment",
   data() {
     return {
-      textarea: ''
+      comment: {
+        blogId: this.$route.query.blogId,
+        authorId: this.$store.state.user.userInfo.id,
+        parentCommentId: -1,
+        page: 0,
+        context: ''
+      }
     }
   },
   methods: {
     publish() {
-      let user = 1
-      alert('我来了')
-      console.log(this.$store.state.user.userInfo)
+      if(!this.$store.state.user.token){
+        alert('未登录，请先登录')
+        return
+      }
+      reqComment(this.comment).then(res=>{
+        if(res.code === 200) {
+          alert('发表成功')
+          this.$bus.$emit('updateComment')
+          this.comment.context = ''
+        }else {
+          alert('发表失败')
+        }
+      })
     }
   }
 }

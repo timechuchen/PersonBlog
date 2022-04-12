@@ -12,6 +12,7 @@ import CommentList from "@/pages/Blog/CommentList";
 export default {
   name: "Comment",
   components: {InputComment,CommentList},
+  props: ['blogId'],
 }
 </script>
 

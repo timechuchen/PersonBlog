@@ -6,10 +6,7 @@ import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.HotSpotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,7 @@ public class PageAdminController {
      * @param map 前端传回的 JSON 对象
      * @return Result
      */
-    @PostMapping("/page/updateSite")
+    @PutMapping("/page/updateSite")
     @ResponseBody
     public Result updateSite(@RequestBody Map<String, ArrayList<HotTagInfo>> map) {
         ArrayList<HotTagInfo> hotTag = map.get("hotTag");
@@ -47,7 +44,7 @@ public class PageAdminController {
      * 查找所有热点信息
      * @return Result
      */
-    @PostMapping("/page/getAllSite")
+    @GetMapping("/page/getAllSite")
     @ResponseBody
     public Result getAllSite() {
         List<HotSpot> allHotSpot = hotSpotServe.getAllHotSpot();

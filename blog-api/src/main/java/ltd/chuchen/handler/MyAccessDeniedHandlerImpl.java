@@ -23,7 +23,7 @@ public class MyAccessDeniedHandlerImpl implements AccessDeniedHandler  {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
-        Result result = Result.create(403, "您的权限不足，无法进行此操作");
+        Result result = Result.error( "您的权限不足，无法进行此操作");
         out.write(JacksonUtil.writeValueAsString(result));
         out.flush();
         out.close();

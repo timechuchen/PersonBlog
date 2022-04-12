@@ -70,7 +70,6 @@ export default {
       //提交数据到后台
       updateSite(jsonObject).then((res)=>{
         this.msgSuccess(res.msg);
-        console.log(res)
       })
     }
   },

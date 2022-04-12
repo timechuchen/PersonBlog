@@ -15,7 +15,6 @@ import Knowledge from '@/pages/Knowledge'
 import Search from '@/pages/Search'
 import Blog from '@/pages/Blog'
 import File from '@/pages/404'
-import tk from "element-ui/src/locale/lang/tk";
 
 //解决 Vue路由的一个bug报错问题
 const originalPush = VueRouter.prototype.push

@@ -2,6 +2,9 @@ package ltd.chuchen.service;
 
 import ltd.chuchen.entity.Comment;
 import ltd.chuchen.model.dto.CommentInfo;
+import ltd.chuchen.model.dto.CommentShow;
+import ltd.chuchen.model.dto.CommentUpdate;
+import ltd.chuchen.model.dto.CommentView;
 
 import java.util.List;
 
@@ -18,8 +21,13 @@ public interface CommentService {
 
     Comment getCommentById(Long id);
 
-    int updateComment(Comment comment);
+    int updateComment(CommentUpdate comment);
 
     List<Comment> getListCommentView();
 
+    List<CommentShow> getAllComments();
+
+    int updateCommentPublishedById(Long id, Boolean published);
+
+    List<CommentView> getCommentByBlogId(Long blogId);
 }

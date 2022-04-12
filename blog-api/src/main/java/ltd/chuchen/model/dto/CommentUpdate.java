@@ -8,19 +8,18 @@ import lombok.ToString;
 
 /**
  * @Author chuchen
- * @Date 2022/3/23
- * @Description 用于接受前台返回的评论
+ * @Date 2022/4/12
+ * @Description 用于接受后台传过来的要修改的评论信息
  */
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommentInfo {
-
-    private String blogId;
-    private String authorId;
-    private short parentCommentId;
-    private short page;
-    private String context;
+public class CommentUpdate {
+    private String id;
+    private String nickname;
+    private String avatar;
+    private String email;
+    private String content;
 }

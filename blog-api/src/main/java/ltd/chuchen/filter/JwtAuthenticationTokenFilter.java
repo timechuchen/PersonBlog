@@ -2,6 +2,7 @@ package ltd.chuchen.filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import ltd.chuchen.entity.Admin;
+import ltd.chuchen.entity.User;
 import ltd.chuchen.utils.JWTUtil;
 import ltd.chuchen.utils.RedisUtil;
 import ltd.chuchen.utils.StringUtils;

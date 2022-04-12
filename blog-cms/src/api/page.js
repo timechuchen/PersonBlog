@@ -3,7 +3,7 @@ import axios from '@/utils/request'
 export function updateSite(hotTag) {
     return axios({
         url: '/page/updateSite',
-        method: 'post',
+        method: 'put',
         data: {
             hotTag,
         }
@@ -13,6 +13,6 @@ export function updateSite(hotTag) {
 export function getAllSite() {
     return axios({
         url: '/page/getAllSite',
-        method: 'post'
+        method: 'get'
     })
 }

@@ -1,5 +1,6 @@
 package ltd.chuchen.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import ltd.chuchen.entity.User;
 import ltd.chuchen.model.dto.SiginInfo;
 import ltd.chuchen.model.vo.Result;
@@ -55,7 +56,7 @@ public class LogoController {
             //生成一个 JWT 令牌
             String token = JWTUtil.getToken(payload);
             //存到Redis中
-            redisUtil.set(token,payload);
+            redisUtil.set(String.valueOf(loginInfo.getId()),payload);
             return Result.ok("登陆成功",token);
         }else if(loginInfo != null){
             //告诉用户登陆失败
@@ -83,7 +84,9 @@ public class LogoController {
             return Result.error("未登录");
         }
         //删除redis中的对应令牌
-        redisUtil.del(token);
+        DecodedJWT tokenInfo = JWTUtil.getTokenInfo(token);
+        String id = tokenInfo.getClaim("id").asString();
+        redisUtil.del(id);
         return Result.ok("退出成功");
     }
 
@@ -91,7 +94,9 @@ public class LogoController {
     @GetMapping("/user/getUserLogin")
     public Result getUserAllLogin(HttpServletRequest request) {
         String token = request.getHeader("token");
-        Object user = redisUtil.get(token);
+        DecodedJWT tokenInfo = JWTUtil.getTokenInfo(token);
+        String id = tokenInfo.getClaim("id").asString();
+        Object user = redisUtil.get(id);
         if(user != null){
             return Result.ok("获取登陆用户成功",user);
         }else {
