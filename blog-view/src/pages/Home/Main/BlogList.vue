@@ -15,9 +15,9 @@
         <span class="blog_blogTage" v-for="(tag,i) in blog.blogTage" :key="tag.id">
             <span style="background-color: #7f7b7b;">{{tag.tagName}}</span>
         </span>
-        <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> {{blog.hot}} </p>
-        <p class="commonts"><i class="Hui-iconfont" title="点击量">&#xe622;</i>
-          <span class="cy_cmt_count">{{blog.hits}}</span></p>
+        <p class="commonts"><i class="Hui-iconfont" title="评论量">&#xe622;</i>
+          <span class="cy_cmt_count">{{blog.comment}}</span>
+        </p>
       </div>
       <div class="desc">{{blog.description | text}}</div>
     </li>

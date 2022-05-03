@@ -32,4 +32,6 @@ public interface CommentService {
     List<CommentView> getCommentByBlogId(Long blogId);
 
     void deleteCommentByBlogId(Long id);
+
+    Integer getCommentCountByBlogId(Long id);
 }

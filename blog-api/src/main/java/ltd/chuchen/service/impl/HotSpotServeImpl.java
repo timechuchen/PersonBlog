@@ -1,10 +1,14 @@
 package ltd.chuchen.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import lombok.experimental.Accessors;
+import ltd.chuchen.constants.RedisKeyConstant;
 import ltd.chuchen.entity.HotSpot;
 import ltd.chuchen.mapper.HotSpotMapper;
+import ltd.chuchen.model.dto.BlogViewListInfo;
 import ltd.chuchen.model.dto.HotTagInfo;
 import ltd.chuchen.service.HotSpotService;
+import ltd.chuchen.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,8 @@ public class HotSpotServeImpl implements HotSpotService {
 
     @Autowired
     private HotSpotMapper hotSpotMapper;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public boolean updateHotSpot(List<HotTagInfo> hots) {
@@ -40,6 +46,13 @@ public class HotSpotServeImpl implements HotSpotService {
 
     @Override
     public List<HotTagInfo> getHotTageInfo() {
+        String redisKey = RedisKeyConstant.HOT_TAG_INFO_LIST;
+        Object o = redisUtil.get(redisKey);
+        List<HotTagInfo> hotTagInfosByRedis = JSON.parseArray(JSON.toJSONString(o),HotTagInfo.class);
+
+        if(hotTagInfosByRedis != null) {
+            return hotTagInfosByRedis;
+        }
         List<HotSpot> hotSpots = hotSpotMapper.selectAll();
         List<HotTagInfo> hotTagInfos = new LinkedList<>();
         for(HotSpot hotSpot : hotSpots){
@@ -51,6 +64,7 @@ public class HotSpotServeImpl implements HotSpotService {
             hotTagInfo.setColor(hotSpot.getColor());
             hotTagInfos.add(hotTagInfo);
         }
+        redisUtil.set(redisKey,hotTagInfos);
         return hotTagInfos;
     }
 }

@@ -1,11 +1,14 @@
 package ltd.chuchen.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import ltd.chuchen.constants.RedisKeyConstant;
 import ltd.chuchen.entity.Blog;
 import ltd.chuchen.entity.Category;
 import ltd.chuchen.entity.Tag;
 import ltd.chuchen.mapper.BlogMapper;
 import ltd.chuchen.model.dto.BlogInfo;
+import ltd.chuchen.model.dto.BlogView;
 import ltd.chuchen.model.dto.BlogViewListInfo;
 import ltd.chuchen.model.dto.BlogVisibility;
 import ltd.chuchen.model.vo.BlogDetail;
@@ -15,10 +18,12 @@ import ltd.chuchen.service.BlogService;
 import ltd.chuchen.service.CategoryService;
 import ltd.chuchen.service.CommentService;
 import ltd.chuchen.service.TagService;
+import ltd.chuchen.utils.RedisUtil;
 import ltd.chuchen.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -37,6 +42,32 @@ public class BlogServiceImpl implements BlogService {
     private TagService tagService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private RedisUtil redisUtil;
+
+    /**
+     * 项目启动时，保存所有博客的浏览量到Redis
+     */
+    @PostConstruct
+    private void saveBlogViewsToRedis() {
+        String redisKey = RedisKeyConstant.BLOG_VIEWS_MAP;
+        //Redis中没有存储博客浏览量的Hash
+        if (!redisUtil.hasKey(redisKey)) {
+            //从数据库中读取并存入Redis
+            Map<String, Object> blogViewsMap = getBlogViewsMap();
+            redisUtil.hmset(redisKey, blogViewsMap);
+        }
+    }
+
+    //获取所有博客的浏览量
+    private Map<String, Object> getBlogViewsMap() {
+        List<BlogView> blogViewList = blogMapper.getBlogViewsList();
+        Map<String, Object> blogViewsMap = new HashMap<>();
+        for (BlogView blogView : blogViewList) {
+            blogViewsMap.put(String.valueOf(blogView.getId()), blogView.getViews());
+        }
+        return blogViewsMap;
+    }
 
     @Override
     public Boolean deleteBlogById(Long id) {
@@ -262,6 +293,18 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<BlogViewListInfo> getBlogViewList() {
+        String redisKey = RedisKeyConstant.HOME_BLOG_INFO_LIST;
+        Object o = redisUtil.get(redisKey);
+        List<BlogViewListInfo> blogViewListInfosByRedis = JSON.parseArray(JSON.toJSONString(o),BlogViewListInfo.class);
+
+        if(blogViewListInfosByRedis != null) {
+            // TODO 更新评论数
+            /*
+            * ..................
+            * */
+            return blogViewListInfosByRedis;
+        }
+        //redis没有缓存，从数据库查询，并添加缓存
         QueryWrapper<Blog> wrapper = new QueryWrapper<>();
         wrapper.select("id", "title", "first_picture", "update_time","views", "description","published", "password");
         List<Blog> blogs = blogMapper.selectList(wrapper);
@@ -274,13 +317,13 @@ public class BlogServiceImpl implements BlogService {
                         .setBlogPic(b.getFirstPicture())
                         .setBlogTage(tagService.getTagListByBlogId(b.getId()))
                         .setUpdateTime(b.getUpdateTime())
-                        .setHot(666)
-                        .setHits(b.getViews())
+                        .setComment(commentService.getCommentCountByBlogId(b.getId()))
                         .setDescription(b.getDescription())
                         .setPublished(b.getPublished())
                         .setPassword(b.getPassword());
                 blogViewListInfos.add(blogViewListInfo);
         }
+        redisUtil.set(redisKey,blogViewListInfos);
         return blogViewListInfos;
     }
 }

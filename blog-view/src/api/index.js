@@ -15,7 +15,7 @@ export const reqPersonInfo = ()=> mockRequest({url:'/personInfo'});
 //获取热点推荐信息
 // export const reqHot = ()=> mockRequest({url: '/hot'});
 export const reqHot = ()=> requests({url: '/loadHotTag'});
-//获取日志信息
+//获取动态信息
 // export const reqRecode = ()=> mockRequest({url:'/diary'});
 export const reqRecode = ()=> requests({url:'/recordsByDesc'});
 //获取留言信息

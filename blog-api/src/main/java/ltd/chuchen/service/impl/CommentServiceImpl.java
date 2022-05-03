@@ -14,6 +14,7 @@ import ltd.chuchen.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,5 +132,17 @@ public class CommentServiceImpl implements CommentService {
         HashMap<String,Object> map = new HashMap<>();
         map.put("blog_id",id);
         commentMapper.deleteByMap(map);
+    }
+
+    /**
+     * 获取指定博客的评论数量
+     * @param id 博客id
+     * @return 博客的评论数
+     */
+    @Override
+    public Integer getCommentCountByBlogId(Long id) {
+        QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("blog_id",id);
+        return commentMapper.selectCount(queryWrapper);
     }
 }

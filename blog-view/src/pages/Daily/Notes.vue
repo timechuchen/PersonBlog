@@ -8,7 +8,7 @@
         <h4>{{ recode.title }}</h4>
         <p class="font-style">{{ recode.content }}</p>
         <div class="f-r">
-          <a @click="isLike(index)">
+          <a @click="isLike(index,recode)">
             <i v-if="!flag[index]" class="Hui-iconfont" style="font-size: 20px">&#xe649;</i>
             <i v-if="flag[index]" class="Hui-iconfont" style="font-size: 20px; color: red">&#xe648;</i>
           </a>
@@ -40,7 +40,9 @@ export default {
     this.flag.length = 100;
   },
   methods: {
-    isLike(index){
+    isLike(index,recode){
+      //TODO 点赞功能的实现
+      // console.log(index+'@@@'+recode.id+'@@@'+recode.likes)
       this.flag.splice(index,1,!this.flag[index]);
     },
   },

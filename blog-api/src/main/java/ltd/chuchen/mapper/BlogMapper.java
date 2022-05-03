@@ -2,9 +2,12 @@ package ltd.chuchen.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import ltd.chuchen.entity.Blog;
+import ltd.chuchen.model.dto.BlogView;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Author chuchen
@@ -33,4 +36,7 @@ public interface BlogMapper extends BaseMapper<Blog> {
 
     @Update("update blog set recommend = #{recommend},appreciation = #{appreciation},published = #{published},comment_enabled = #{commentEnabled},top = #{top},password = #{password} where id = #{blogId}")
     int updateVisibilityById(Long blogId, Boolean recommend, Boolean appreciation, Boolean published, Boolean commentEnabled, Boolean top, String password);
+
+    @Select("select id,views from blog")
+    List<BlogView> getBlogViewsList();
 }

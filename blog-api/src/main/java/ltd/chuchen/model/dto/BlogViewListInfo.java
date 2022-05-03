@@ -33,8 +33,7 @@ public class BlogViewListInfo {
     private String blogPic;
     private List<Tag> blogTage;
     private Date updateTime;
-    private Integer hot;
-    private Integer hits;
+    private Integer comment;
     private String description;
     private Boolean published;
     private String password;
