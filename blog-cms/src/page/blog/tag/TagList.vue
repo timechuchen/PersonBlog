@@ -164,7 +164,11 @@ export default {
       this.$refs.addFormRef.validate(valid => {
         if (valid) {
           addTag(this.addForm).then(res => {
-            this.msgSuccess(res.msg)
+            if(res.code === 200) {
+              this.msgSuccess(res.msg)
+            }else {
+              this.msgError(res.msg)
+            }
             this.addDialogVisible = false
             this.getTag()
           })
@@ -175,7 +179,11 @@ export default {
       this.$refs.editFormRef.validate(valid => {
         if (valid) {
           editTag(this.editForm).then(res => {
-            this.msgSuccess(res.msg)
+            if(res.code === 200) {
+              this.msgSuccess(res.msg)
+            }else {
+              this.msgError(res.msg)
+            }
             this.editDialogVisible = false
             this.getTag()
           })
@@ -188,7 +196,11 @@ export default {
     },
     deleteTagById(id) {
       deleteTagById(id).then(res => {
-        this.msgSuccess(res.msg)
+        if(res.code === 200) {
+          this.msgSuccess(res.msg)
+        }else {
+          this.msgError(res.msg)
+        }
         this.getTag()
       })
     }

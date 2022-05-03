@@ -51,12 +51,20 @@ export default {
       this.form.published = published
       if (this.$route.params.id) {
         updateRecord(this.form).then(res => {
-          this.msgSuccess(res.msg)
+          if(res.code === 200) {
+            this.msgSuccess(res.msg)
+          }else {
+            this.msgError(res.msg)
+          }
           this.$router.push('/blog/record/list')
         })
       } else {
         saveRecord(this.form).then(res => {
-          this.msgSuccess(res.msg)
+          if(res.code === 200) {
+            this.msgSuccess(res.msg)
+          }else {
+            this.msgError(res.msg)
+          }
           this.$router.push('/blog/record/list')
         })
       }

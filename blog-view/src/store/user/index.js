@@ -74,6 +74,11 @@ const actions = {
         if(result.code === 200){
             commit('GETUSERINFO',result.data);
             return 'ok';
+        }else if(result.code === 401) {
+            alert('登陆已过期')
+            commit('CLEAR');
+        }else {
+            commit('CLEAR');
         }
     },
     //退出登陆

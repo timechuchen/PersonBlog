@@ -200,12 +200,20 @@ export default {
             this.form.category = null
             this.form.tags = null
             updateBlog(this.form).then(res => {
-              this.msgSuccess(res.msg)
+              if(res.code === 200) {
+                this.msgSuccess(res.msg)
+              }else {
+                this.msgError(res.msg)
+              }
               this.$router.push('/blog/list')
             })
           } else {
             saveBlog(this.form).then(res => {
-              this.msgSuccess(res.msg)
+              if(res.code === 200) {
+                this.msgSuccess(res.msg)
+              }else {
+                this.msgError(res.msg)
+              }
               this.$router.push('/blog/list')
             })
           }

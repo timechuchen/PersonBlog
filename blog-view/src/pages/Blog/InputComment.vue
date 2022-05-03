@@ -43,7 +43,7 @@ export default {
           this.$bus.$emit('updateComment')
           this.comment.context = ''
         }else {
-          alert('发表失败')
+          alert(res.data)
         }
       })
     }

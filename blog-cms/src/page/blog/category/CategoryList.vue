@@ -98,7 +98,7 @@ export default {
         this.total = res.data.length
         this.getData()
         if(res.code !== 200) {
-          this.msgSuccess(res.msg)
+          this.msgError(res.msg)
         }
       })
     },
@@ -123,7 +123,11 @@ export default {
       this.$refs.addFormRef.validate(valid => {
         if (valid) {
           addCategory(this.addForm).then(res => {
-            this.msgSuccess(res.msg)
+            if(res.code === 200) {
+              this.msgSuccess(res.msg)
+            }else {
+              this.msgError(res.msg)
+            }
             this.addDialogVisible = false
             this.getCategory()
           })
@@ -134,7 +138,11 @@ export default {
       this.$refs.editFormRef.validate(valid => {
         if (valid) {
           editCategory(this.editForm).then(res => {
-            this.msgSuccess(res.msg)
+            if(res.code === 200) {
+              this.msgSuccess(res.msg)
+            }else {
+              this.msgError(res.msg)
+            }
             this.editDialogVisible = false
             this.getCategory()
           })
@@ -149,7 +157,11 @@ export default {
     },
     deleteCategoryById(id) {
       deleteCategoryById(id).then(res => {
-        this.msgSuccess(res.msg)
+        if(res.code === 200) {
+          this.msgSuccess(res.msg)
+        }else {
+          this.msgError(res.msg)
+        }
         this.getCategory()
       })
     }

@@ -78,7 +78,11 @@ export default {
     },
     recordPublishedChanged(row) {
       updatePublished(row.id, row.published).then(res => {
-        this.msgSuccess(res.msg)
+        if(res.code === 200) {
+          this.msgSuccess(res.msg)
+        }else {
+          this.msgError(res.msg)
+        }
       })
     },
     goEditMomentPage(id) {
@@ -86,7 +90,11 @@ export default {
     },
     deleteMomentById(id) {
       deleteRecordById(id).then(res => {
-        this.msgSuccess(res.msg)
+        if(res.code === 200) {
+          this.msgSuccess(res.msg)
+        }else {
+          this.msgError(res.msg)
+        }
         this.getRecordList()
       })
     }

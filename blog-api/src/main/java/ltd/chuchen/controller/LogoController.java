@@ -54,7 +54,7 @@ public class LogoController {
             payload.put("username",loginInfo.getUsername());
             payload.put("avatar",loginInfo.getAvatar());
             //生成一个 JWT 令牌
-            String token = JWTUtil.getToken(payload);
+            String token = JWTUtil.getToken(payload,3);
             //存到Redis中
             redisUtil.set(String.valueOf(loginInfo.getId()),payload);
             return Result.ok("登陆成功",token);
@@ -94,13 +94,18 @@ public class LogoController {
     @GetMapping("/user/getUserLogin")
     public Result getUserAllLogin(HttpServletRequest request) {
         String token = request.getHeader("token");
-        DecodedJWT tokenInfo = JWTUtil.getTokenInfo(token);
-        String id = tokenInfo.getClaim("id").asString();
-        Object user = redisUtil.get(id);
+        Object user = null;
+        try{
+            DecodedJWT tokenInfo = JWTUtil.getTokenInfo(token);
+            String id = tokenInfo.getClaim("id").asString();
+            user = redisUtil.get(id);
+        }catch (Exception e) {
+            return Result.create(401,"登陆已过期");
+        }
         if(user != null){
             return Result.ok("获取登陆用户成功",user);
         }else {
-            return Result.error("登陆已过期");
+            return Result.error("服务器错误");
         }
     }
 }

@@ -47,7 +47,11 @@ export default {
     handleLogin() {
       this.loading = true
       login(this.admin).then(res => {
-        this.msgSuccess(res.msg);
+        if(res.code === 200) {
+          this.msgSuccess(res.msg)
+        }else {
+          this.msgError(res.msg)
+        }
         window.localStorage.setItem('token', res.data.token)
         window.localStorage.setItem('user', JSON.stringify(res.data.user))
         this.$router.push('/')

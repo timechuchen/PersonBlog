@@ -150,20 +150,28 @@ export default {
       getBlogs().then(res => {
         this.blogList = res.data.blogListInfo
         this.categoryList = res.data.categories
-        this.total = res.data.length
+        this.total = res.data.blogListInfo.length
         this.getData()
       })
     },
     //切换博客置顶状态
     blogTopChanged(row) {
       updateTop(row.id, row.top).then(res => {
-        this.msgSuccess(res.msg);
+        if(res.code === 200) {
+          this.msgSuccess(res.msg)
+        }else {
+          this.msgError(res.msg)
+        }
       })
     },
     //切换博客推荐状态
     blogRecommendChanged(row) {
       updateRecommend(row.id, row.recommend).then(res => {
-        this.msgSuccess(res.msg);
+        if(res.code === 200) {
+          this.msgSuccess(res.msg)
+        }else {
+          this.msgError(res.msg)
+        }
       })
     },
     //编辑博客可见性
@@ -198,7 +206,11 @@ export default {
         this.visForm.password = ''
       }
       updateVisibility(this.blogId, this.visForm).then(res => {
-        this.msgSuccess(res.msg)
+        if(res.code === 200) {
+          this.msgSuccess(res.msg)
+        }else {
+          this.msgError(res.msg)
+        }
         this.getBlogs()
         this.dialogVisible = false
       })
@@ -224,7 +236,11 @@ export default {
         dangerouslyUseHTMLString: true
       }).then(() => {
         deleteBlogById(id).then(res => {
-          this.msgSuccess(res.msg)
+          if(res.code === 200) {
+            this.msgSuccess(res.msg)
+          }else {
+            this.msgError(res.msg)
+          }
           this.getBlogs()
         })
       }).catch(() => {

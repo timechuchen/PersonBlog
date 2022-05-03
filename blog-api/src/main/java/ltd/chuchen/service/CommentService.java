@@ -30,4 +30,6 @@ public interface CommentService {
     int updateCommentPublishedById(Long id, Boolean published);
 
     List<CommentView> getCommentByBlogId(Long blogId);
+
+    void deleteCommentByBlogId(Long id);
 }

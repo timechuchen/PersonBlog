@@ -2,8 +2,9 @@ package ltd.chuchen.filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import ltd.chuchen.entity.Admin;
-import ltd.chuchen.entity.User;
+import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.utils.JWTUtil;
+import ltd.chuchen.utils.JacksonUtil;
 import ltd.chuchen.utils.RedisUtil;
 import ltd.chuchen.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Objects;
 
 /**
@@ -50,12 +52,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             userId = tokenInfo.getClaim("id").asString();
         }catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("token非法");
+            throw new RuntimeException("凭证已失效，请重新登录！");
         }
         //从 redis 中获取用户信息
         Admin o = (Admin) redisUtil.get(userId);
         if(Objects.isNull(o)) {
-            throw new RuntimeException("登陆已过期");
+            throw new RuntimeException("凭证已失效，请重新登录！");
         }
         //将用户信息存入 SecurityContextHolder
         // 获取权限信息封装到 Authentication 中

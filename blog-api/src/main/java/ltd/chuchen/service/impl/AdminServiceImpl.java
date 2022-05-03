@@ -61,7 +61,7 @@ public class AdminServiceImpl implements AdminService {
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         //如果认证没有通过给出对应提示
         if(Objects.isNull(authenticate)) {
-            throw new RuntimeException("登陆失败");
+            throw new RuntimeException("用户名或者密码错误");
         }
         //通过则使用用户id生成jwt，并且将完整的用户信息放入redis
         Admin loginAdmin = (Admin)authenticate.getPrincipal();

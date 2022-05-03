@@ -36,7 +36,6 @@ import Seniority from "@/pages/Home/RightBar/Seniority";
 import FriendlyLink from "@/pages/Home/RightBar/FriendlyLink";
 import Visitors from "@/pages/Home/RightBar/Visitors";
 import SiteShare from "@/pages/Home/RightBar/images/SiteShare";
-import store from "@/store";
 
 export default {
   name: "index",

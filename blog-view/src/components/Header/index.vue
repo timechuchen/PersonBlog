@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import store from "@/store";
-
 export default {
   name: 'Header',
   data() {

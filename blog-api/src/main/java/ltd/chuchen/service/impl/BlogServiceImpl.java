@@ -13,6 +13,7 @@ import ltd.chuchen.model.vo.BlogInfos;
 import ltd.chuchen.model.vo.BolgListInfo;
 import ltd.chuchen.service.BlogService;
 import ltd.chuchen.service.CategoryService;
+import ltd.chuchen.service.CommentService;
 import ltd.chuchen.service.TagService;
 import ltd.chuchen.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,13 @@ public class BlogServiceImpl implements BlogService {
     private CategoryService categoryService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private CommentService commentService;
 
     @Override
     public Boolean deleteBlogById(Long id) {
         blogMapper.deleteTag(id);
+        commentService.deleteCommentByBlogId(id);
         int i = blogMapper.deleteById(id);
         return i == 1;
     }

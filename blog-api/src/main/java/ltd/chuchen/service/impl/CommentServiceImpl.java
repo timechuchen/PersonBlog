@@ -14,6 +14,7 @@ import ltd.chuchen.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int saveComment(CommentInfo commentInfo) {
+        System.out.println(commentInfo);
         User user = userMapper.selectById(commentInfo.getAuthorId());
         Comment comment = new Comment();
         comment
@@ -118,5 +120,16 @@ public class CommentServiceImpl implements CommentService {
                 .setContent(c.getContent()));
         }
         return result;
+    }
+
+    /**
+     * 通过博客id删除评论
+     * @param id 博客id
+     */
+    @Override
+    public void deleteCommentByBlogId(Long id) {
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("blog_id",id);
+        commentMapper.deleteByMap(map);
     }
 }
