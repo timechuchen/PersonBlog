@@ -34,12 +34,12 @@ export default {
   methods: {
     publish() {
       if(!this.$store.state.user.token){
-        alert('未登录，请先登录')
+        this.msgError('未登录，请先登录')
         return
       }
       reqComment(this.comment).then(res=>{
         if(res.code === 200) {
-          alert('发表成功')
+          this.msgSuccess("发表成功")
           this.$bus.$emit('updateComment')
           this.comment.context = ''
         }else {

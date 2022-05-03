@@ -24,6 +24,15 @@ Vue.use(VueLazyload,{
   //懒加载默认的图片
   loading:pic
 })
+
+Vue.prototype.msgSuccess = function (msg) {
+  this.$message.success(msg)
+}
+
+Vue.prototype.msgError = function (msg) {
+  this.$message.error(msg)
+}
+
 Vue.use(Element)
 
 new Vue({

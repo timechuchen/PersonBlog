@@ -47,7 +47,7 @@ export default {
         //跳转到 home 首页
         await this.$router.push('/home');
       }catch (error){
-        alert(error.message);
+        this.msgError(error.message)
       }
     }
   },
