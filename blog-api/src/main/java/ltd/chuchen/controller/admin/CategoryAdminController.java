@@ -1,6 +1,8 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Category;
+import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,7 @@ public class CategoryAdminController {
      * 后去所有分类信息
      * @return data为所有的分类信息
      */
+    @VisitLogger(VisitBehavior.CATEGORY)
     @GetMapping("/categories")
     @ResponseBody
     public Result getAllCategory() {

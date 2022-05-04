@@ -1,5 +1,7 @@
 package ltd.chuchen.controller;
 
+import ltd.chuchen.annotation.VisitLogger;
+import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.dto.HotTagInfo;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.HotSpotService;
@@ -18,6 +20,7 @@ public class HotTagController {
     @Autowired
     private HotSpotService hotSpotServe;
 
+    @VisitLogger(VisitBehavior.INDEX)
     @ResponseBody
     @GetMapping("/loadHotTag")
     public Result loadHotTag() {

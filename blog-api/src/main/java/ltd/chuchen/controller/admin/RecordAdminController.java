@@ -1,6 +1,8 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Record;
+import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.dto.RecordInfo;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.RecordService;
@@ -62,6 +64,7 @@ public class RecordAdminController {
         }
     }
 
+    @VisitLogger(VisitBehavior.COMMENT)
     @GetMapping("/records")
     @ResponseBody
     public Result getRecordListAll() {

@@ -1,6 +1,8 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.HotSpot;
+import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.dto.HotTagInfo;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.HotSpotService;
@@ -44,6 +46,7 @@ public class PageAdminController {
      * 查找所有热点信息
      * @return Result
      */
+    @VisitLogger(VisitBehavior.TAG)
     @GetMapping("/page/getAllSite")
     @ResponseBody
     public Result getAllSite() {

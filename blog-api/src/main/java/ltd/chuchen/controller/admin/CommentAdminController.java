@@ -1,6 +1,8 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Comment;
+import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.dto.CommentShow;
 import ltd.chuchen.model.dto.CommentUpdate;
 import ltd.chuchen.model.vo.Result;
@@ -24,6 +26,7 @@ public class CommentAdminController {
     @Autowired
     private CommentService commentService;
 
+    @VisitLogger(VisitBehavior.CHECK_PASSWORD)
     @GetMapping("/comments")
     @ResponseBody
     public Result getCommentListByQuery() {

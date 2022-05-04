@@ -1,11 +1,13 @@
 //登陆预注册
 import {reqGetCode, reqLogo, reqLogout, reqUserInfo, reqUserRegister} from "@/api";
 import {getToken, setToken, removeToken} from "@/utils/token";
+import {getUUID} from "@/utils/uuid_token";
 //仓库存储数据的地方
 const state = {
     token: getToken(),
     code: '',
-    userInfo: {}
+    userInfo: {},
+    uuid_token: getUUID()
 };
 //修改state的唯一手段
 const mutations = {

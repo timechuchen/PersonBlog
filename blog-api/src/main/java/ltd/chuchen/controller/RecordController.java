@@ -1,6 +1,8 @@
 package ltd.chuchen.controller;
 
+import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Record;
+import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ public class RecordController {
         return Result.ok("成功",records);
     }
 
+    @VisitLogger(VisitBehavior.MOMENT)
     @GetMapping("/recordsByDesc")
     @ResponseBody
     public Result getRecordListAllDesc() {

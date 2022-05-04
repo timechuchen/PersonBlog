@@ -1,6 +1,8 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Tag;
+import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +76,7 @@ public class TagAdminController {
      * 查找所有标签信息
      * @return List<Tag>
      */
+    @VisitLogger(VisitBehavior.TAG)
     @GetMapping("/tags")
     @ResponseBody
     public Result getTags() {

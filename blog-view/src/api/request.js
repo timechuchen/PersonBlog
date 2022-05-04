@@ -22,6 +22,9 @@ requests.interceptors.request.use((config)=>{
     if(store.state.user.token) {
         config.headers.token = store.state.user.token;
     }
+    if(store.state.user.uuid_token) {
+        config.headers.identification = store.state.user.uuid_token;
+    }
     //进度条开始动
     nprogress.start();
     return config;

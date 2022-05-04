@@ -54,6 +54,15 @@ public class RedisKeyConstant {
     /**
      * 热门推荐标识码 key
      */
-    public static final String HOT_TAG_INFO_LIST = "HotTagInfoList";
+    public static final String HOT_TAG_INFO_LIST = "hotTagInfoList";
 
+    /**
+     * 浏览标识码 key
+     */
+    public static final String VISIT_LOG = "visitLogList";
+
+    /**
+     * 浏览日志标识码
+     */
+    public static final String VISIT_LOG_LIST = "visitLogs";
 }

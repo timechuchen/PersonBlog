@@ -1,5 +1,7 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.VisitLogger;
+import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.dto.BlogInfo;
 import ltd.chuchen.model.dto.BlogVisibility;
 import ltd.chuchen.model.vo.BlogInfos;
@@ -23,6 +25,7 @@ public class BlogAdminController {
     @Autowired
     private BlogService blogService;
 
+    @VisitLogger(VisitBehavior.BLOG)
     @GetMapping("/blogs")
     @ResponseBody
     public Result getBlogList() {
