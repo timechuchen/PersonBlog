@@ -34,8 +34,7 @@ public class CommentAdminController {
     @DeleteMapping("/comment")
     @ResponseBody
     public Result deleteCommentById(@RequestParam("id") Long id) {
-        int i = commentService.deleteCommentById(id);
-        if(i == 1) {
+        if(commentService.deleteCommentById(id)) {
             return Result.ok("删除成功");
         }else {
             return Result.error("删除失败");
@@ -51,8 +50,7 @@ public class CommentAdminController {
     @PutMapping("/comment/published")
     @ResponseBody
     public Result updatePublished(@RequestParam Long id, @RequestParam Boolean isPublished) {
-        int i = commentService.updateCommentPublishedById(id, isPublished);
-        if(i == 1) {
+        if(commentService.updateCommentPublishedById(id, isPublished)) {
             return Result.ok("ok");
         }else {
             return Result.error("fail");
@@ -65,8 +63,7 @@ public class CommentAdminController {
         if (StringUtils.isEmpty(comment.getNickname(), comment.getAvatar(), comment.getContent())) {
             return Result.error("参数有误");
         }
-        int i = commentService.updateComment(comment);
-        if(i == 1) {
+        if(commentService.updateComment(comment)) {
             return Result.ok("修改成功");
         }else {
             return Result.error("修改失败");

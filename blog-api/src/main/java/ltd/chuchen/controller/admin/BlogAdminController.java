@@ -37,7 +37,7 @@ public class BlogAdminController {
         if(save == 0) {
             return Result.create(201,"参数有误");
         }else  if(save == 1) {
-            return Result.create(202,"添加成功");
+            return Result.ok("添加成功");
         }else  if(save == 2) {
             return Result.create(203,"分类不能为空");
         }else  if(save == 5 || save == 6) {
@@ -57,7 +57,7 @@ public class BlogAdminController {
         if(save == 0) {
             return Result.create(201,"参数有误");
         }else  if(save == 1) {
-            return Result.create(202,"修改成功");
+            return Result.ok("修改成功",blog);
         }else  if(save == 2) {
             return Result.create(203,"分类不能为空");
         }else  if(save == 5 || save == 6) {

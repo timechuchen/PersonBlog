@@ -5,13 +5,13 @@ import lombok.experimental.Accessors;
 import ltd.chuchen.constants.RedisKeyConstant;
 import ltd.chuchen.entity.HotSpot;
 import ltd.chuchen.mapper.HotSpotMapper;
-import ltd.chuchen.model.dto.BlogViewListInfo;
 import ltd.chuchen.model.dto.HotTagInfo;
 import ltd.chuchen.service.HotSpotService;
 import ltd.chuchen.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.LinkedList;
 import java.util.List;
 

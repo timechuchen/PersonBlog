@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="cd-timeline-block"  v-for="(recode,index) in recodes" :key="recode.id">
+    <div class="cd-timeline-block"  v-for="(recode,index) in recodes" :key="recode.id" v-if="recode.published">
       <div class="cd-timeline-img cd-picture">
         <i class="Hui-iconfont font-local">&#xe690;</i>
       </div>

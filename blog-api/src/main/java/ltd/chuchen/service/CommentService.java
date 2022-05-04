@@ -15,19 +15,19 @@ import java.util.List;
  */
 public interface CommentService {
 
-    int saveComment(CommentInfo commentInfo);
+    Boolean saveComment(CommentInfo commentInfo);
 
-    int deleteCommentById(Long commentId);
+    Boolean deleteCommentById(Long commentId);
 
     Comment getCommentById(Long id);
 
-    int updateComment(CommentUpdate comment);
+    Boolean updateComment(CommentUpdate comment);
 
     List<Comment> getListCommentView();
 
     List<CommentShow> getAllComments();
 
-    int updateCommentPublishedById(Long id, Boolean published);
+    Boolean updateCommentPublishedById(Long id, Boolean published);
 
     List<CommentView> getCommentByBlogId(Long blogId);
 

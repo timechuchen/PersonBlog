@@ -1,16 +1,16 @@
 package ltd.chuchen.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import ltd.chuchen.constants.RedisKeyConstant;
 import ltd.chuchen.entity.Comment;
 import ltd.chuchen.entity.User;
 import ltd.chuchen.mapper.BlogMapper;
 import ltd.chuchen.mapper.CommentMapper;
 import ltd.chuchen.mapper.UserMapper;
-import ltd.chuchen.model.dto.CommentInfo;
-import ltd.chuchen.model.dto.CommentShow;
-import ltd.chuchen.model.dto.CommentUpdate;
-import ltd.chuchen.model.dto.CommentView;
+import ltd.chuchen.model.dto.*;
 import ltd.chuchen.service.CommentService;
+import ltd.chuchen.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +33,16 @@ public class CommentServiceImpl implements CommentService {
     private BlogMapper blogMapper;
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @PostConstruct
+    private void init() {
+        updateAllCommentsOfRedis();
+    }
 
     @Override
-    public int saveComment(CommentInfo commentInfo) {
-        System.out.println(commentInfo);
+    public Boolean saveComment(CommentInfo commentInfo) {
         User user = userMapper.selectById(commentInfo.getAuthorId());
         Comment comment = new Comment();
         comment
@@ -48,12 +54,22 @@ public class CommentServiceImpl implements CommentService {
                 .setParentCommentId(comment.getParentCommentId())
                 .setBlogId(commentInfo.getBlogId())
                 .setIsPublished(true);
-        return commentMapper.insert(comment);
+        int insert = commentMapper.insert(comment);
+        if(insert == 1) {
+            updateAllCommentsOfRedis();
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public int deleteCommentById(Long commentId) {
-        return commentMapper.deleteById(commentId);
+    public Boolean deleteCommentById(Long commentId) {
+        int i = commentMapper.deleteById(commentId);
+        if(i == 1) {
+            updateAllCommentsOfRedis();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -62,10 +78,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public int updateComment(CommentUpdate comment) {
+    public Boolean updateComment(CommentUpdate comment) {
         Comment c = commentMapper.selectById(comment.getId());
         c.setNickname(comment.getNickname()).setAvatar(comment.getAvatar()).setEmail(comment.getEmail()).setContent(comment.getContent());
-        return commentMapper.updateById(c);
+        int i = commentMapper.updateById(c);
+        if(i == 1) {
+            updateAllCommentsOfRedis();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -75,34 +96,33 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentShow> getAllComments() {
-        List<CommentShow> result = new LinkedList<>();
-        List<Comment> comments = commentMapper.selectList(null);
-        for(Comment c : comments) {
-            String blogTitle = blogMapper.selectById(c.getBlogId()).getTitle();
-            result.add(new CommentShow()
-                    .setId(c.getId())
-                    .setNickname(c.getNickname())
-                    .setPage(c.getPage())
-                    .setAvatar(c.getAvatar())
-                    .setBlogTitle(blogTitle)
-                    .setEmail(c.getEmail())
-                    .setCreateTime(c.getCreateTime())
-                    .setContent(c.getContent())
-                    .setIsPublished(c.getIsPublished()));
+        String redisKey = RedisKeyConstant.COMMENT_LIST;
+        Object o = redisUtil.get(redisKey);
+        if(o == null) {
+            return updateAllCommentsOfRedis();
         }
-        return result;
+        List<CommentShow> commentShows = JSON.parseArray(JSON.toJSONString(o),CommentShow.class);
+        if(commentShows != null) {
+            return commentShows;
+        }
+        return updateAllCommentsOfRedis();
     }
 
     @Override
-    public int updateCommentPublishedById(Long id, Boolean published) {
+    public Boolean updateCommentPublishedById(Long id, Boolean published) {
         QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id",id);
         Comment comment = commentMapper.selectOne(queryWrapper);
         if(comment == null) {
-            return 0;
+            return false;
         }
         comment.setIsPublished(published);
-        return commentMapper.updateById(comment);
+        int i = commentMapper.updateById(comment);
+        if(i == 1) {
+            updateAllCommentsOfRedis();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -132,6 +152,7 @@ public class CommentServiceImpl implements CommentService {
         HashMap<String,Object> map = new HashMap<>();
         map.put("blog_id",id);
         commentMapper.deleteByMap(map);
+        updateAllCommentsOfRedis();
     }
 
     /**
@@ -144,5 +165,29 @@ public class CommentServiceImpl implements CommentService {
         QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("blog_id",id);
         return commentMapper.selectCount(queryWrapper);
+    }
+
+    /**
+     * 更新 redis 中评论信息
+     */
+    protected List<CommentShow> updateAllCommentsOfRedis() {
+        String redisKey = RedisKeyConstant.COMMENT_LIST;
+        List<CommentShow> result = new LinkedList<>();
+        List<Comment> comments = commentMapper.selectList(null);
+        for(Comment c : comments) {
+            String blogTitle = blogMapper.selectById(c.getBlogId()).getTitle();
+            result.add(new CommentShow()
+                    .setId(c.getId())
+                    .setNickname(c.getNickname())
+                    .setPage(c.getPage())
+                    .setAvatar(c.getAvatar())
+                    .setBlogTitle(blogTitle)
+                    .setEmail(c.getEmail())
+                    .setCreateTime(c.getCreateTime())
+                    .setContent(c.getContent())
+                    .setIsPublished(c.getIsPublished()));
+        }
+        redisUtil.set(redisKey,result);
+        return result;
     }
 }

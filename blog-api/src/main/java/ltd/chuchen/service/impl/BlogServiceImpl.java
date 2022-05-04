@@ -2,13 +2,14 @@ package ltd.chuchen.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ltd.chuchen.constants.RedisKeyConstant;
 import ltd.chuchen.entity.Blog;
 import ltd.chuchen.entity.Category;
 import ltd.chuchen.entity.Tag;
 import ltd.chuchen.mapper.BlogMapper;
 import ltd.chuchen.model.dto.BlogInfo;
-import ltd.chuchen.model.dto.BlogView;
 import ltd.chuchen.model.dto.BlogViewListInfo;
 import ltd.chuchen.model.dto.BlogVisibility;
 import ltd.chuchen.model.vo.BlogDetail;
@@ -45,28 +46,9 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     private RedisUtil redisUtil;
 
-    /**
-     * 项目启动时，保存所有博客的浏览量到Redis
-     */
     @PostConstruct
-    private void saveBlogViewsToRedis() {
-        String redisKey = RedisKeyConstant.BLOG_VIEWS_MAP;
-        //Redis中没有存储博客浏览量的Hash
-        if (!redisUtil.hasKey(redisKey)) {
-            //从数据库中读取并存入Redis
-            Map<String, Object> blogViewsMap = getBlogViewsMap();
-            redisUtil.hmset(redisKey, blogViewsMap);
-        }
-    }
-
-    //获取所有博客的浏览量
-    private Map<String, Object> getBlogViewsMap() {
-        List<BlogView> blogViewList = blogMapper.getBlogViewsList();
-        Map<String, Object> blogViewsMap = new HashMap<>();
-        for (BlogView blogView : blogViewList) {
-            blogViewsMap.put(String.valueOf(blogView.getId()), blogView.getViews());
-        }
-        return blogViewsMap;
+    private void init() {
+        updateRedisOfBlogViewList();
     }
 
     @Override
@@ -74,7 +56,13 @@ public class BlogServiceImpl implements BlogService {
         blogMapper.deleteTag(id);
         commentService.deleteCommentByBlogId(id);
         int i = blogMapper.deleteById(id);
-        return i == 1;
+        if(i == 1) {
+            //更新 redis 缓存数据
+            updateRedisOfBlogViewList();
+            updateBlogListInfo();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -151,6 +139,9 @@ public class BlogServiceImpl implements BlogService {
             }
         }
         if(insert == 1) {
+            //更新 redis 缓存数据
+            updateRedisOfBlogViewList();
+            updateBlogListInfo();
             return 1;
         }else {
             return 8;
@@ -165,26 +156,50 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Boolean updateBlogRecommendById(Long blogId, Boolean recommend) {
         int update = blogMapper.updateRecommendById(blogId,recommend);
-        return update == 1;
+        if(update == 1) {
+            //更新 redis 缓存数据
+            updateRedisOfBlogViewList();
+            updateBlogListInfo();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public Boolean updateBlogVisibilityById(Long blogId, BlogVisibility blogVisibility) {
         System.out.println(blogVisibility);
         int update = blogMapper.updateVisibilityById(blogId, blogVisibility.getRecommend(),blogVisibility.getAppreciation(),blogVisibility.getPublished(),blogVisibility.getCommentEnabled(),blogVisibility.getTop(),blogVisibility.getPassword());
-        return update == 1;
+        if(update == 1) {
+            //更新 redis 缓存数据
+            updateRedisOfBlogViewList();
+            updateBlogListInfo();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public Boolean updateBlogTopById(Long blogId, Boolean top) {
         int update = blogMapper.updateTopById(blogId,top);
-        return update == 1;
+        if(update == 1) {
+            //更新 redis 缓存数据
+            updateRedisOfBlogViewList();
+            updateBlogListInfo();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public Boolean updateViews(Long blogId, Integer views) {
         int update = blogMapper.updateViewsById(blogId, views);
-        return update == 1;
+        if(update == 1) {
+            //更新 redis 缓存数据
+            updateRedisOfBlogViewList();
+            updateBlogListInfo();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -263,38 +278,35 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Map<String, Object> getBlogListInfo() {
-        Map<String,Object> map = new HashMap<>();
+        String redisKey = RedisKeyConstant.ADMIN_BLOG_INFO_LIST;
+        ObjectMapper mapper = new ObjectMapper();
 
-        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
-        wrapper.select("id", "title", "category_id", "recommend","password", "top","create_time", "update_time","published","appreciation","comment_enabled");
-        List<Blog> blogs = blogMapper.selectList(wrapper);
-        List<BolgListInfo> bolgListInfos = new LinkedList<>();
-        for (Blog b : blogs) {
-            bolgListInfos.add(
-                    new BolgListInfo()
-                        .setId(b.getId())
-                        .setTitle(b.getTitle())
-                        .setPassword(b.getPassword())
-                        .setPublished(b.getPublished())
-                        .setCategory(categoryService.getCategoryById(b.getCategoryId()).getCategoryName())
-                        .setRecommend(b.getRecommend())
-                        .setTop(b.getTop())
-                        .setAppreciation(b.getAppreciation())
-                        .setCommentEnabled(b.getCommentEnabled())
-                        .setCreateTime(b.getCreateTime())
-                        .setUpdateTime(b.getUpdateTime())
-            );
+        Object o = redisUtil.get(redisKey);
+        if(o == null) {
+            return updateBlogListInfo();
         }
-        map.put("blogListInfo",bolgListInfos);
-        List<Category> categories = categoryService.getCategoryList();
-        map.put("categories",categories);
-        return map;
+        String json = null;
+        HashMap<String, Object> blogListInfosByRedis = null;
+        try {
+            json = mapper.writeValueAsString(o);
+            blogListInfosByRedis = mapper.readValue(json, HashMap.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        if(blogListInfosByRedis != null) {
+            return blogListInfosByRedis;
+        }
+        return updateBlogListInfo();
     }
 
     @Override
     public List<BlogViewListInfo> getBlogViewList() {
         String redisKey = RedisKeyConstant.HOME_BLOG_INFO_LIST;
         Object o = redisUtil.get(redisKey);
+        if(o == null) {
+            return updateRedisOfBlogViewList();
+        }
         List<BlogViewListInfo> blogViewListInfosByRedis = JSON.parseArray(JSON.toJSONString(o),BlogViewListInfo.class);
 
         if(blogViewListInfosByRedis != null) {
@@ -305,25 +317,69 @@ public class BlogServiceImpl implements BlogService {
             return blogViewListInfosByRedis;
         }
         //redis没有缓存，从数据库查询，并添加缓存
+        return updateRedisOfBlogViewList();
+    }
+
+    /**
+     * 更新 redis 中的后台博客列表信息：直接从数据库中查询到数据，将redis中对用的 key 的 value 更新
+     */
+    protected Map<String,Object> updateBlogListInfo() {
+        String redisKey = RedisKeyConstant.ADMIN_BLOG_INFO_LIST;
+        Map<String,Object> map = new HashMap<>();
+
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.select("id", "title", "category_id", "recommend","password", "top","create_time", "update_time","published","appreciation","comment_enabled");
+        List<Blog> blogs = blogMapper.selectList(wrapper);
+        List<BolgListInfo> bolgListInfos = new LinkedList<>();
+        for (Blog b : blogs) {
+            bolgListInfos.add(
+                    new BolgListInfo()
+                            .setId(b.getId())
+                            .setTitle(b.getTitle())
+                            .setPassword(b.getPassword())
+                            .setPublished(b.getPublished())
+                            .setCategory(categoryService.getCategoryById(b.getCategoryId()).getCategoryName())
+                            .setRecommend(b.getRecommend())
+                            .setTop(b.getTop())
+                            .setAppreciation(b.getAppreciation())
+                            .setCommentEnabled(b.getCommentEnabled())
+                            .setCreateTime(b.getCreateTime())
+                            .setUpdateTime(b.getUpdateTime())
+            );
+        }
+        map.put("blogListInfo",bolgListInfos);
+        List<Category> categories = categoryService.getCategoryList();
+        map.put("categories",categories);
+        redisUtil.set(redisKey,map);
+        return map;
+    }
+
+    /**
+     * 更新 redis 中的博客列表信息：直接从数据库中查询到数据，将redis中对用的 key 的 value 更新
+     */
+    protected List<BlogViewListInfo> updateRedisOfBlogViewList() {
+        String redisKey = RedisKeyConstant.HOME_BLOG_INFO_LIST;
         QueryWrapper<Blog> wrapper = new QueryWrapper<>();
         wrapper.select("id", "title", "first_picture", "update_time","views", "description","published", "password");
         List<Blog> blogs = blogMapper.selectList(wrapper);
         List<BlogViewListInfo> blogViewListInfos = new LinkedList<>();
         for(Blog b : blogs) {
-                BlogViewListInfo blogViewListInfo = new BlogViewListInfo();
-                blogViewListInfo
-                        .setBlogId(b.getId())
-                        .setBlogTitle(b.getTitle())
-                        .setBlogPic(b.getFirstPicture())
-                        .setBlogTage(tagService.getTagListByBlogId(b.getId()))
-                        .setUpdateTime(b.getUpdateTime())
-                        .setComment(commentService.getCommentCountByBlogId(b.getId()))
-                        .setDescription(b.getDescription())
-                        .setPublished(b.getPublished())
-                        .setPassword(b.getPassword());
-                blogViewListInfos.add(blogViewListInfo);
+            BlogViewListInfo blogViewListInfo = new BlogViewListInfo();
+            blogViewListInfo
+                    .setBlogId(b.getId())
+                    .setBlogTitle(b.getTitle())
+                    .setBlogPic(b.getFirstPicture())
+                    .setBlogTage(tagService.getTagListByBlogId(b.getId()))
+                    .setUpdateTime(b.getUpdateTime())
+                    .setComment(commentService.getCommentCountByBlogId(b.getId()))
+                    .setDescription(b.getDescription())
+                    .setPublished(b.getPublished())
+                    .setPassword(b.getPassword());
+            blogViewListInfos.add(blogViewListInfo);
         }
         redisUtil.set(redisKey,blogViewListInfos);
         return blogViewListInfos;
     }
 }
+
+

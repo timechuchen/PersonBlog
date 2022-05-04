@@ -30,8 +30,7 @@ public class CommentController {
     @ResponseBody
     @PostMapping("/comment")
     public Result saveComment(@RequestBody CommentInfo commentInfo) {
-        int i = commentService.saveComment(commentInfo);
-        if(i == 1) {
+        if(commentService.saveComment(commentInfo)) {
             return Result.ok("ok");
         }else {
             return Result.error("服务器错误");

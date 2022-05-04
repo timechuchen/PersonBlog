@@ -12,9 +12,24 @@ public class RedisKeyConstant {
     public static final String HOME_BLOG_INFO_LIST = "homeBlogInfoList";
 
     /**
+     * 后台博客展示列表
+     */
+    public static final String ADMIN_BLOG_INFO_LIST = "adminBlogInfoList";
+
+    /**
      * 分类名列表key
      */
-    public static final String CATEGORY_NAME_LIST = "categoryNameList";
+    public static final String CATEGORY_LIST = "categoryList";
+
+    /**
+     * 评论列表key
+     */
+    public static final String COMMENT_LIST = "CommentList";
+
+    /**
+     * 动态列表key
+     */
+    public static final String RECORD_LIST = "RecordList";
 
     /**
      * 标签云列表key
