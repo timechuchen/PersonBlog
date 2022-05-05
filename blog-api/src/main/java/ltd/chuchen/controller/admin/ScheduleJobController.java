@@ -1,5 +1,6 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.OperationLogger;
 import ltd.chuchen.model.vo.Result;
 import ltd.chuchen.task.VisitorSyncScheduleTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class ScheduleJobController {
     @Autowired
     private VisitorSyncScheduleTask visitorSyncScheduleTask;
 
+    @OperationLogger("手动指定定时任务")
     @ResponseBody
     @PutMapping("/syncVisitInfoToDatabase")
     public Result syncVisitInfoToDatabase() {
@@ -32,11 +34,24 @@ public class ScheduleJobController {
         }
     }
 
+    @OperationLogger("手动指定定时任务")
     @ResponseBody
     @DeleteMapping("/delVisitInfoToDatabase")
     public Result delVisitInfoToDatabase() {
         try{
             visitorSyncScheduleTask.delVisitLogInfo();
+            return Result.ok("执行成功");
+        }catch (Exception e) {
+            return Result.error("执行失败");
+        }
+    }
+
+    @OperationLogger("手动指定定时任务")
+    @ResponseBody
+    @DeleteMapping("/emptyExceptionLog")
+    public Result emptyExceptionLog() {
+        try{
+            visitorSyncScheduleTask.emptyExceptionLog();
             return Result.ok("执行成功");
         }catch (Exception e) {
             return Result.error("执行失败");

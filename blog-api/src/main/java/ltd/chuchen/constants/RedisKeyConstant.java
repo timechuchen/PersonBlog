@@ -65,4 +65,5 @@ public class RedisKeyConstant {
      * 浏览日志标识码
      */
     public static final String VISIT_LOG_LIST = "visitLogs";
+
 }

@@ -1,5 +1,6 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.OperationLogger;
 import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Tag;
 import ltd.chuchen.enums.VisitBehavior;
@@ -29,6 +30,7 @@ public class TagAdminController {
      * @param tag 标签对象
      * @return Result
      */
+    @OperationLogger("添加标签")
     @PostMapping("/tag")
     @ResponseBody
     public Result saveTag(@RequestBody Tag tag) {
@@ -47,6 +49,7 @@ public class TagAdminController {
      * @param tag 标签对象
      * @return Result
      */
+    @OperationLogger("修改标签")
     @PutMapping("/tag")
     @ResponseBody
     public Result updateTag(@RequestBody Tag tag) {
@@ -62,6 +65,7 @@ public class TagAdminController {
      * @param id id
      * @return Result
      */
+    @OperationLogger("删除标签")
     @DeleteMapping("/tag")
     @ResponseBody
     public Result deleteTag(@RequestParam Long id) {

@@ -176,12 +176,6 @@ const routes = [
         meta: {title: '日志管理', icon: 'el-icon-document'},
         children: [
             {
-                path: 'job',
-                name: 'JobLog',
-                component: () => import('@/page/log/ScheduleJobLog'),
-                meta: {title: '任务日志', icon: 'el-icon-alarm-clock'}
-            },
-            {
                 path: 'login',
                 name: 'LoginLog',
                 component: () => import('@/page/log/LoginLog'),

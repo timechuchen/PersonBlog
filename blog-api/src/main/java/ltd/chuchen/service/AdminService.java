@@ -3,6 +3,8 @@ package ltd.chuchen.service;
 import ltd.chuchen.entity.Admin;
 import ltd.chuchen.model.vo.Result;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @Author chuchen
  * @Date 2022/3/20
@@ -14,7 +16,7 @@ public interface AdminService {
 
     Admin findAdminById(Long id);
 
-    Result login(Admin admin);
+    Result login(Admin admin, HttpServletRequest request);
 
     Result logout();
 }

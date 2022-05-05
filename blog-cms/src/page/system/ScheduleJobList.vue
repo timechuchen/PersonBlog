@@ -26,7 +26,7 @@
 
 <script>
 import Breadcrumb from "@/components/Breadcrumb";
-import {updateVisitLogToMySql,delVisitInfoToDatabase} from "@/api/schedule";
+import {updateVisitLogToMySql,delVisitInfoToDatabase,emptyExceptionLog} from "@/api/schedule";
 
 export default {
   name: "ScheduleJobList",
@@ -42,6 +42,11 @@ export default {
                       list: '2',
                       name: '删除所有浏览日志信息',
                       direct: '删除数据库中所有的浏览日志',
+                    },
+                    {
+                      list: '3',
+                      name: '清空异常日志日志信息',
+                      direct: '清空数据库中所有的异常日志',
                     }
                   ]
     }
@@ -59,6 +64,14 @@ export default {
       }else if(n === '2') {
         // TODO 删除数据库所有的浏览日志
         delVisitInfoToDatabase().then((res)=>{
+          if(res.code === 200) {
+            this.msgSuccess(res.msg)
+          }else {
+            this.msgError(res.msg)
+          }
+        })
+      }else if(n === '3') {
+        emptyExceptionLog().then((res)=>{
           if(res.code === 200) {
             this.msgSuccess(res.msg)
           }else {

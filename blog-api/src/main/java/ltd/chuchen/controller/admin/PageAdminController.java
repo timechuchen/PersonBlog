@@ -1,5 +1,6 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.OperationLogger;
 import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.HotSpot;
 import ltd.chuchen.enums.VisitBehavior;
@@ -31,6 +32,7 @@ public class PageAdminController {
      * @param map 前端传回的 JSON 对象
      * @return Result
      */
+    @OperationLogger("更新热点信息")
     @PutMapping("/page/updateSite")
     @ResponseBody
     public Result updateSite(@RequestBody Map<String, ArrayList<HotTagInfo>> map) {

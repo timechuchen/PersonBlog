@@ -1,5 +1,6 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.OperationLogger;
 import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Category;
 import ltd.chuchen.enums.VisitBehavior;
@@ -29,6 +30,7 @@ public class CategoryAdminController {
      * @param category 分类对象
      * @return Result
      */
+    @OperationLogger("添加分类")
     @PostMapping("/category")
     @ResponseBody
     public Result saveCategory(@RequestBody Category category) {
@@ -63,6 +65,7 @@ public class CategoryAdminController {
      * @param id id
      * @return Result
      */
+    @OperationLogger("删除分类")
     @DeleteMapping("/category")
     @ResponseBody
     public Result deleteCategory(@RequestParam Long id) {
@@ -78,6 +81,7 @@ public class CategoryAdminController {
      * @param category 要更新的分类信息
      * @return Result
      */
+    @OperationLogger("更新分类")
     @PutMapping("/category")
     @ResponseBody
     public Result updateCategory(@RequestBody Category category) {

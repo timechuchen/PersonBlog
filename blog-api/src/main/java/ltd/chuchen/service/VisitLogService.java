@@ -12,6 +12,7 @@ import java.util.List;
  * @Description TODO
  */
 public interface VisitLogService {
+
     @Async
     void saveVisitLog(VisitLog visitLog);
 

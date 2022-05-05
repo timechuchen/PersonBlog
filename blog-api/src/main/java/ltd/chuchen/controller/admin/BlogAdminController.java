@@ -1,5 +1,6 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.OperationLogger;
 import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.dto.BlogInfo;
@@ -33,6 +34,7 @@ public class BlogAdminController {
         return Result.ok("成功",blogListInfo);
     }
 
+    @OperationLogger("添加博客")
     @PostMapping("/blog")
     @ResponseBody
     public Result saveBlog(@RequestBody BlogInfo blog) {
@@ -53,6 +55,7 @@ public class BlogAdminController {
         return Result.ok("保存成功",blog);
     }
 
+    @OperationLogger("修改博客")
     @PutMapping("/blog")
     @ResponseBody
     public Result updateBlog(@RequestBody BlogInfo blog) {
@@ -73,6 +76,7 @@ public class BlogAdminController {
         return Result.ok("修改成功",blog);
     }
 
+    @OperationLogger("删除博客")
     @DeleteMapping("/blog")
     @ResponseBody
     public Result deleteBlog(@RequestParam Long id) {
@@ -90,6 +94,7 @@ public class BlogAdminController {
         return Result.ok("请求成功！",categoryAndTag);
     }
 
+    @OperationLogger("修改博客置顶情况")
     @PutMapping("/blog/top")
     @ResponseBody
     public Result updateTop(@RequestParam Long id, @RequestParam Boolean top) {
@@ -100,6 +105,7 @@ public class BlogAdminController {
         }
     }
 
+    @OperationLogger("修改博客是否推荐")
     @PutMapping("/blog/recommend")
     @ResponseBody
     public Result updateRecommend(@RequestParam Long id, @RequestParam Boolean recommend) {
@@ -110,6 +116,7 @@ public class BlogAdminController {
         }
     }
 
+    @OperationLogger("修改博客客可见性信息")
     @PutMapping("/blog/{id}/visibility")
     @ResponseBody
     public Result updateVisibility(@PathVariable Long id, @RequestBody BlogVisibility blogVisibility) {

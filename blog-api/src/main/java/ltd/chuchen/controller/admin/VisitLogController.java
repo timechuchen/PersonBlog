@@ -1,5 +1,6 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.OperationLogger;
 import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.enums.VisitBehavior;
 import ltd.chuchen.model.vo.Result;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * @Author chuchen
  * @Date 2022/5/4
- * @Description TODO
+ * @Description 访问日志控制层
  */
 @Controller
 @RequestMapping("/api/admin")
@@ -31,6 +32,7 @@ public class VisitLogController {
         return Result.ok("成功",visitorLogViews);
     }
 
+    @OperationLogger("删除访问日志")
     @DeleteMapping("/visitLog")
     @ResponseBody
     public Result delVisitById(@RequestParam("id") Long id) {

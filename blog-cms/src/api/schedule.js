@@ -13,3 +13,10 @@ export function delVisitInfoToDatabase() {
         method: 'DELETE',
     })
 }
+
+export function emptyExceptionLog() {
+    return axios({
+        url: '/emptyExceptionLog',
+        method: 'DELETE',
+    })
+}

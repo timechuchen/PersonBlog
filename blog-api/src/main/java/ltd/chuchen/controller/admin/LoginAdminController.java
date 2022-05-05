@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @Author chuchen
  * @Date 2022/3/20
@@ -24,8 +26,8 @@ public class LoginAdminController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Result login(@RequestBody Admin admin ){
-        return adminService.login(admin);
+    public Result login(@RequestBody Admin admin, HttpServletRequest request){
+        return adminService.login(admin,request);
     }
 
     @ResponseBody

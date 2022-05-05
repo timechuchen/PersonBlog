@@ -1,5 +1,6 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.OperationLogger;
 import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Record;
 import ltd.chuchen.enums.VisitBehavior;
@@ -24,6 +25,7 @@ public class RecordAdminController {
     @Autowired
     private RecordService recordService;
 
+    @OperationLogger("添加动态")
     @PostMapping("/record")
     @ResponseBody
     public Result saveRecord(@RequestBody RecordInfo record) {
@@ -34,6 +36,7 @@ public class RecordAdminController {
         }
     }
 
+    @OperationLogger("删除动态")
     @DeleteMapping ("/record")
     @ResponseBody
     public Result deleteRecordById(@RequestParam Long id) {
@@ -54,6 +57,7 @@ public class RecordAdminController {
         return Result.ok("获取成功",record);
     }
 
+    @OperationLogger("修改动态")
     @PutMapping ("/record")
     @ResponseBody
     public Result updateRecord(@RequestBody Record record) {
@@ -72,6 +76,7 @@ public class RecordAdminController {
         return Result.ok("成功",records);
     }
 
+    @OperationLogger("修改动态是否更新")
     @PutMapping ("/published")
     @ResponseBody
     public Result updatePublished(@RequestParam Long id, @RequestParam Boolean published) {

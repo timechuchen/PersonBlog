@@ -1,5 +1,6 @@
 package ltd.chuchen.controller.admin;
 
+import ltd.chuchen.annotation.OperationLogger;
 import ltd.chuchen.annotation.VisitLogger;
 import ltd.chuchen.entity.Comment;
 import ltd.chuchen.enums.VisitBehavior;
@@ -34,6 +35,7 @@ public class CommentAdminController {
         return Result.ok("ok",comments);
     }
 
+    @OperationLogger("删除评论")
     @DeleteMapping("/comment")
     @ResponseBody
     public Result deleteCommentById(@RequestParam("id") Long id) {
@@ -50,6 +52,7 @@ public class CommentAdminController {
      * @param id        评论id
      * @param isPublished 是否公开
      */
+    @OperationLogger("修改评论是否公开")
     @PutMapping("/comment/published")
     @ResponseBody
     public Result updatePublished(@RequestParam Long id, @RequestParam Boolean isPublished) {
@@ -60,6 +63,7 @@ public class CommentAdminController {
         }
     }
 
+    @OperationLogger("修改评论")
     @PutMapping("/comment")
     @ResponseBody
     public Result updateComment(@RequestBody CommentUpdate comment) {
