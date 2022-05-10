@@ -66,4 +66,9 @@ public class RedisKeyConstant {
      */
     public static final String VISIT_LOG_LIST = "visitLogs";
 
+    /**
+     * 邮箱验证码标识码
+     */
+    public static final String EMAIL_CODE = "email_code";
+
 }

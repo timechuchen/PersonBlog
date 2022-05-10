@@ -56,7 +56,7 @@ export default {
 }
 .size {
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
 }
 .border {
   margin-top: 20px;

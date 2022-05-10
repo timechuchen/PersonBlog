@@ -5,7 +5,7 @@
       <div class="input-group partition">
         <label for="username">
           <button class="btn btn-primary size-L"><i class="Hui-iconfont">&#xe62c;</i></button>
-          <input type="text" placeholder="电话" id="username" class="input-text size-L size" v-model="phone">
+          <input type="text" placeholder="QQ邮箱" id="username" class="input-text size-L size" v-model="email">
         </label>
       </div>
       <div class="input-group partition">
@@ -34,7 +34,7 @@ export default {
   name: "Login",
   data() {
     return {
-      phone: '',
+      email: '',
       password: ''
     }
   },
@@ -42,8 +42,8 @@ export default {
     async isLogin() {
       try {
         //登陆成功
-        const {phone,password} = this;
-        (phone&&password)&& (await this.$store.dispatch('isLogo', {phone, password}));
+        const {email,password} = this;
+        (email&&password)&& (await this.$store.dispatch('isLogo', {email, password}));
         //跳转到 home 首页
         await this.$router.push('/home');
       }catch (error){

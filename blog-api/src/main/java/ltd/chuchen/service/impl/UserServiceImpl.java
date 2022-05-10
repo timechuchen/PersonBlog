@@ -21,24 +21,24 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public boolean login(String username, String password) {
+    public boolean login(String email, String password) {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("phone",username);
+        map.put("email",email);
         map.put("password",password);
         List<User> users = userMapper.selectByMap(map);
         return users.size() != 0;
     }
 
     @Override
-    public int sigin(String username, String password, String phone,String code,String imageUrl) {
+    public int sigin(String username, String password, String email,String code,String imageUrl) {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("phone",phone);
+        map.put("email",email);
         List<User> users = userMapper.selectByMap(map);
         if(users.size() == 0){
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
-            user.setPhone(phone);
+            user.setEmail(email);
             user.setAvatar(imageUrl);
             userMapper.insert(user);
             return 0;
@@ -50,9 +50,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByPhone(String phone) {
+    public User findUserByEmail(String email) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone",phone);
+        queryWrapper.eq("email",email);
         return userMapper.selectOne(queryWrapper);
     }
 }

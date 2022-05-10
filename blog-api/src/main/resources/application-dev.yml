@@ -15,7 +15,15 @@ spring:
     multipart:
       max-request-size: 5MB
       max-file-size: 5MB
-
+#  mail:
+#    host: smtp.qq.com
+#    username: 2665300871@qq.com
+#    password: anpldvyjdtzaebii
+#    properties:
+#      mail:
+#        smtp:
+#          ssl:
+#            enable: true
 # 日志的输出
 #mybatis-plus:
 #  configuration:

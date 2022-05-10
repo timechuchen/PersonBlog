@@ -47,13 +47,15 @@ const actions = {
     async userRegister({commit},user) {
        let result = await reqUserRegister(user);
        if(result.code === 200) {
-           return 'ok';
+           return '注册成功';
        }else if(result.code === 70001){
            return Promise.reject(new Error('验证码错误'));
        }else if(result.code === 20005){
            return Promise.reject(new Error('用户已存在'));
        }else if(result.code === 500){
            return Promise.reject(new Error('服务器错误'));
+       }else if(result.code === 201){
+           return Promise.reject(new Error('验证码已过期'));
        }
     },
     //登陆业务
