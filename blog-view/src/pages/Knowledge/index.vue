@@ -14,6 +14,7 @@
       </div>
       <div class="col-sm-3 col-md-3">
         <HotTag/>
+        <RecommendBlog/>
       </div>
     </section>
   </div>
@@ -22,9 +23,10 @@
 <script>
 import BlogList from "@/pages/Knowledge/BlogList";
 import HotTag from "@/pages/Common/HotTag";
+import RecommendBlog from "@/pages/Knowledge/RecommendBlog";
 export default {
   name: "index",
-  components: {BlogList,HotTag}
+  components: {RecommendBlog, BlogList,HotTag}
 }
 </script>
 

@@ -321,6 +321,26 @@ public class BlogServiceImpl implements BlogService {
     }
 
     /**
+     * 获取推荐文章信息
+     * @return 推荐文章信息
+     */
+    @Override
+    public List<BlogViewListInfo> getRecommendBlog() {
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("recommend",true);
+        List<Blog> blogs = blogMapper.selectList(queryWrapper);
+        List<BlogViewListInfo> blogViewListInfos  = new ArrayList<>();
+        blogs.forEach((o)->{
+            blogViewListInfos.add(new BlogViewListInfo()
+                    .setBlogId(o.getId())
+                    .setBlogPic(o.getFirstPicture())
+                    .setBlogTitle(o.getTitle())
+                    .setDescription(o.getDescription()));
+        });
+        return blogViewListInfos;
+    }
+
+    /**
      * 更新 redis 中的后台博客列表信息：直接从数据库中查询到数据，将redis中对用的 key 的 value 更新
      */
     protected Map<String,Object> updateBlogListInfo() {

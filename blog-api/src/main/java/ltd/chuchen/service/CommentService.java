@@ -34,4 +34,8 @@ public interface CommentService {
     void deleteCommentByBlogId(Long id);
 
     Integer getCommentCountByBlogId(Long id);
+
+    List<CommentView> getAllWords();
+
+    boolean addWord(CommentInfo commentInfo);
 }

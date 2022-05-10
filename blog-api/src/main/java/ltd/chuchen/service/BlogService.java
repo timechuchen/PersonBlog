@@ -53,4 +53,6 @@ public interface BlogService {
     Map<String, Object> getBlogListInfo();
 
     List<BlogViewListInfo> getBlogViewList();
+
+    List<BlogViewListInfo> getRecommendBlog();
 }

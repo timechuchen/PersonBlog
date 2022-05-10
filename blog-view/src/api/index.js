@@ -19,7 +19,16 @@ export const reqHot = ()=> requests({url: '/loadHotTag'});
 // export const reqRecode = ()=> mockRequest({url:'/diary'});
 export const reqRecode = ()=> requests({url:'/recordsByDesc'});
 //获取留言信息
-export const reqWords = ()=> mockRequest({url:'/words'});
+// export const reqWords = ()=> mockRequest({url:'/words'});
+export const reqWords = ()=>requests({url:'/words',method:'get'})
+//发布留言
+export const reqWord = (comment)=> requests({
+    url: `/word`,
+    method: 'POST',
+    data: {
+        ...comment
+    }
+});
 //获取博客详细信息
 // export const reqBlog = (blogId)=> mockRequest({url:'/blog',method: 'get',params: {blogId: blogId}});
 export const reqBlog = (blogId)=> requests({url:'/blog',method: 'get',params: {blogId: blogId}});
@@ -48,4 +57,9 @@ export const reqCommentByBlogId = (blogId)=>requests({
     params: {
         blogId
     }
+});
+//获取推荐文章信息
+export const reqGetRecommendBlogs = ()=>requests({
+    url: `/recommendBlogs`,
+    method: 'GET',
 });

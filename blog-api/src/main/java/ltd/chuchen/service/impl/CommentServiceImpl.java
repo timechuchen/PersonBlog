@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -168,6 +169,48 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
+     * 获取所有的留言信息
+     * @return 留言信息
+     */
+    @Override
+    public List<CommentView> getAllWords() {
+        QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("page",1);
+        queryWrapper.eq("is_published",true);
+        List<CommentView> words = new ArrayList<>();
+        List<Comment> comments = commentMapper.selectList(queryWrapper);
+        comments.forEach((o)-> words.add(new CommentView()
+                                        .setId(o.getId())
+                                        .setTime(o.getCreateTime())
+                                        .setContent(o.getContent())
+                                        .setImg(o.getAvatar())
+                                        .setAuthor(o.getNickname())));
+        return words;
+    }
+
+    @Override
+    public boolean addWord(CommentInfo commentInfo) {
+        User user = userMapper.selectById(commentInfo.getAuthorId());
+        Comment comment = new Comment();
+        comment
+                .setAvatar(user.getAvatar())
+                .setContent(commentInfo.getContext())
+                .setNickname(user.getUsername())
+                .setEmail(user.getEmail())
+                .setPage(commentInfo.getPage())
+                .setParentCommentId(comment.getParentCommentId())
+                .setBlogId(commentInfo.getBlogId())
+                .setIsPublished(true);
+        int insert = commentMapper.insert(comment);
+        if(insert == 1) {
+            updateAllCommentsOfRedis();
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
      * 更新 redis 中评论信息
      */
     protected List<CommentShow> updateAllCommentsOfRedis() {
@@ -175,7 +218,12 @@ public class CommentServiceImpl implements CommentService {
         List<CommentShow> result = new LinkedList<>();
         List<Comment> comments = commentMapper.selectList(null);
         for(Comment c : comments) {
-            String blogTitle = blogMapper.selectById(c.getBlogId()).getTitle();
+            String blogTitle;
+            if(c.getPage() == 1) {
+                blogTitle = "留言";
+            }else {
+                blogTitle = blogMapper.selectById(c.getBlogId()).getTitle();
+            }
             result.add(new CommentShow()
                     .setId(c.getId())
                     .setNickname(c.getNickname())

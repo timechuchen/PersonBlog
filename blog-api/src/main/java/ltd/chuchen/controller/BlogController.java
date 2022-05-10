@@ -46,4 +46,15 @@ public class BlogController {
             return Result.error("error");
         }
     }
+
+    @ResponseBody
+    @GetMapping("/recommendBlogs")
+    public Result getRecommendBlog() {
+        List<BlogViewListInfo> blogViewList = blogService.getRecommendBlog();
+        if(blogViewList.size() != 0){
+            return Result.ok("数据加载成功",blogViewList);
+        }else {
+            return Result.error("数据加载失败!");
+        }
+    }
 }

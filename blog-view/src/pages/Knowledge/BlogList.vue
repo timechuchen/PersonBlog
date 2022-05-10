@@ -1,22 +1,25 @@
 <template>
 <div>
   <ul class="index_arc" @click="goBlog">
-    <li class="index_arc_item" v-for="(blog,index) in blogList" :key="blog.blogId" v-if="index < count" :class="blog.blogPic === null ? 'no_pic' : null">
+    <li class="index_arc_item" v-for="(blog,index) in blogList" :key="blog.blogId" v-if="index < count" :class="blog.blogPic === null ? 'no_pic' : null" v-show="blog.published">
       <a class="pic" v-if="blog.blogPic !== null">
-        <img :data-blogOne="blog.blogId" class="lazyload" :src="blog.blogPic" alt="logo"/>
+        <img :data-blogOne="blog.blogId" class="lazyload" v-lazy="blog.blogPic" alt="logo"/>
       </a>
       <h4 class="title">
         <a :data-blogOne="blog.blogId">{{blog.blogTitle}}</a>
+        <i class="Hui-iconfont Hui-iconfont-key" style="font-size: 15px; color: #b94a48" v-show="blog.password !== ''"></i>
       </h4>
       <div class="date_hits">
-        <span class="blog_author">{{blog.author}}</span>
-        <span class="blog_createTime">{{blog.createTime}}</span>
-        <span class="blog_blogTage">{{blog.blogTage}}</span>
-        <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> {{blog.hot}} </p>
-        <p class="commonts"><i class="Hui-iconfont" title="点击量">&#xe622;</i>
-          <span class="cy_cmt_count">{{blog.hits}}</span></p>
+        <span class="blog_author" style="color: #e5db18">{{blog.author}}</span>
+        <span class="blog_createTime" style="color: #e7572c">{{blog.updateTime | timeFormat}}</span>
+        <span class="blog_blogTage" v-for="(tag,i) in blog.blogTage" :key="tag.id">
+            <span style="background-color: #7f7b7b;">{{tag.tagName}}</span>
+        </span>
+        <p class="commonts"><i class="Hui-iconfont" title="评论量">&#xe622;</i>
+          <span class="cy_cmt_count">{{blog.comment}}</span>
+        </p>
       </div>
-      <div class="desc">{{blog.synopsis}}</div>
+      <div class="desc">{{blog.description | text}}</div>
     </li>
   </ul>
   <div class="text-c mb-20" id="moreBlog">
@@ -28,6 +31,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import dayjs from "@/utils/dayjs.min";
 
 export default {
   name: "BlogList",
@@ -43,7 +47,7 @@ export default {
       let {blogone} = element.dataset;
       // //如果标签身上有blog_one属性那它一定是a标签
       if(blogone){
-        let location = {name: 'ShowBlog'};
+        let location = {name: 'Blog'};
         location.query = {blogId: blogone};
         this.$router.push(location);
       }
@@ -65,6 +69,18 @@ export default {
     ...mapState({
       blogList:state=> state.home.blogList
     })
+  },
+  filters: {
+    text(value) {
+      if(value.length > 145){
+        return value.slice(0,140) + ' . . .';
+      }else {
+        return value
+      }
+    },
+    timeFormat(val,str='YYYY-MM-DD HH:mm:ss'){
+      return dayjs(val).format(str);
+    },
   }
 }
 </script>

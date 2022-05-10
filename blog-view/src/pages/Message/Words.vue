@@ -8,7 +8,7 @@
         <div class="comment-main">
           <header class="comment-header">
             <div class="comment-meta"><a class="comment-author" href="#">{{ word.author }}</a>
-              <time class="f-r">{{ word.time }}</time>
+              <time class="f-r">{{ word.time | timeFormat}}</time>
             </div>
           </header>
           <div class="comment-body">
@@ -26,6 +26,7 @@
 
 <script>
 import {mapState} from "vuex";
+import dayjs from "@/utils/dayjs.min";
 
 export default {
   name: "Words",
@@ -45,7 +46,6 @@ export default {
     }
   },
   mounted() {
-    //从Vuex发送请求获取数据（这里先拿到模拟数据）
     this.$store.dispatch('getWords');
   },
   computed: {
@@ -53,6 +53,11 @@ export default {
       words:state=> state.message.words
     }),
   },
+  filters: {
+    timeFormat(val, str = 'YYYY-MM-DD HH:mm:ss') {
+      return dayjs(val).format(str);
+    },
+  }
 }
 </script>
 
