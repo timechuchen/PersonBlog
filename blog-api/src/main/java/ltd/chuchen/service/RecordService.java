@@ -6,6 +6,7 @@ import ltd.chuchen.entity.Record;
 import ltd.chuchen.model.dto.RecordInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RecordService {
 
@@ -24,4 +25,10 @@ public interface RecordService {
      boolean updateRecord(Record record);
 
     List<Record> selectAllByDesc();
+
+     void updateLikes(String commentId);
+
+    boolean updateLikesToMySql();
+
+    Map<String,Integer> getLikesOfRecord();
 }

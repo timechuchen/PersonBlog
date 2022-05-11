@@ -2,6 +2,7 @@ package ltd.chuchen;
 
 import ltd.chuchen.mapper.UserMapper;
 import ltd.chuchen.service.UserService;
+import ltd.chuchen.service.impl.RecordServiceImpl;
 import ltd.chuchen.utils.EmailUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ class BlogApiApplicationTests {
     private UserMapper userMapper;
     @Autowired
     private UserService userService;
-
     @Autowired
     private JavaMailSenderImpl mailSender;
 

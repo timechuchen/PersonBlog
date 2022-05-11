@@ -310,10 +310,6 @@ public class BlogServiceImpl implements BlogService {
         List<BlogViewListInfo> blogViewListInfosByRedis = JSON.parseArray(JSON.toJSONString(o),BlogViewListInfo.class);
 
         if(blogViewListInfosByRedis != null) {
-            // TODO 更新评论数
-            /*
-            * ..................
-            * */
             return blogViewListInfosByRedis;
         }
         //redis没有缓存，从数据库查询，并添加缓存

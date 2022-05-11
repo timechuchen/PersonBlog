@@ -8,11 +8,11 @@
         <h4>{{ recode.title }}</h4>
         <p class="font-style">{{ recode.content }}</p>
         <div class="f-r">
-          <a @click="isLike(index,recode)">
+          <a @click="isLike(index,recode.id)">
             <i v-if="!flag[index]" class="Hui-iconfont" style="font-size: 20px">&#xe649;</i>
             <i v-if="flag[index]" class="Hui-iconfont" style="font-size: 20px; color: red">&#xe648;</i>
           </a>
-          <span class="font-style">{{ recode.likes }}</span>
+          <span class="font-style">{{ likes[recode.id] }}</span>
         </div>
 <!--        <button class="btn btn-success size-S location" v-if="recode.content.length>70">{{msg}}</button>-->
         <span class="cd-date">{{recode.createTime | timeFormat}}</span>
@@ -24,6 +24,7 @@
 <script>
 import {mapState} from "vuex";
 import dayjs from '@/utils/dayjs.min'
+import {getLikesOfRecord,addLike} from '@/api'
 
 export default {
   name: "Notes",
@@ -31,19 +32,26 @@ export default {
     return {
       flag: [],
       // msg: '展开'
+      likes: {}
     }
   },
   //组件挂载完毕就可以向服务器发送请求获取数据
   mounted() {
-    //从Vuex发送请求获取数据（这里先拿到模拟数据）
     this.$store.dispatch('getDiary');
+    this.getLikes()
     this.flag.length = 100;
   },
   methods: {
-    isLike(index,recode){
-      //TODO 点赞功能的实现
-      // console.log(index+'@@@'+recode.id+'@@@'+recode.likes)
+    isLike(index,recodeId){
+      addLike(recodeId)
+      this.getLikes()
+      // this.likes[recodeId]++
       this.flag.splice(index,1,!this.flag[index]);
+    },
+    getLikes() {
+      getLikesOfRecord().then((res)=>{
+        this.likes = res.data
+      })
     },
   },
   computed: {
@@ -62,7 +70,7 @@ export default {
     timeFormat(val,str='YYYY-MM-DD HH:mm:ss'){
       return dayjs(val).format(str);
     },
-  }
+  },
 }
 </script>
 

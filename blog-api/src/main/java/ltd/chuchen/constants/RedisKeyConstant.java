@@ -71,4 +71,9 @@ public class RedisKeyConstant {
      */
     public static final String EMAIL_CODE = "email_code";
 
+    /**
+     * 动态的点赞信息
+     */
+    public static final String RECORD_LIKES = "record_likes";
+
 }

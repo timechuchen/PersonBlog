@@ -6,6 +6,7 @@ import ltd.chuchen.entity.VisitLog;
 import ltd.chuchen.mapper.ExceptionLogMapper;
 import ltd.chuchen.mapper.VisitLogMapper;
 import ltd.chuchen.service.ExceptionLogService;
+import ltd.chuchen.service.RecordService;
 import ltd.chuchen.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -28,6 +29,8 @@ public class VisitorSyncScheduleTask {
     private VisitLogMapper visitLogMapper;
     @Autowired
     private ExceptionLogMapper exceptionLogMapper;
+    @Autowired
+    private RecordService recordService;
 
     /**
      * 1、拿到 redis 中的所有访问信息存储到数据库中，并且删除redis中的标识
@@ -47,6 +50,11 @@ public class VisitorSyncScheduleTask {
         //为了能够拿到准确的信息，这是要在数据库中拿，不能在 redis 中拿
         redisUtil.set(RedisKeyConstant.VISIT_LOG_LIST,visitLogs);
         redisUtil.del(redisKey);
+    }
+
+    @Scheduled(cron = "0 0 2 * * ?") //每天凌晨两点执行一次
+    public void updateRecordLikes() {
+        recordService.updateLikesToMySql();
     }
 
     /**

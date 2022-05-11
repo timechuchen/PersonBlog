@@ -22,7 +22,7 @@ public class ScheduleJobController {
     @Autowired
     private VisitorSyncScheduleTask visitorSyncScheduleTask;
 
-    @OperationLogger("手动指定定时任务")
+    @OperationLogger("手动执行定时任务（同步访客信息到数据库）")
     @ResponseBody
     @PutMapping("/syncVisitInfoToDatabase")
     public Result syncVisitInfoToDatabase() {
@@ -34,7 +34,7 @@ public class ScheduleJobController {
         }
     }
 
-    @OperationLogger("手动指定定时任务")
+    @OperationLogger("手动执行定时任务（删除浏览记录）")
     @ResponseBody
     @DeleteMapping("/delVisitInfoToDatabase")
     public Result delVisitInfoToDatabase() {
@@ -46,12 +46,24 @@ public class ScheduleJobController {
         }
     }
 
-    @OperationLogger("手动指定定时任务")
+    @OperationLogger("手动执行定时任务（清空异常日志）")
     @ResponseBody
     @DeleteMapping("/emptyExceptionLog")
     public Result emptyExceptionLog() {
         try{
             visitorSyncScheduleTask.emptyExceptionLog();
+            return Result.ok("执行成功");
+        }catch (Exception e) {
+            return Result.error("执行失败");
+        }
+    }
+
+    @OperationLogger("手动执行定时任务（更新动态的点赞数）")
+    @PutMapping("/updateLikesOfDB")
+    @ResponseBody
+    public Result updateLikesOfDB() {
+        try{
+            visitorSyncScheduleTask.updateRecordLikes();
             return Result.ok("执行成功");
         }catch (Exception e) {
             return Result.error("执行失败");

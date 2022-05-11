@@ -20,3 +20,10 @@ export function emptyExceptionLog() {
         method: 'DELETE',
     })
 }
+
+export function updateLikesOfDB() {
+    return axios({
+        url: '/updateLikesOfDB',
+        method: 'PUT',
+    })
+}

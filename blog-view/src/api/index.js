@@ -63,3 +63,16 @@ export const reqGetRecommendBlogs = ()=>requests({
     url: `/recommendBlogs`,
     method: 'GET',
 });
+
+export const getLikesOfRecord = ()=>requests({
+    url: `/likesOfRecord`,
+    method: 'GET',
+})
+
+export const addLike = (recordId)=>requests({
+    url: `/addLikes`,
+    method: 'GET',
+    params: {
+        recordId
+    }
+})

@@ -26,7 +26,7 @@
 
 <script>
 import Breadcrumb from "@/components/Breadcrumb";
-import {updateVisitLogToMySql,delVisitInfoToDatabase,emptyExceptionLog} from "@/api/schedule";
+import {updateVisitLogToMySql, delVisitInfoToDatabase, emptyExceptionLog, updateLikesOfDB} from "@/api/schedule";
 
 export default {
   name: "ScheduleJobList",
@@ -47,6 +47,11 @@ export default {
                       list: '3',
                       name: '清空异常日志日志信息',
                       direct: '清空数据库中所有的异常日志',
+                    },
+                    {
+                      list: '4',
+                      name: '更新点赞数',
+                      direct: '更新动态点赞数到数据库',
                     }
                   ]
     }
@@ -72,6 +77,14 @@ export default {
         })
       }else if(n === '3') {
         emptyExceptionLog().then((res)=>{
+          if(res.code === 200) {
+            this.msgSuccess(res.msg)
+          }else {
+            this.msgError(res.msg)
+          }
+        })
+      }else if(n === '4') {
+        updateLikesOfDB().then((res)=>{
           if(res.code === 200) {
             this.msgSuccess(res.msg)
           }else {
