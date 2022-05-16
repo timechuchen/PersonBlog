@@ -13,7 +13,7 @@
         <span class="blog_author" style="color: #e5db18">{{blog.author}}</span>
         <span class="blog_createTime" style="color: #e7572c">{{blog.updateTime | timeFormat}}</span>
         <span class="blog_blogTage" v-for="(tag,i) in blog.blogTage" :key="tag.id">
-            <span style="background-color: #7f7b7b;">{{tag.tagName}}</span>
+            <span :style="{'background-color':tag.color}">{{tag.tagName}}</span>
         </span>
         <p class="commonts"><i class="Hui-iconfont" title="评论量">&#xe622;</i>
           <span class="cy_cmt_count">{{blog.comment}}</span>
@@ -30,16 +30,20 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
 import dayjs from "@/utils/dayjs.min";
+import {reqCommentByBlogTag} from '@/api'
 
 export default {
   name: "BlogList",
   data() {
     return {
       count: 5,
-      msg: "点击加载更多"
+      msg: "点击加载更多",
+      blogList: []
     }
+  },
+  created() {
+    this.getData()
   },
   methods: {
     goBlog(event) {
@@ -58,17 +62,17 @@ export default {
       }else {
         this.msg = "没有更多了哦！！！"
       }
+    },
+    getData() {
+      reqCommentByBlogTag(this.$route.query.keyword).then((res)=>{
+        this.blogList = res.data
+      })
     }
   },
-  //组件挂载完毕就可以向服务器发送请求获取数据
-  mounted() {
-    //从Vuex发送请求获取数据（这里先拿到模拟数据）
-    this.$store.dispatch('getBlogList')
-  },
-  computed: {
-    ...mapState({
-      blogList:state=> state.home.blogList
-    })
+  watch: {
+    $route(){
+      this.getData()
+    },
   },
   filters: {
     text(value) {

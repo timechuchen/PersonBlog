@@ -43,7 +43,7 @@ export default {
         code: '',
         password: '',
         twoPassword: '',
-        imageUrl: 'http://localhost:8089/api/util/files/head/mm',
+        imageUrl: 'http://localhost:8089/api/util/files/head/mm.jpg',
       },
       rules: {
         username: [

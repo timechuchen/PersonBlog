@@ -55,4 +55,8 @@ public interface BlogService {
     List<BlogViewListInfo> getBlogViewList();
 
     List<BlogViewListInfo> getRecommendBlog();
+
+    List<BlogViewListInfo> getBlogByCategory(String category);
+
+    List<BlogViewListInfo> getBlogBysearch(String search);
 }

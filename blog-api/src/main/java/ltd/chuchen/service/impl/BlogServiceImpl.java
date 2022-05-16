@@ -336,6 +336,52 @@ public class BlogServiceImpl implements BlogService {
         return blogViewListInfos;
     }
 
+    @Override
+    public List<BlogViewListInfo> getBlogByCategory(String category) {
+        Category categoryByName = categoryService.getCategoryByName(category);
+        if(categoryByName == null) {
+            return null;
+        }
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        List<BlogViewListInfo> blogViewListInfos = new ArrayList<>();
+        queryWrapper.eq("category_id",categoryByName.getId());
+        List<Blog> blogs = blogMapper.selectList(queryWrapper);blogs.forEach((b)->{
+            blogViewListInfos.add(new BlogViewListInfo()
+                    .setBlogId(b.getId())
+                    .setBlogTitle(b.getTitle())
+                    .setBlogPic(b.getFirstPicture())
+                    .setBlogTage(tagService.getTagListByBlogId(b.getId()))
+                    .setUpdateTime(b.getUpdateTime())
+                    .setComment(commentService.getCommentCountByBlogId(b.getId()))
+                    .setDescription(b.getDescription())
+                    .setPublished(b.getPublished())
+                    .setPassword(b.getPassword()));
+        });
+        return blogViewListInfos;
+    }
+
+    @Override
+    public List<BlogViewListInfo> getBlogBysearch(String search) {
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        List<BlogViewListInfo> blogViewListInfos = new ArrayList<>();
+        queryWrapper.like("title",search);
+        List<Blog> blogs = blogMapper.selectList(queryWrapper);
+        if(blogs == null) return null;
+        blogs.forEach((b)->{
+            blogViewListInfos.add(new BlogViewListInfo()
+                    .setBlogId(b.getId())
+                    .setBlogTitle(b.getTitle())
+                    .setBlogPic(b.getFirstPicture())
+                    .setBlogTage(tagService.getTagListByBlogId(b.getId()))
+                    .setUpdateTime(b.getUpdateTime())
+                    .setComment(commentService.getCommentCountByBlogId(b.getId()))
+                    .setDescription(b.getDescription())
+                    .setPublished(b.getPublished())
+                    .setPassword(b.getPassword()));
+        });
+        return blogViewListInfos;
+    }
+
     /**
      * 更新 redis 中的后台博客列表信息：直接从数据库中查询到数据，将redis中对用的 key 的 value 更新
      */

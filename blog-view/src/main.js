@@ -19,6 +19,7 @@ import HotTag from "@/pages/Common/HotTag";
 //引入懒加载图片
 import pic from '@/assets/default.gif'
 Vue.component(HotTag.name,HotTag);
+//瀑布流插件
 
 Vue.use(VueLazyload,{
   //懒加载默认的图片

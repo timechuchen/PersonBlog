@@ -70,9 +70,10 @@ let router = new VueRouter({
             name: 'search'
         },
         {
-            path: '/knowledge',
+            path: '/knowledge/:keyword?',
             component: Knowledge,
-            meta: {isShowFooter: true}
+            meta: {isShowFooter: true},
+            name: 'knowledge'
         },
         {
             path: '/blog',

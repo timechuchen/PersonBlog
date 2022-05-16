@@ -1,25 +1,19 @@
 package ltd.chuchen.utils;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.io.InputStream;
 
 @Component
 public class FilesUtil {
 
+    @Autowired
+    private QiniuUtils qiniuUtils;
 
-    //获取端口名
     @Value("${server.port}")
     private String port;
     private static final String ip = "http://localhost";
@@ -32,14 +26,13 @@ public class FilesUtil {
         String originalFilename = file.getOriginalFilename();
         assert originalFilename != null;
         String postfix = originalFilename.substring(originalFilename.length() - 4);
-        String fileName = System.getProperty("user.dir") + "\\src\\main\\resources\\files\\" + local +"\\" + phone + postfix;
-        try {
-            FileUtil.writeBytes(file.getBytes(), fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "文件过大,最大只能上传 3M 照片";
+        String fileName =  "files/"+local +"/" + phone + postfix;
+        boolean upload = qiniuUtils.upload(file, fileName);
+        if(upload) {
+            return ip+":"+ port + "/api/util/files/" +local + "/" +  phone + postfix;
+        }else {
+            return "上传失败";
         }
-        return ip+":"+ port + "/api/util/files/" +local + "/" +  phone;
     }
 
     /**
@@ -47,25 +40,8 @@ public class FilesUtil {
      * @param response 请求信息
      */
     public void getFiles(String file,HttpServletResponse response,String local) {
-        OutputStream os;
-        String basePath = System.getProperty("user.dir") + "\\src\\main\\resources\\files\\"+local+"\\";
-        List<String> fileNames = FileUtil.listFileNames(basePath);
-        //找到跟参数一致的文件
-        String fileName = fileNames.stream().filter(name -> name.contains(file)).findAny().orElse("");
-        try {
-            if(StrUtil.isNotEmpty(fileName))  {
-                response.addHeader("Content-Disposition","attachment;filename="+ URLEncoder.encode(fileName, StandardCharsets.UTF_8));
-                response.setContentType("application/octet-stream");
-                byte[] bytes = FileUtil.readBytes(basePath+fileName); //通过文件的路径读取文件字节流
-                os = response.getOutputStream(); //通过输出流返回文件
-                os.write(bytes);
-                os.flush();
-                os.close();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        String basePath = "http://rbx53i4an.hd-bkt.clouddn.com"+"/files/"+local+"/"+file;
+        InputStream inputStream = QiniuUtils.getInputStream(basePath);
+        QiniuUtils.writeFile(response,inputStream);
     }
-
-    //博客图片的上传
 }

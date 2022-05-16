@@ -38,7 +38,7 @@ public class FileController {
     }
 
     /**
-     * 相当于头像上传接口
+     * 相当于博客图片上传接口
      * @param file 要上上传的文件
      * @return Result
      */
@@ -67,7 +67,7 @@ public class FileController {
         String randomName = Objects.requireNonNull(multiRequest.getFile("image")).getOriginalFilename(); //获取图片名
         //生成随机数确保唯一性，并加上图片后缀
         assert randomName != null;
-        String saveName = UUID.randomUUID() + randomName.substring(randomName.lastIndexOf("."),randomName.length());
+        String saveName = UUID.randomUUID() + randomName.substring(randomName.lastIndexOf("."));
         String absolutePath = folder.getAbsolutePath(); //转换成绝对路径
 
         try {

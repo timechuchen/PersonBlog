@@ -224,7 +224,6 @@ export default {
       })
     },
     filesUploadSuccess(res) {
-      console.log(res.data)
       this.form.firstPicture = res.data
     }
   }

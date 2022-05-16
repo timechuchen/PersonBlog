@@ -1,7 +1,6 @@
 'use strict'
 const path = require('path')
-const defaultSettings = require('./src/settings.js')
-
+require('./src/settings.js');
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
@@ -15,10 +14,10 @@ module.exports = {
         //代理服务器
         proxy: {
             '/api': {
-                target: 'http://localhost:8089',
+                target: 'http://127.0.0.1:8089',
             },
         },
-        port: 8081
+        port: 8081,
     },
 
     chainWebpack(config) {

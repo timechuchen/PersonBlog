@@ -10,7 +10,7 @@
           <ul class="cl">
             <li> <router-link to="/home" data-hover="首页">首页</router-link> </li>
             <li class="dropDown dropDown_hover" @mouseenter="current = true" @mouseleave="current = false">
-              <router-link to="/knowledge" class="dropDown_A" data-hover="学无止境">学无止境<i class="Hui-iconfont">&#xe6d5;</i></router-link>
+              <router-link to="#" class="dropDown_A" data-hover="学无止境">学无止境<i class="Hui-iconfont">&#xe6d5;</i></router-link>
               <transition>
                 <ul class="dropDown-menu menu radius box-shadow" v-show="current" style="display: block">
                   <li><a @click="goSearch2('Java')">Java</a></li>
@@ -61,10 +61,10 @@ export default {
   methods: {
     //搜索按钮的回调函数：需要想search路由进行跳转
     goSearch() {
-      this.$router.push({name:'search',params: {keyword:this.keyword !== ''?this.keyword:undefined}});
+      this.$router.push({name:'search',query: {keyword:this.keyword !== ''?this.keyword:undefined}});
     },
     goSearch2(value){
-      this.$router.push({name:'search',params: {keyword:value}});
+      this.$router.push({name:'knowledge',query: {keyword:value}});
     },
     logout() {
       try {

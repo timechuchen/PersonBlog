@@ -1,6 +1,15 @@
 //当前模块是对所有的 api 接口进行统一的管理
 import requests from "@/api/request";
 import mockRequest from "@/api/mockAjax";
+
+export const reqBlogBySearch = (search)=>requests({
+    url: `/blogSearch`,
+    method: 'GET',
+    params: {
+        search
+    }
+});
+
 //`https://api.github.com/search/users?q=${this.keyWord}`
 //先调用一下其他的接口的接口测试一下
 export const reqGitHubList = ()=> requests({url: '/search/users?q=chuchen',method:'get'})
@@ -58,6 +67,16 @@ export const reqCommentByBlogId = (blogId)=>requests({
         blogId
     }
 });
+
+//获得分类的博客
+export const reqCommentByBlogTag = (category)=>requests({
+    url: `/blogByTag`,
+    method: 'GET',
+    params: {
+        category
+    }
+});
+
 //获取推荐文章信息
 export const reqGetRecommendBlogs = ()=>requests({
     url: `/recommendBlogs`,

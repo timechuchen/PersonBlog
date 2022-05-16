@@ -13,7 +13,7 @@
         <span class="blog_author" style="color: #e5db18">{{blog.author}}</span>
         <span class="blog_createTime" style="color: #e7572c">{{blog.updateTime | timeFormat}}</span>
         <span class="blog_blogTage" v-for="(tag,i) in blog.blogTage" :key="tag.id">
-            <span style="background-color: #7f7b7b;">{{tag.tagName}}</span>
+            <span :style="{'background-color':tag.color}">{{tag.tagName}}</span>
         </span>
         <p class="commonts"><i class="Hui-iconfont" title="评论量">&#xe622;</i>
           <span class="cy_cmt_count">{{blog.comment}}</span>

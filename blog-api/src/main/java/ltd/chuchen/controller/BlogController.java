@@ -57,4 +57,28 @@ public class BlogController {
             return Result.error("数据加载失败!");
         }
     }
+
+    @ResponseBody
+    @GetMapping("/blogByTag")
+    public Result getBlogByTag(@RequestParam String category) {
+        List<BlogViewListInfo> blogViewList = blogService.getBlogByCategory(category);
+        if(blogViewList == null || blogViewList.size() != 0){
+            return Result.ok("数据加载成功",blogViewList);
+        }else {
+            return Result.error("数据加载失败!");
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/blogSearch")
+    public Result getBlogBySearch(@RequestParam String search) {
+        List<BlogViewListInfo> blogViewList = blogService.getBlogBysearch(search);
+        if(blogViewList == null){
+            return Result.ok("没有数据");
+        } else if(blogViewList.size() != 0){
+            return Result.ok("数据加载成功",blogViewList);
+        }else {
+            return Result.error("数据加载失败!");
+        }
+    }
 }
