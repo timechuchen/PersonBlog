@@ -2,6 +2,7 @@ package ltd.chuchen;
 
 import ltd.chuchen.mapper.UserMapper;
 import ltd.chuchen.service.UserService;
+import ltd.chuchen.service.impl.DashboardServiceImpl;
 import ltd.chuchen.service.impl.RecordServiceImpl;
 import ltd.chuchen.utils.EmailUtil;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class BlogApiApplicationTests {
@@ -23,6 +26,8 @@ class BlogApiApplicationTests {
     private UserService userService;
     @Autowired
     private JavaMailSenderImpl mailSender;
+    @Autowired
+    private DashboardServiceImpl dashboardService;
 
     @Test
     void contextLoads() {
@@ -50,5 +55,11 @@ class BlogApiApplicationTests {
         helper.setTo("2665300871@qq.com");
         helper.setFrom("2665300871@qq.com");
         mailSender.send(mimeMessage);
+    }
+
+    @Test
+    void contextLoads3() {
+        Map<String, List> categoryBlogCountMap = dashboardService.getCategoryBlogCountMap();
+        System.out.println(categoryBlogCountMap);
     }
 }

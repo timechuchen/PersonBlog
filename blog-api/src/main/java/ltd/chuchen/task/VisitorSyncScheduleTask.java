@@ -3,8 +3,10 @@ package ltd.chuchen.task;
 import com.alibaba.fastjson.JSON;
 import ltd.chuchen.constants.RedisKeyConstant;
 import ltd.chuchen.entity.VisitLog;
+import ltd.chuchen.entity.VisitRecord;
 import ltd.chuchen.mapper.ExceptionLogMapper;
 import ltd.chuchen.mapper.VisitLogMapper;
+import ltd.chuchen.mapper.VisitRecordMapper;
 import ltd.chuchen.service.ExceptionLogService;
 import ltd.chuchen.service.RecordService;
 import ltd.chuchen.utils.RedisUtil;
@@ -13,6 +15,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +35,8 @@ public class VisitorSyncScheduleTask {
     private ExceptionLogMapper exceptionLogMapper;
     @Autowired
     private RecordService recordService;
+    @Autowired
+    private VisitRecordMapper visitRecordMapper;
 
     /**
      * 1、拿到 redis 中的所有访问信息存储到数据库中，并且删除redis中的标识
@@ -47,6 +53,16 @@ public class VisitorSyncScheduleTask {
         visitLogs.forEach((v)-> {
             visitLogMapper.insert(v);
         });
+
+        int pv = visitLogs.size();
+        int uv = Math.toIntExact(redisUtil.sGetSetSize(RedisKeyConstant.IDENTIFICATION_SET));
+
+        System.out.println(pv +"@@@"+ uv);
+
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+        String date = format.format(new Date());
+        visitRecordMapper.insert(new VisitRecord(pv,uv,date));
+        redisUtil.del(RedisKeyConstant.IDENTIFICATION_SET);
         //为了能够拿到准确的信息，这是要在数据库中拿，不能在 redis 中拿
         redisUtil.set(RedisKeyConstant.VISIT_LOG_LIST,visitLogs);
         redisUtil.del(redisKey);

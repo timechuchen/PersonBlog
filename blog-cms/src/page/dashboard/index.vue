@@ -63,18 +63,22 @@
       </el-col>
       <el-col :span="8">
         <el-card>
-          <div ref="mapEcharts" style="height:500px;"></div>
+          <div ref="mapEcharts" style="height:500px; color: red">地图实现（待实现）</div>
         </el-card>
       </el-col>
     </el-row>
     <el-card class="panel-group">
-      <div ref="visitRecordEcharts" style="height:500px;"></div>
+      <div ref="visitRecordEcharts" style="height:500px;">统计</div>
     </el-card>
   </div>
 </template>
 
 <script>
 import SvgIcon from "@/components/SvgIcon";
+import {getDashboard} from "@/api/dashboard";
+import echarts from 'echarts'
+import 'echarts/map/js/china'
+
 export default {
   name: "Dashboard",
   components: {SvgIcon},
@@ -360,22 +364,60 @@ export default {
   },
   methods: {
     getData() {
-
+      getDashboard().then(res => {
+        this.pv = res.data.pv
+        this.uv = res.data.uv
+        this.blogCount = res.data.blogCount
+        this.commentCount = res.data.commentCount
+        //渲染分类数据
+        this.categoryOption.legend.data = res.data.category.legend
+        this.categoryOption.series[0].data = res.data.category.series
+        this.initCategoryEcharts()
+        //渲染标签数据
+        this.tagOption.legend.data = res.data.tag.legend
+        this.tagOption.series[0].data = res.data.tag.series
+        this.initTagEcharts()
+        // //渲染访客地图数据
+        // let mapData = this.convertData(res.data.cityVisitor)
+        // this.mapOption.series[1].data = mapData
+        // this.mapOption.series[2].data = mapData.splice(0, 5)
+        // this.initMapEcharts()
+        //渲染一周访问量数据
+        this.visitRecordOption.xAxis.data = res.data.visitRecord.date
+        this.visitRecordOption.series[0].data = res.data.visitRecord.pv
+        this.visitRecordOption.series[1].data = res.data.visitRecord.uv
+        this.initVisitRecordEcharts()
+      })
     },
     initCategoryEcharts() {
-
+      this.categoryEcharts = echarts.init(this.$refs.categoryEcharts, 'light')
+      this.categoryEcharts.setOption(this.categoryOption)
     },
     initTagEcharts() {
-
+      this.tagEcharts = echarts.init(this.$refs.tagEcharts, 'light')
+      this.tagEcharts.setOption(this.tagOption)
     },
-    initMapEcharts() {
-
-    },
-    convertData(data) {
-
-    },
+    // initMapEcharts() {
+    //   this.mapEcharts = echarts.init(this.$refs.mapEcharts)
+    //   this.mapEcharts.setOption(this.mapOption)
+    // },
+    // convertData(data) {
+    //   let res = []
+    //   for (let i = 0; i < data.length; i++) {
+    //     let geoCoord = geoCoordMap[data[i].city]
+    //     if (geoCoord) {
+    //       res.push({
+    //         name: data[i].city,
+    //         value: geoCoord,
+    //         uv: data[i].uv
+    //       })
+    //     }
+    //   }
+    //   return res
+    // },
     initVisitRecordEcharts() {
-
+      this.visitRecordEcharts = echarts.init(this.$refs.visitRecordEcharts)
+      this.visitRecordEcharts.setOption(this.visitRecordOption)
     },
   }
 }

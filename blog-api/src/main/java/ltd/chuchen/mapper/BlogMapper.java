@@ -3,6 +3,7 @@ package ltd.chuchen.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import ltd.chuchen.entity.Blog;
 import ltd.chuchen.model.dto.BlogView;
+import ltd.chuchen.model.vo.CategoryBlogCount;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -39,4 +40,11 @@ public interface BlogMapper extends BaseMapper<Blog> {
 
     @Select("select id,views from blog")
     List<BlogView> getBlogViewsList();
+
+    @Select("select category_id, count(category_id) as blog_count from blog group by category_id")
+    @Results(value = {
+            @Result(id = true,column = "category_id",property = "id"),
+            @Result(column = "blog_count",property = "value")
+    })
+    List<CategoryBlogCount> getCategoryBlogCountList();
 }

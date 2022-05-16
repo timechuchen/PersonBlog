@@ -2,7 +2,10 @@ package ltd.chuchen.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import ltd.chuchen.entity.Tag;
+import ltd.chuchen.model.vo.TagBlogCount;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -24,4 +27,11 @@ public interface TagMapper extends BaseMapper<Tag> {
 
     @Select("select tag_id from blog_tag where blog_id = #{blogId}")
     List<Long> selectIdByBlogId(Long blogId);
+
+    @Select("select tag_id, count(tag_id) as blog_count from blog_tag group by tag_id")
+    @Results(value = {
+            @Result(id = true,column = "tag_id",property = "id"),
+            @Result(column = "blog_count",property = "value")
+    })
+    List<TagBlogCount> getTagBlogCount();
 }

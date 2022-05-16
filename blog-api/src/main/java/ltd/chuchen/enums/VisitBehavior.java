@@ -22,7 +22,8 @@ public enum VisitBehavior {
     LIKE_MOMENT("点赞动态", ""),
     CHECK_PASSWORD("查看评论", ""),
     CHECK_LOG("查看日志", ""),
-    COMMENT("查看动态","");
+    COMMENT("查看动态",""),
+    DASHBOARD("后台首页","");
 
     private final String behavior;
 
