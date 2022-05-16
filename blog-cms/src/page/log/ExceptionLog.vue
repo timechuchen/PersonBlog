@@ -10,7 +10,7 @@
       </el-form-item>
     </el-form>
 
-    <el-table :data="logList">
+    <el-table :data="pageList">
       <el-table-column label="序号" type="index" width="100"></el-table-column>
       <el-table-column label="请求接口" prop="uri" width="180"></el-table-column>
       <el-table-column label="请求方式" prop="method"  width="100"></el-table-column>
