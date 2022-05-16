@@ -57,8 +57,6 @@ public class VisitorSyncScheduleTask {
         int pv = visitLogs.size();
         int uv = Math.toIntExact(redisUtil.sGetSetSize(RedisKeyConstant.IDENTIFICATION_SET));
 
-        System.out.println(pv +"@@@"+ uv);
-
         SimpleDateFormat format = new SimpleDateFormat("MM-dd");
         String date = format.format(new Date());
         visitRecordMapper.insert(new VisitRecord(pv,uv,date));

@@ -98,7 +98,8 @@ public class TagServiceImpl implements TagService {
     @Override
     public Boolean deleteTagById(Long id) {
         int i = tagMapper.deleteById(id);
-        if(i == 1) {
+        int j = tagMapper.deleteOfTagAndBlog(id);
+        if(i == 1 && j >= 0) {
             updateTagsOfRedis();
             return true;
         }

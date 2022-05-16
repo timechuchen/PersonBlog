@@ -3,10 +3,7 @@ package ltd.chuchen.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import ltd.chuchen.entity.Tag;
 import ltd.chuchen.model.vo.TagBlogCount;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -34,4 +31,7 @@ public interface TagMapper extends BaseMapper<Tag> {
             @Result(column = "blog_count",property = "value")
     })
     List<TagBlogCount> getTagBlogCount();
+
+    @Delete("delete from blog_tag where tag_id = #{id}")
+    int deleteOfTagAndBlog(Long id);
 }

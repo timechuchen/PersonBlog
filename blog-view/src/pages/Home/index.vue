@@ -18,9 +18,8 @@
         <Statement/>
         <Personal/>
         <HotTag/>
-        <Seniority/>
         <Visitors/>
-        <SiteShare/>
+        <FriendlyLink/>
       </div>
     </section>
   </div>
@@ -32,14 +31,12 @@ import SlideShow from "@/pages/Home/Main/SlideShow";
 import BlogList from "@/pages/Home/Main/BlogList"
 import Statement from "@/pages/Home/RightBar/Statement";
 import Personal from "@/pages/Home/RightBar/Personal";
-import Seniority from "@/pages/Home/RightBar/Seniority";
 import FriendlyLink from "@/pages/Home/RightBar/FriendlyLink";
 import Visitors from "@/pages/Home/RightBar/Visitors";
-import SiteShare from "@/pages/Home/RightBar/images/SiteShare";
 
 export default {
   name: "index",
-  components: {SlideShow,BlogList,Statement,Personal,Seniority,FriendlyLink,Visitors,SiteShare},
+  components: {SlideShow,BlogList,Statement,Personal,FriendlyLink,Visitors},
   mounted() {
     //获取用户信息进行展示
     if(this.$store.state.user.token){

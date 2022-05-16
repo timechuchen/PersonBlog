@@ -9,8 +9,8 @@
         <p class="font-style">{{ recode.content }}</p>
         <div class="f-r">
           <a @click="isLike(index,recode.id)">
-            <i v-if="!flag[index]" class="Hui-iconfont" style="font-size: 20px">&#xe649;</i>
-            <i v-if="flag[index]" class="Hui-iconfont" style="font-size: 20px; color: red">&#xe648;</i>
+            <i class="Hui-iconfont" style="font-size: 20px">&#xe697;</i>
+<!--            <i v-if="flag[index]" class="Hui-iconfont" style="font-size: 20px; color: red">&#xe697;</i>-->
           </a>
           <span class="font-style">{{ likes[recode.id] }}</span>
         </div>
@@ -45,8 +45,7 @@ export default {
     isLike(index,recodeId){
       addLike(recodeId)
       this.getLikes()
-      // this.likes[recodeId]++
-      this.flag.splice(index,1,!this.flag[index]);
+      this.getLikes()
     },
     getLikes() {
       getLikesOfRecord().then((res)=>{
