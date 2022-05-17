@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
  * @Description 异常日志映射文件
  */
 @Mapper
-@Component
 @Repository
 public interface ExceptionLogMapper extends BaseMapper<ExceptionLog> {
 

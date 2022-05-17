@@ -15,6 +15,7 @@ import Knowledge from '@/pages/Knowledge'
 import Search from '@/pages/Search'
 import Blog from '@/pages/Blog'
 import File from '@/pages/404'
+import getPageTitle from "@/utils/get-page-title";
 
 //解决 Vue路由的一个bug报错问题
 const originalPush = VueRouter.prototype.push
@@ -41,45 +42,45 @@ let router = new VueRouter({
         {
             path: '/home',
             component: Home,
-            meta: {isShowFooter: true},
+            meta: {isShowFooter: true,title: '首页'},
         },
         {
             path: '/login',
             component: Login,
-            meta: {isShowFooter: false},
+            meta: {isShowFooter: false,title: '登陆'},
         },
         {
             path: '/about',
             component: About,
-            meta: {isShowFooter: true}
+            meta: {isShowFooter: true,title: '关于我'}
         },
         {
             path: '/daily',
             component: Daily,
-            meta: {isShowFooter: true}
+            meta: {isShowFooter: true,title: '动态'}
         },
         {
             path: '/message',
             component: Message,
-            meta: {isShowFooter: true}
+            meta: {isShowFooter: true,title: '留言'}
         },
         {
             path: '/search/:keyword?',
             component: Search,
-            meta: {isShowFooter: false},
+            meta: {isShowFooter: false,title: '搜索'},
             name: 'search'
         },
         {
             path: '/knowledge/:keyword?',
             component: Knowledge,
-            meta: {isShowFooter: true},
+            meta: {isShowFooter: true,title: '学无止境'},
             name: 'knowledge'
         },
         {
             path: '/blog',
             component: Blog,
             name: 'Blog',
-            meta: {isShowFooter: false}
+            meta: {isShowFooter: false,title: '博客'}
         },
         {
             //重定向，在项目跑起来的时候，也就是访问根路径就要访问首页
@@ -99,19 +100,23 @@ router.beforeEach(async (to,from,next)=>{
     if(token){
         //已经登陆而且要想去登陆或者页面就要拦截下来
         if(to.path === '/login') {
+            document.title = getPageTitle(to.meta.title)
             next('/')
         }else {
             //已经登陆而且访问的是非登陆页面
             if(username){
+                document.title = getPageTitle(to.meta.title)
                 next()
             }else {
                 //登陆了而且没有用户信息要先获取信息再放行
                 try {
                     await store.dispatch('getUserInfo');
+                    document.title = getPageTitle(to.meta.title)
                     next();
                 }catch (err) {
                     //token失效要重新登陆
                     await store.dispatch('userLogout');
+                    document.title = getPageTitle(to.meta.title)
                     next('/login')
                 }
             }
@@ -121,6 +126,7 @@ router.beforeEach(async (to,from,next)=>{
             alert('登陆后才能查看此页面')
             next('/login')
         }else {
+            document.title = getPageTitle(to.meta.title)
             next();
         }
     }

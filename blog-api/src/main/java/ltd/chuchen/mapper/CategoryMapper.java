@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Mapper
-@Component
 @Repository
 public interface CategoryMapper extends BaseMapper<Category> {
 

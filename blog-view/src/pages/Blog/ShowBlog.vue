@@ -19,6 +19,7 @@
 import {mavonEditor} from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import {mapState} from "vuex/dist/vuex.mjs";
+import {reqBlogPassword} from '@/api'
 
 export default {
   name: "ShowBlog",
@@ -26,9 +27,17 @@ export default {
   data() {
     return {
       content: '',
+      password: ''
     }
   },
   props: ['blogId'],
+  created() {
+    if(this.blog.password !== '') {
+      reqBlogPassword(this.blogId).then(res => {
+        this.password = res.data + '';
+      })
+    }
+  },
   mounted() {
     this.$store.dispatch('getBlog',this.blogId);
   },
@@ -41,9 +50,12 @@ export default {
     blog() {
       this.content = this.blog.content;
       this.$emit('getTitle',this.blog.title)
-      if(this.blog.password !== '') {
+      if(this.blog.password !== ''){
         let pas = prompt('请输入密码：')
-        console.log(pas)
+        if((this.password === '')||(this.password !== pas)){
+          this.msgError('密码错误')
+          this.$router.go(-1);
+        }
       }
     }
   }

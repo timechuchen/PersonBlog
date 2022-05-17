@@ -13,7 +13,7 @@
         <span class="blog_author" style="color: #e5db18">{{blog.author}}</span>
         <span class="blog_createTime" style="color: #e7572c">{{blog.updateTime | timeFormat}}</span>
         <span class="blog_blogTage" v-for="(tag,i) in blog.blogTage" :key="tag.id">
-            <span :style="{'background-color':tag.color}">{{tag.tagName}}</span>
+            <span class="tag" :style="{'background-color':tag.color}">{{tag.tagName}}</span>
         </span>
         <p class="commonts"><i class="Hui-iconfont" title="评论量">&#xe622;</i>
           <span class="cy_cmt_count">{{blog.comment}}</span>
@@ -89,10 +89,17 @@ export default {
   .blog_author {
     color: black;
   }
-  .blog_blogTage {
-    color: #62c462;
-  }
+  /*.blog_blogTage {*/
+  /*  color: #62c462;*/
+  /*}*/
   .blog_createTime {
     color: #8ad21c;
+  }
+  .tag {
+    padding-left: 5px;
+    font-weight: 700;
+    color: white;
+    display: inline-block;
+    border-radius: 60% 0 0 60%;
   }
 </style>

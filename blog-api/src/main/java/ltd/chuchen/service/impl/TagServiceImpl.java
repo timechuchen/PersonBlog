@@ -3,7 +3,6 @@ package ltd.chuchen.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import ltd.chuchen.constants.RedisKeyConstant;
-import ltd.chuchen.entity.Record;
 import ltd.chuchen.entity.Tag;
 import ltd.chuchen.mapper.TagMapper;
 import ltd.chuchen.service.TagService;
@@ -35,7 +34,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> getTagList() {
-        String redisKey = RedisKeyConstant.TAG_CLOUD_LIST;
+        String redisKey = RedisKeyConstant.TAG_LIST;
         Object o = redisUtil.get(redisKey);
         if(o == null) {
             return updateTagsOfRedis();
@@ -120,7 +119,7 @@ public class TagServiceImpl implements TagService {
      * 更新 redis 中的标签
      */
     protected List<Tag> updateTagsOfRedis() {
-        String redisKey = RedisKeyConstant.TAG_CLOUD_LIST;
+        String redisKey = RedisKeyConstant.TAG_LIST;
         List<Tag> tags = tagMapper.selectAll();
         redisUtil.set(redisKey,tags);
         return tags;

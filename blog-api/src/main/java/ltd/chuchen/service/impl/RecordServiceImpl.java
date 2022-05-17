@@ -143,7 +143,6 @@ public class RecordServiceImpl implements RecordService {
             Map<Object, Object> hmget = redisUtil.hmget(redisKey);
             System.out.println(hmget);
             hmget.forEach((k,v)->{
-                System.out.println(k+"@@@"+v);
                 Record record = recordMapper.selectById((Serializable) k);
                 record.setLikes((Integer) v);
                 recordMapper.updateById(record);

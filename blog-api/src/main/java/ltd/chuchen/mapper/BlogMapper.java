@@ -16,7 +16,6 @@ import java.util.List;
  * @Description 博客管理映射文件
  */
 @Mapper
-@Component
 @Repository
 public interface BlogMapper extends BaseMapper<Blog> {
 

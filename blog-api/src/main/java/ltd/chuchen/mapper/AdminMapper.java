@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
  * @Description TODO
  */
 @Mapper
-@Component
 @Repository
 public interface AdminMapper extends BaseMapper<Admin> {
 }

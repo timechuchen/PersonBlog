@@ -233,7 +233,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public String getBlogPassword(Long blogId) {
-        return null;
+        return blogMapper.selectById(blogId).getPassword();
     }
 
     @Override

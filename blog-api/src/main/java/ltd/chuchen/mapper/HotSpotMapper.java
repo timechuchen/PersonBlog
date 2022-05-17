@@ -12,7 +12,6 @@ import java.util.List;
 
 
 @Mapper
-@Component
 @Repository
 public interface HotSpotMapper extends BaseMapper<HotSpot> {
     //清空指定表

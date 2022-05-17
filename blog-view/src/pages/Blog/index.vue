@@ -31,10 +31,12 @@ export default {
 .title {
   font-weight: 800;
   font-size: 50px;
+  border: 3px solid #58585c;
   text-align: center;
-  background-color: rgba(9, 80, 102, 0.51);
+  background-color: rgba(152, 11, 253, 0.34);
   margin: 0 auto;
   width: 90%;
-  border-radius: 10%;
+  color: #f1e608;
+  border-radius: 10px;
 }
 </style>

@@ -17,7 +17,6 @@ import java.util.List;
  */
 @Mapper
 @Repository
-@Component
 public interface VisitRecordMapper  extends BaseMapper<VisitRecord> {
     /**
      * 按天数查询访问记录

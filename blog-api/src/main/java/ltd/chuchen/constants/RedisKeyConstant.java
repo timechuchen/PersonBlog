@@ -29,12 +29,12 @@ public class RedisKeyConstant {
     /**
      * 动态列表key
      */
-    public static final String RECORD_LIST = "RecordList";
+    public static final String RECORD_LIST = "record_list";
 
     /**
-     * 标签云列表key
+     * 标签列表key
      */
-    public static final String TAG_CLOUD_LIST = "tagCloudList";
+    public static final String TAG_LIST = "tag_list";
 
     /**
      * 站点信息key
@@ -75,5 +75,10 @@ public class RedisKeyConstant {
      * 动态的点赞信息
      */
     public static final String RECORD_LIKES = "record_likes";
+
+    /**
+     * 标签云标识码
+     */
+    public static final String TAG_CLOUD = "tag_cloud";
 
 }

@@ -44,8 +44,9 @@ export default {
   methods: {
     isLike(index,recodeId){
       addLike(recodeId)
-      this.getLikes()
-      this.getLikes()
+      setTimeout(()=>{
+        this.getLikes()
+      },20)
     },
     getLikes() {
       getLikesOfRecord().then((res)=>{

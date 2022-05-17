@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
  * @Description 操作日志映射文件
  */
 @Mapper
-@Component
 @Repository
 public interface OperationLogMapper extends BaseMapper<OperationLog> {
 }

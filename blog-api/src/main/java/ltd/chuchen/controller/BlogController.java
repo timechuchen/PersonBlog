@@ -48,6 +48,17 @@ public class BlogController {
     }
 
     @ResponseBody
+    @GetMapping("/getPassword")
+    public Result getPassword(@RequestParam Long blogId) {
+        String blogPassword = blogService.getBlogPassword(blogId);
+        if(blogPassword != null) {
+            return Result.ok("ok",blogPassword);
+        }else {
+            return Result.error("error");
+        }
+    }
+
+    @ResponseBody
     @GetMapping("/recommendBlogs")
     public Result getRecommendBlog() {
         List<BlogViewListInfo> blogViewList = blogService.getRecommendBlog();

@@ -15,7 +15,6 @@ import java.util.List;
  * @Description Tag 的 Mapper 映射
  */
 @Mapper
-@Component
 @Repository
 public interface TagMapper extends BaseMapper<Tag> {
 

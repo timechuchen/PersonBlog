@@ -26,6 +26,7 @@ public class HotSpotServeImpl implements HotSpotService {
 
     @Override
     public boolean updateHotSpot(List<HotTagInfo> hots) {
+        String redisKey = RedisKeyConstant.HOT_TAG_INFO_LIST;
         hotSpotMapper.deleteHotSpot();
         for(HotTagInfo hot : hots){
             HotSpot hotSpot = new HotSpot();
@@ -36,6 +37,7 @@ public class HotSpotServeImpl implements HotSpotService {
             hotSpot.setColor(hot.getColor());
             hotSpotMapper.insert(hotSpot);
         }
+        redisUtil.del(redisKey);
         return true;
     }
 

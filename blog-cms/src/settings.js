@@ -9,7 +9,7 @@ module.exports = {
 	 * @type {string}
 	 * @description logo URL
 	 */
-	logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
+	logo: 'http://rbx53i4an.hd-bkt.clouddn.com/files/head/714mhe4rvk.png',
 
 	/**
 	 * @type {boolean} true | false

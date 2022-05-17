@@ -16,7 +16,6 @@ const actions = {
         let result = await getAllSite();
         if(result.code === 200){
             commit('GETALLHOTTAG',result.data);
-            // console.log("122",result.data[0])
             return result.msg;
         }else {
             return Promise.reject(new Error('服务器异常'));

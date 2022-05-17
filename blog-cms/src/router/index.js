@@ -119,38 +119,11 @@ const routes = [
                 meta: {title: '热点设置', icon: 'el-icon-guide'}
             },
             {
-                path: 'friend',
-                name: 'FriendList',
-                component: () => import('@/page/page/FriendList'),
-                meta: {title: '友链管理', icon: 'el-icon-lollipop'}
-            },
-            {
-                path: 'about',
-                name: 'About',
-                component: () => import('@/page/page/About'),
-                meta: {title: '关于我', icon: 'el-icon-tickets'}
-            },
-        ]
-    },
-    {
-        path: '/pictureHosting',
-        name: 'PictureHosting',
-        redirect: '/pictureHosting/setting',
-        component: Layout,
-        meta: {title: '图床管理', icon: 'el-icon-picture'},
-        children: [
-            {
-                path: 'setting',
-                name: 'Setting',
-                component: () => import('@/page/pictureHosting/Setting'),
-                meta: {title: '配置', icon: 'el-icon-setting'}
-            },
-            {
-                path: 'manage',
-                name: 'Manage',
-                component: () => import('@/page/pictureHosting/Manage'),
-                meta: {title: '管理', icon: 'el-icon-folder-opened'}
-            },
+                path: 'tag',
+                name: 'TagCloud',
+                component: () => import('@/page/page/TagCloud'),
+                meta: {title: '标签云', icon: 'el-icon-paperclip'}
+            }
         ]
     },
     {
@@ -198,21 +171,6 @@ const routes = [
                 name: 'VisitLog',
                 component: () => import('@/page/log/VisitLog'),
                 meta: {title: '访问日志', icon: 'el-icon-data-line'}
-            },
-        ]
-    },
-    {
-        path: '/statics',
-        name: 'Statics',
-        redirect: '/statics/visitor',
-        component: Layout,
-        meta: {title: '数据统计', icon: 'el-icon-s-data'},
-        children: [
-            {
-                path: 'visitor',
-                name: 'Visitor',
-                component: () => import('@/page/statics/Visitor'),
-                meta: {title: '访客统计', icon: 'el-icon-s-marketing'}
             },
         ]
     },
