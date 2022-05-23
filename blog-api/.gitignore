@@ -18,6 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
+docker-compose.yml
+Dockerfile
 src/main/resources/files
 
 ### NetBeans ###
@@ -27,6 +29,7 @@ src/main/resources/files
 /nbdist/
 /.nb-gradle/
 build/
+**/src/main/resources/application-pro.yml
 !**/src/main/**/build/
 !**/src/test/**/build/
 .mvn
