@@ -16,7 +16,7 @@ public class FilesUtil {
 
     @Value("${server.port}")
     private String port;
-    private static final String ip = "http://rbx53i4an.hd-bkt.clouddn.com";
+    private static final String ip = "http://localhost";
 
     /**
      * @param file 要上传的文件
