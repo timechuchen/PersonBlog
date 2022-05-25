@@ -45,7 +45,7 @@ public class FileController {
     @PostMapping("/blogImg/{blogId}")
     @ResponseBody
     public Result uploadBlogImg(@RequestBody MultipartFile file,  @PathVariable String blogId) {
-        String imgUrl = filesUtil.uploadHead(file, blogId,"blog");
+        String imgUrl = filesUtil.uploadHead(file, blogId,"test");
         return Result.ok("上传成功",imgUrl);
     }
 

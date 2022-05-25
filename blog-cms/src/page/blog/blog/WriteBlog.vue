@@ -7,12 +7,19 @@
             <el-input v-model="form.title" placeholder="请输入标题"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="文章首图URL" prop="firstPicture">
+        <el-col :span="5">
+          <el-form-item label="文章首图上传" prop="firstPicture">
             <el-upload :action="this.form.firstPicture ? this.form.firstPicture : action" :on-success="filesUploadSuccess">
-              <i class="el-icon-plus"></i>
+              <i @click="temp = !temp" class="el-icon-plus"></i>
             </el-upload>
-            <img width="100px" :src="this.form.firstPicture" alt="">
+            <img v-show="this.form.firstPicture" width="120px" height="60px" :src="this.form.firstPicture" alt="">
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item label="文章照片上传" prop="firstPicture">
+            <el-upload :action="action" :on-success="filesUploadBlog">
+              <i @click="temp = !temp" class="el-icon-plus"></i>
+            </el-upload>
           </el-form-item>
         </el-col>
       </el-row>
@@ -113,7 +120,7 @@ export default {
   name: "WriteBlog",
   data() {
     return {
-      action: 'http://localhost:8081/api/util/files/blogImg/' + Math.random().toString(36).substr(2),
+      temp: true,
       categoryList: [],
       tagList: [],
       dialogVisible: false,
@@ -225,6 +232,23 @@ export default {
     },
     filesUploadSuccess(res) {
       this.form.firstPicture = res.data
+    },
+    filesUploadBlog(res) {
+      if(res.code === 200) {
+        alert('上传成功，url：'+res.data)
+      }else {
+        alert('上传失败')
+      }
+    },
+  },
+  computed: {
+    action() {
+      let a = this.temp
+      if(a === true) {
+        return 'http://localhost:8081/api/util/files/blogImg/' + Math.random().toString(36).substr(2)
+      }else {
+        return 'http://localhost:8081/api/util/files/blogImg/' + Math.random().toString(36).substr(2)
+      }
     }
   }
 }
