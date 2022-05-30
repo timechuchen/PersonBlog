@@ -10,7 +10,7 @@ import Home from '@/pages/Home'
 import Login from '@/pages/Login'
 import About from '@/pages/About'
 import Daily from '@/pages/Daily'
-import Message from '@/pages/Message'
+import Friends from '@/pages/Friends'
 import Knowledge from '@/pages/Knowledge'
 import Search from '@/pages/Search'
 import Blog from '@/pages/Blog'
@@ -60,9 +60,9 @@ let router = new VueRouter({
             meta: {isShowFooter: true,title: '动态'}
         },
         {
-            path: '/message',
-            component: Message,
-            meta: {isShowFooter: true,title: '留言'}
+            path: '/friends',
+            component: Friends,
+            meta: {isShowFooter: true,title: '友链'}
         },
         {
             path: '/search/:keyword?',

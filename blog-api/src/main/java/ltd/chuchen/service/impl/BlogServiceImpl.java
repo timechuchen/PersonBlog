@@ -390,6 +390,7 @@ public class BlogServiceImpl implements BlogService {
         Map<String,Object> map = new HashMap<>();
 
         QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("update_time");
         wrapper.select("id", "title", "category_id", "recommend","password", "top","create_time", "update_time","published","appreciation","comment_enabled");
         List<Blog> blogs = blogMapper.selectList(wrapper);
         List<BolgListInfo> bolgListInfos = new LinkedList<>();
@@ -422,6 +423,7 @@ public class BlogServiceImpl implements BlogService {
     protected List<BlogViewListInfo> updateRedisOfBlogViewList() {
         String redisKey = RedisKeyConstant.HOME_BLOG_INFO_LIST;
         QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("update_time");
         wrapper.select("id", "title", "first_picture", "update_time","views", "description","published", "password");
         List<Blog> blogs = blogMapper.selectList(wrapper);
         List<BlogViewListInfo> blogViewListInfos = new LinkedList<>();

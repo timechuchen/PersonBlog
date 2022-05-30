@@ -21,7 +21,7 @@
             </li>
             <li> <router-link to="/daily" data-hover="碎言碎语">碎言碎语</router-link> </li>
             <li> <router-link to="/about" data-hover="关于我">关于我</router-link> </li>
-            <li> <router-link to="/message" data-hover="留言板">留言板</router-link> </li>
+            <li> <router-link to="/friends" data-hover="友链">友链</router-link> </li>
             <li>
               <input type="text" class="input-text input-size" v-model="keyword" placeholder="搜索博客">
               <button class="btn btn-default" @click="goSearch">搜索</button>
