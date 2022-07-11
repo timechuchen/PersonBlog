@@ -5,7 +5,7 @@
         <router-link class="navbar-logo hidden-xs" to="/home">
           <img class="logo" src="./images/logo.png" alt="初晨博客" />
         </router-link>
-        <a class="logo navbar-logo-m visible-xs" href="#">初晨博客</a>
+        <a class="logo navbar-logo-m visible-xs" href="#">初晨</a>
         <nav class="nav navbar-nav nav-collapse font-size" role="navigation" id="Hui-navbar">
           <ul class="cl">
             <li> <router-link to="/home" data-hover="首页">首页</router-link> </li>

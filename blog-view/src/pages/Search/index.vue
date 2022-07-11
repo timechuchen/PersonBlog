@@ -6,7 +6,7 @@
             <img :data-blogOne="blog.blogId" class="lazyload" v-lazy="blog.blogPic" alt="logo"/>
           </a>
           <h4 class="title">
-            <a :data-blogOne="blog.blogId">{{blog.blogTitle}}</a>
+            <a :data-blogOne="blog.blogId" v-html="blog.blogTitle"></a>
             <i class="Hui-iconfont Hui-iconfont-key" style="font-size: 15px; color: #b94a48" v-show="blog.password !== ''"></i>
           </h4>
           <div class="date_hits">

@@ -1,6 +1,7 @@
 package ltd.chuchen.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,11 +22,35 @@ import ltd.chuchen.service.CommentService;
 import ltd.chuchen.service.TagService;
 import ltd.chuchen.utils.RedisUtil;
 import ltd.chuchen.utils.StringUtils;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.text.Text;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.rest.RestStatus;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author chuchen
@@ -45,10 +70,18 @@ public class BlogServiceImpl implements BlogService {
     private CommentService commentService;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private RestHighLevelClient restHighLevelClient;
 
     @PostConstruct
     private void init() {
         updateRedisOfBlogViewList();
+        Boolean aBoolean = updateDataOfElasticSearch();
+        if(aBoolean) {
+            System.out.println("ok");
+        }else {
+            System.out.println("error");
+        }
     }
 
     @Override
@@ -60,6 +93,7 @@ public class BlogServiceImpl implements BlogService {
             //更新 redis 缓存数据
             updateRedisOfBlogViewList();
             updateBlogListInfo();
+            deleteBlogByElasticSearch(id);
             return true;
         }
         return false;
@@ -118,6 +152,17 @@ public class BlogServiceImpl implements BlogService {
             queryWrapper.eq("title",blog.getTitle());
             Long blogId = blogMapper.selectOne(queryWrapper).getId();
 
+            addDataOfElasticSearch(new BlogViewListInfo()
+                    .setBlogId(b.getId())
+                    .setBlogTitle(b.getTitle())
+                    .setBlogPic(b.getFirstPicture())
+                    .setBlogTage(tagService.getTagListByBlogId(b.getId()))
+                    .setUpdateTime(b.getUpdateTime())
+                    .setComment(commentService.getCommentCountByBlogId(b.getId()))
+                    .setDescription(b.getDescription())
+                    .setPublished(b.getPublished())
+                    .setPassword(b.getPassword()));
+
             //处理标签
             List<String> tagList = blog.getTagList();
             for(String t : tagList) {
@@ -128,6 +173,19 @@ public class BlogServiceImpl implements BlogService {
         }else {
             b.setId(blog.getId());
             insert = blogMapper.updateById(b);
+
+            //更新 ElasticSearch 中的信息
+            updateSingleDataOfElasticSearch(new BlogViewListInfo()
+                    .setBlogId(b.getId())
+                    .setBlogTitle(b.getTitle())
+                    .setBlogPic(b.getFirstPicture())
+                    .setBlogTage(tagService.getTagListByBlogId(b.getId()))
+                    .setUpdateTime(b.getUpdateTime())
+                    .setComment(commentService.getCommentCountByBlogId(b.getId()))
+                    .setDescription(b.getDescription())
+                    .setPublished(b.getPublished())
+                    .setPassword(b.getPassword()));
+
             //处理标签
             blogMapper.deleteTag(b.getId());
             List<String> tagList = blog.getTagList();
@@ -159,6 +217,7 @@ public class BlogServiceImpl implements BlogService {
         if(update == 1) {
             //更新 redis 缓存数据
             updateRedisOfBlogViewList();
+
             updateBlogListInfo();
             return true;
         }
@@ -345,7 +404,8 @@ public class BlogServiceImpl implements BlogService {
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         List<BlogViewListInfo> blogViewListInfos = new ArrayList<>();
         queryWrapper.eq("category_id",categoryByName.getId());
-        List<Blog> blogs = blogMapper.selectList(queryWrapper);blogs.forEach((b)->{
+        List<Blog> blogs = blogMapper.selectList(queryWrapper);
+        blogs.forEach((b)->{
             blogViewListInfos.add(new BlogViewListInfo()
                     .setBlogId(b.getId())
                     .setBlogTitle(b.getTitle())
@@ -361,7 +421,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogViewListInfo> getBlogBysearch(String search) {
+    public List<BlogViewListInfo> getBlogBySearch(String search) {
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         List<BlogViewListInfo> blogViewListInfos = new ArrayList<>();
         queryWrapper.like("title",search);
@@ -381,6 +441,60 @@ public class BlogServiceImpl implements BlogService {
         });
         return blogViewListInfos;
     }
+
+    @Override
+    public List<BlogViewListInfo> getBlogByElasticSearch(String search) {
+        //条件搜索
+        SearchRequest searchRequest = new SearchRequest("cc_blog_info");
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+
+        //精准匹配关键字
+        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("blogTitle", search);
+        sourceBuilder.query(matchQueryBuilder);
+        sourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+        //高亮
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("blogTitle");
+        highlightBuilder.requireFieldMatch(false);
+        highlightBuilder.preTags("<span style='color:red'>");
+        highlightBuilder.postTags("</span>");
+
+        sourceBuilder.highlighter(highlightBuilder);
+
+        //执行搜索
+        searchRequest.source(sourceBuilder);
+        SearchResponse searchResult = null;
+        try {
+            searchResult = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //解析结果
+        ArrayList<BlogViewListInfo> list = new ArrayList<>();
+        for(SearchHit documentFields : searchResult.getHits()) {
+            //解析高亮的字段
+            Map<String, HighlightField> highlightFields = documentFields.getHighlightFields();
+            HighlightField title = highlightFields.get("blogTitle");
+            Map<String, Object> sourceAsMap = documentFields.getSourceAsMap();
+
+            //将原来的字段换成高亮的字段
+            if(title != null) {
+                Text[] fragments = title.fragments();
+                String newTitle = "";
+                for(Text text : fragments) {
+                    newTitle += text;
+                }
+                sourceAsMap.put("blogTitle",newTitle); //高亮字段替换为原来的内容即可
+            }
+
+
+            list.add(JSONObject.parseObject(JSONObject.toJSONString(sourceAsMap),BlogViewListInfo.class));
+        }
+
+        return list;
+    }
+
 
     /**
      * 更新 redis 中的后台博客列表信息：直接从数据库中查询到数据，将redis中对用的 key 的 value 更新
@@ -444,6 +558,80 @@ public class BlogServiceImpl implements BlogService {
         redisUtil.set(redisKey,blogViewListInfos);
         return blogViewListInfos;
     }
+
+    // 向 ElasticSearch 更新单个数据库信息
+    protected Boolean updateSingleDataOfElasticSearch(BlogViewListInfo blogViewListInfo) {
+        UpdateRequest updateRequest = new UpdateRequest("cc_blog_info", blogViewListInfo.getBlogId()+"");
+        updateRequest.timeout("1s");
+        updateRequest.doc(JSON.toJSONString(blogViewListInfo),XContentType.JSON);
+        UpdateResponse updateResponse = null;
+        try {
+            updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert updateResponse != null;
+        RestStatus status = updateResponse.status();
+        return status.getStatus() == 200;
+    }
+    // 向 ElasticSearch 更新数据库信息
+    protected Boolean updateDataOfElasticSearch() {
+        List<BlogViewListInfo> blogViewListInfos = updateRedisOfBlogViewList();
+        //将查询到的数据放入到 ES 中
+        BulkRequest bulkRequest = new BulkRequest();
+        bulkRequest.timeout("2m");
+
+        for (BlogViewListInfo blogViewListInfo : blogViewListInfos) {
+            IndexRequest request = new IndexRequest("cc_blog_info");
+            request.id(blogViewListInfo.getBlogId()+"");
+            bulkRequest.add(request.source(JSON.toJSONString(blogViewListInfo), XContentType.JSON));
+        }
+
+        BulkResponse bulk;
+        try {
+            bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return !bulk.hasFailures();
+    }
+
+    //向 ElasticSearch 中插入数据
+    protected Boolean addDataOfElasticSearch(BlogViewListInfo blogViewListInfo) {
+        IndexRequest request = new IndexRequest("cc_blog_info");
+        //设置一些规则
+        request.id(blogViewListInfo.getBlogId()+"");
+        request.timeout(TimeValue.timeValueSeconds(3));
+
+        //将我们的数据放入请求 json
+        request.source(JSON.toJSONString(blogViewListInfo), XContentType.JSON);
+
+        //客户端发送请求
+        IndexResponse response = null;
+        try {
+            response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert response != null;
+        return response.status().getStatus() == 200;
+    }
+
+    //删除 ElasticSearch 中数据
+    private Boolean deleteBlogByElasticSearch(Long id) {
+        DeleteRequest deleteRequest = new DeleteRequest("cc_blog_info",id+"");
+        deleteRequest.timeout("1s");
+        DeleteResponse delete = null;
+        try {
+            delete = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert delete != null;
+        return delete.status().getStatus() == 200;
+    }
 }
+
 
 

@@ -58,5 +58,7 @@ public interface BlogService {
 
     List<BlogViewListInfo> getBlogByCategory(String category);
 
-    List<BlogViewListInfo> getBlogBysearch(String search);
+    List<BlogViewListInfo> getBlogByElasticSearch(String search);
+
+    List<BlogViewListInfo> getBlogBySearch(String search);
 }

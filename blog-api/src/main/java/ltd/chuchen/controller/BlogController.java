@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author chuchen
@@ -83,11 +84,13 @@ public class BlogController {
     @ResponseBody
     @GetMapping("/blogSearch")
     public Result getBlogBySearch(@RequestParam String search) {
-        List<BlogViewListInfo> blogViewList = blogService.getBlogBysearch(search);
-        if(blogViewList == null){
+//        List<BlogViewListInfo> blogViewList = blogService.getBlogBySearch(search);
+        List<BlogViewListInfo> blogByElasticSearch = blogService.getBlogByElasticSearch(search);
+        System.out.println(blogByElasticSearch);
+        if(blogByElasticSearch == null){
             return Result.ok("没有数据");
-        } else if(blogViewList.size() != 0){
-            return Result.ok("数据加载成功",blogViewList);
+        } else if(blogByElasticSearch.size() != 0){
+            return Result.ok("数据加载成功",blogByElasticSearch);
         }else {
             return Result.error("数据加载失败!");
         }

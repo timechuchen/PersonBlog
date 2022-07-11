@@ -16,6 +16,8 @@
     <properties>
         <java.version>11</java.version>
         <repackage.classifier/>
+        <!-- 自己定义 ES 版本，保证和本地的一致 -->
+        <elasticsearch.version>7.6.1</elasticsearch.version>
         <spring-native.version>0.11.3</spring-native.version>
     </properties>
     <dependencies>
@@ -27,6 +29,10 @@
             <groupId>org.springframework.experimental</groupId>
             <artifactId>spring-native</artifactId>
             <version>${spring-native.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
